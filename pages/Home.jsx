@@ -34,9 +34,7 @@ const testimonials = [
 ];
 
 export default function Home() {
-  const [activeDecade, setActiveDecade] = useState(null);
   const [scrollY, setScrollY] = useState(0);
-  const [visibleSections, setVisibleSections] = useState({});
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -44,24 +42,9 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setVisibleSections((prev) => ({ ...prev, [entry.target.id]: true }));
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-    document.querySelectorAll("[data-animate]").forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <div style={{ fontFamily: "'Georgia', serif", background: "#0a0a0f", color: "#fff", overflowX: "hidden" }}>
-      
+
       {/* NAV */}
       <nav style={{
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000,
@@ -81,22 +64,30 @@ export default function Home() {
           }}>⏰</div>
           <span style={{ fontSize: 22, fontWeight: "bold", color: "#FFD700", letterSpacing: 1 }}>eDecades</span>
         </div>
-        <div style={{ display: "flex", gap: "32px", alignItems: "center" }}>
-          <a href="#decades" style={{ color: "rgba(255,255,255,0.8)", textDecoration: "none", fontSize: 14, transition: "color 0.2s" }}
+        <div style={{ display: "flex", gap: "24px", alignItems: "center" }}>
+          <a href="#decades" style={{ color: "rgba(255,255,255,0.8)", textDecoration: "none", fontSize: 14 }}
             onMouseOver={e => e.target.style.color = "#FFD700"}
             onMouseOut={e => e.target.style.color = "rgba(255,255,255,0.8)"}>Explore Decades</a>
-          <a href="#features" style={{ color: "rgba(255,255,255,0.8)", textDecoration: "none", fontSize: 14, transition: "color 0.2s" }}
+          <a href="#features" style={{ color: "rgba(255,255,255,0.8)", textDecoration: "none", fontSize: 14 }}
             onMouseOver={e => e.target.style.color = "#FFD700"}
             onMouseOut={e => e.target.style.color = "rgba(255,255,255,0.8)"}>Features</a>
-          <a href="#community" style={{ color: "rgba(255,255,255,0.8)", textDecoration: "none", fontSize: 14, transition: "color 0.2s" }}
+          <a href="#community" style={{ color: "rgba(255,255,255,0.8)", textDecoration: "none", fontSize: 14 }}
             onMouseOver={e => e.target.style.color = "#FFD700"}
             onMouseOut={e => e.target.style.color = "rgba(255,255,255,0.8)"}>Community</a>
+          <a href="/Quiz" style={{
+            color: "#fff", textDecoration: "none", fontSize: 14,
+            background: "rgba(255,215,0,0.12)", border: "1px solid rgba(255,215,0,0.35)",
+            padding: "8px 18px", borderRadius: 30, transition: "all 0.2s"
+          }}
+            onMouseOver={e => { e.target.style.background = "rgba(255,215,0,0.25)"; e.target.style.color = "#FFD700"; }}
+            onMouseOut={e => { e.target.style.background = "rgba(255,215,0,0.12)"; e.target.style.color = "#fff"; }}>
+            🕰️ Take the Quiz
+          </a>
           <a href="https://benevolent-decade-dive-now.base44.app" target="_blank" style={{
             background: "linear-gradient(135deg, #FFD700, #FF8C00)",
             color: "#000", padding: "10px 24px", borderRadius: 30,
             fontWeight: "bold", textDecoration: "none", fontSize: 14,
-            boxShadow: "0 4px 15px rgba(255,215,0,0.3)",
-            transition: "transform 0.2s, box-shadow 0.2s"
+            boxShadow: "0 4px 15px rgba(255,215,0,0.3)"
           }}
             onMouseOver={e => { e.target.style.transform = "scale(1.05)"; e.target.style.boxShadow = "0 6px 25px rgba(255,215,0,0.5)"; }}
             onMouseOut={e => { e.target.style.transform = "scale(1)"; e.target.style.boxShadow = "0 4px 15px rgba(255,215,0,0.3)"; }}>
@@ -113,10 +104,9 @@ export default function Home() {
         textAlign: "center", padding: "120px 24px 80px",
         position: "relative", overflow: "hidden"
       }}>
-        {/* Animated background orbs */}
         <div style={{ position: "absolute", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,215,0,0.06) 0%, transparent 70%)", top: "10%", left: "10%", animation: "pulse 8s ease-in-out infinite" }} />
         <div style={{ position: "absolute", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(138,43,226,0.08) 0%, transparent 70%)", bottom: "20%", right: "15%" }} />
-        
+
         <div style={{
           display: "inline-block", background: "rgba(255,215,0,0.1)", border: "1px solid rgba(255,215,0,0.3)",
           borderRadius: 30, padding: "8px 20px", marginBottom: 24, fontSize: 13,
@@ -124,7 +114,7 @@ export default function Home() {
         }}>
           🕰️ Travel Through Time — Join eDecades
         </div>
-        
+
         <h1 style={{
           fontSize: "clamp(42px, 8vw, 90px)", fontWeight: 900, lineHeight: 1.1, marginBottom: 24,
           background: "linear-gradient(135deg, #FFFFFF 0%, #FFD700 40%, #FF8C00 70%, #FF4500 100%)",
@@ -132,37 +122,34 @@ export default function Home() {
         }}>
           Every Decade.<br />Every Story.<br />All Connected.
         </h1>
-        
+
         <p style={{ fontSize: "clamp(16px, 2.5vw, 22px)", color: "rgba(255,255,255,0.7)", maxWidth: 700, lineHeight: 1.7, marginBottom: 48 }}>
           The world's first decade-themed social network. Explore music, fashion, culture, and history from <strong style={{ color: "#FFD700" }}>1900 to today</strong> — and connect with people who love the same era as you.
         </p>
-        
+
         <div style={{ display: "flex", gap: 16, flexWrap: "wrap", justifyContent: "center", marginBottom: 64 }}>
           <a href="https://benevolent-decade-dive-now.base44.app" target="_blank" style={{
             background: "linear-gradient(135deg, #FFD700, #FF8C00)",
             color: "#000", padding: "18px 48px", borderRadius: 40,
             fontWeight: "bold", textDecoration: "none", fontSize: 18,
-            boxShadow: "0 8px 30px rgba(255,215,0,0.4)",
-            transition: "all 0.3s ease", display: "inline-block"
+            boxShadow: "0 8px 30px rgba(255,215,0,0.4)", display: "inline-block"
           }}
             onMouseOver={e => { e.target.style.transform = "translateY(-3px)"; e.target.style.boxShadow = "0 12px 40px rgba(255,215,0,0.6)"; }}
             onMouseOut={e => { e.target.style.transform = "translateY(0)"; e.target.style.boxShadow = "0 8px 30px rgba(255,215,0,0.4)"; }}>
             🚀 Start Exploring Free
           </a>
-          <a href="#decades" style={{
+          <a href="/Quiz" style={{
             background: "transparent", color: "#fff",
             padding: "18px 48px", borderRadius: 40, fontWeight: "bold",
             textDecoration: "none", fontSize: 18,
-            border: "2px solid rgba(255,255,255,0.3)",
-            transition: "all 0.3s ease", display: "inline-block"
+            border: "2px solid rgba(255,255,255,0.3)", display: "inline-block"
           }}
             onMouseOver={e => { e.target.style.borderColor = "#FFD700"; e.target.style.color = "#FFD700"; }}
             onMouseOut={e => { e.target.style.borderColor = "rgba(255,255,255,0.3)"; e.target.style.color = "#fff"; }}>
-            Browse Decades ↓
+            🕰️ Find My Soul Decade
           </a>
         </div>
-        
-        {/* Stats */}
+
         <div style={{ display: "flex", gap: 48, flexWrap: "wrap", justifyContent: "center" }}>
           {[["13+", "Decades Covered"], ["1900", "To Present Day"], ["∞", "Memories Shared"]].map(([num, label]) => (
             <div key={label} style={{ textAlign: "center" }}>
@@ -170,6 +157,79 @@ export default function Home() {
               <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", letterSpacing: 1 }}>{label}</div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* QUIZ CALLOUT BANNER */}
+      <section style={{
+        padding: "80px 24px",
+        background: "linear-gradient(135deg, #1a0a2e 0%, #0a1a10 50%, #1a0a00 100%)",
+        position: "relative", overflow: "hidden"
+      }}>
+        {/* Glow orb */}
+        <div style={{ position: "absolute", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(255,215,0,0.08) 0%, transparent 70%)", top: "50%", left: "50%", transform: "translate(-50%,-50%)", pointerEvents: "none" }} />
+
+        <div style={{ maxWidth: 900, margin: "0 auto", position: "relative", zIndex: 1 }}>
+          <div style={{
+            background: "rgba(255,255,255,0.03)",
+            border: "1px solid rgba(255,215,0,0.25)",
+            borderRadius: 28,
+            padding: "56px 48px",
+            display: "flex", alignItems: "center", justifyContent: "space-between",
+            flexWrap: "wrap", gap: 40,
+            boxShadow: "0 0 60px rgba(255,215,0,0.08)"
+          }}>
+            <div style={{ flex: 1, minWidth: 280 }}>
+              <div style={{
+                display: "inline-block", background: "rgba(255,215,0,0.12)",
+                border: "1px solid rgba(255,215,0,0.3)", borderRadius: 30,
+                padding: "6px 16px", fontSize: 12, color: "#FFD700",
+                letterSpacing: 2, textTransform: "uppercase", marginBottom: 20
+              }}>✨ Viral Quiz</div>
+              <h2 style={{
+                fontSize: "clamp(28px, 4vw, 46px)", fontWeight: 900,
+                lineHeight: 1.2, marginBottom: 16,
+                background: "linear-gradient(135deg, #fff 0%, #FFD700 100%)",
+                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent"
+              }}>
+                What's Your<br />Soul Decade?
+              </h2>
+              <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 17, lineHeight: 1.7, marginBottom: 0, maxWidth: 420 }}>
+                6 quick questions reveal which decade you truly belong in — from the Roaring Twenties to right now. Take it, share it, and find your people on eDecades.
+              </p>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 20 }}>
+              {/* Decade emoji wheel */}
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginBottom: 8 }}>
+                {["🥂", "🎸", "☮️", "🕺", "📺", "💾", "📱", "🚀"].map((emoji, i) => (
+                  <div key={i} style={{
+                    width: 52, height: 52, borderRadius: 14,
+                    background: "rgba(255,255,255,0.06)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: 24, transition: "all 0.2s"
+                  }}>
+                    {emoji}
+                  </div>
+                ))}
+              </div>
+
+              <a href="/Quiz" style={{
+                display: "inline-block",
+                background: "linear-gradient(135deg, #FFD700, #FF8C00)",
+                color: "#000", padding: "18px 48px", borderRadius: 40,
+                fontWeight: "bold", textDecoration: "none", fontSize: 18,
+                boxShadow: "0 8px 30px rgba(255,215,0,0.45)",
+                whiteSpace: "nowrap", transition: "all 0.3s ease"
+              }}
+                onMouseOver={e => { e.target.style.transform = "translateY(-3px) scale(1.04)"; e.target.style.boxShadow = "0 14px 40px rgba(255,215,0,0.65)"; }}
+                onMouseOut={e => { e.target.style.transform = "translateY(0) scale(1)"; e.target.style.boxShadow = "0 8px 30px rgba(255,215,0,0.45)"; }}>
+                🕰️ Take the Free Quiz →
+              </a>
+              <div style={{ fontSize: 13, color: "rgba(255,255,255,0.35)" }}>Takes less than 2 minutes · Free to share</div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -181,17 +241,12 @@ export default function Home() {
             <h2 style={{ fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 900, margin: 0 }}>Pick Your Decade</h2>
             <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 18, marginTop: 16 }}>Each era has its own world. Explore all of them.</p>
           </div>
-          
+
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 20 }}>
             {decades.map((d) => (
-              <a
-                key={d.name}
-                href="https://benevolent-decade-dive-now.base44.app"
-                target="_blank"
-                style={{ textDecoration: "none" }}
+              <a key={d.name} href="https://benevolent-decade-dive-now.base44.app" target="_blank" style={{ textDecoration: "none" }}
                 onMouseOver={e => { e.currentTarget.querySelector(".card").style.transform = "translateY(-8px) scale(1.02)"; e.currentTarget.querySelector(".card").style.boxShadow = `0 20px 50px ${d.color}55`; }}
-                onMouseOut={e => { e.currentTarget.querySelector(".card").style.transform = "translateY(0) scale(1)"; e.currentTarget.querySelector(".card").style.boxShadow = "0 4px 20px rgba(0,0,0,0.3)"; }}
-              >
+                onMouseOut={e => { e.currentTarget.querySelector(".card").style.transform = "translateY(0) scale(1)"; e.currentTarget.querySelector(".card").style.boxShadow = "0 4px 20px rgba(0,0,0,0.3)"; }}>
                 <div className="card" style={{
                   background: `linear-gradient(135deg, ${d.color}22 0%, #1a1a2e 100%)`,
                   border: `1px solid ${d.color}44`,
@@ -201,10 +256,7 @@ export default function Home() {
                 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16 }}>
                     <div style={{ fontSize: 36 }}>{d.emoji}</div>
-                    <div style={{
-                      background: `${d.color}33`, border: `1px solid ${d.color}66`,
-                      color: d.color, padding: "4px 12px", borderRadius: 20, fontSize: 12, fontWeight: "bold"
-                    }}>{d.years}</div>
+                    <div style={{ background: `${d.color}33`, border: `1px solid ${d.color}66`, color: d.color, padding: "4px 12px", borderRadius: 20, fontSize: 12, fontWeight: "bold" }}>{d.years}</div>
                   </div>
                   <h3 style={{ fontSize: 28, fontWeight: 900, color: "#fff", margin: "0 0 8px" }}>{d.name}</h3>
                   <div style={{ fontSize: 13, color: d.color, marginBottom: 12, fontStyle: "italic" }}>{d.tagline}</div>
@@ -226,18 +278,14 @@ export default function Home() {
             <div style={{ color: "#FFD700", fontSize: 13, letterSpacing: 3, textTransform: "uppercase", marginBottom: 16 }}>Everything You Need</div>
             <h2 style={{ fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 900, margin: 0 }}>One Platform.<br />Every Era.</h2>
           </div>
-          
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 24 }}>
             {features.map((f) => (
               <div key={f.title} style={{
-                background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                borderRadius: 20, padding: "32px 28px",
-                transition: "all 0.3s ease"
+                background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)",
+                borderRadius: 20, padding: "32px 28px", transition: "all 0.3s ease"
               }}
                 onMouseOver={e => { e.currentTarget.style.background = "rgba(255,215,0,0.05)"; e.currentTarget.style.borderColor = "rgba(255,215,0,0.2)"; e.currentTarget.style.transform = "translateY(-4px)"; }}
-                onMouseOut={e => { e.currentTarget.style.background = "rgba(255,255,255,0.03)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"; e.currentTarget.style.transform = "translateY(0)"; }}
-              >
+                onMouseOut={e => { e.currentTarget.style.background = "rgba(255,255,255,0.03)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"; e.currentTarget.style.transform = "translateY(0)"; }}>
                 <div style={{ fontSize: 40, marginBottom: 16 }}>{f.icon}</div>
                 <h3 style={{ fontSize: 20, fontWeight: "bold", marginBottom: 12, color: "#fff" }}>{f.title}</h3>
                 <p style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", lineHeight: 1.7, margin: 0 }}>{f.desc}</p>
@@ -247,7 +295,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* WHAT'S INSIDE - Visual Showcase */}
+      {/* WHAT'S INSIDE */}
       <section style={{ padding: "100px 24px", background: "#0a0a0f" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }}>
           <div>
@@ -282,8 +330,7 @@ export default function Home() {
               { icon: "📡", label: "Live", color: "#FF8C00", count: "Streams daily" },
             ].map(item => (
               <div key={item.label} style={{
-                background: `${item.color}15`,
-                border: `1px solid ${item.color}33`,
+                background: `${item.color}15`, border: `1px solid ${item.color}33`,
                 borderRadius: 16, padding: "24px 20px", textAlign: "center"
               }}>
                 <div style={{ fontSize: 32, marginBottom: 8 }}>{item.icon}</div>
@@ -305,8 +352,7 @@ export default function Home() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 24 }}>
             {testimonials.map(t => (
               <div key={t.name} style={{
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.1)",
+                background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)",
                 borderRadius: 20, padding: "32px 28px"
               }}>
                 <div style={{ fontSize: 24, marginBottom: 16 }}>⭐⭐⭐⭐⭐</div>
@@ -340,18 +386,30 @@ export default function Home() {
           <p style={{ fontSize: 20, color: "rgba(255,255,255,0.7)", maxWidth: 600, margin: "0 auto 48px", lineHeight: 1.7 }}>
             Join thousands of history lovers, nostalgia junkies, and culture explorers. Free to join. No credit card needed.
           </p>
-          <a href="https://benevolent-decade-dive-now.base44.app" target="_blank" style={{
-            display: "inline-block",
-            background: "linear-gradient(135deg, #FFD700, #FF8C00)",
-            color: "#000", padding: "22px 64px", borderRadius: 50,
-            fontWeight: "bold", textDecoration: "none", fontSize: 20,
-            boxShadow: "0 12px 50px rgba(255,215,0,0.5)",
-            transition: "all 0.3s ease"
-          }}
-            onMouseOver={e => { e.target.style.transform = "scale(1.05)"; e.target.style.boxShadow = "0 20px 60px rgba(255,215,0,0.7)"; }}
-            onMouseOut={e => { e.target.style.transform = "scale(1)"; e.target.style.boxShadow = "0 12px 50px rgba(255,215,0,0.5)"; }}>
-            🚀 Join eDecades Free
-          </a>
+          <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
+            <a href="https://benevolent-decade-dive-now.base44.app" target="_blank" style={{
+              display: "inline-block",
+              background: "linear-gradient(135deg, #FFD700, #FF8C00)",
+              color: "#000", padding: "22px 64px", borderRadius: 50,
+              fontWeight: "bold", textDecoration: "none", fontSize: 20,
+              boxShadow: "0 12px 50px rgba(255,215,0,0.5)"
+            }}
+              onMouseOver={e => { e.target.style.transform = "scale(1.05)"; e.target.style.boxShadow = "0 20px 60px rgba(255,215,0,0.7)"; }}
+              onMouseOut={e => { e.target.style.transform = "scale(1)"; e.target.style.boxShadow = "0 12px 50px rgba(255,215,0,0.5)"; }}>
+              🚀 Join eDecades Free
+            </a>
+            <a href="/Quiz" style={{
+              display: "inline-block",
+              background: "transparent", color: "#FFD700",
+              padding: "22px 48px", borderRadius: 50,
+              fontWeight: "bold", textDecoration: "none", fontSize: 20,
+              border: "2px solid rgba(255,215,0,0.4)"
+            }}
+              onMouseOver={e => { e.target.style.background = "rgba(255,215,0,0.1)"; e.target.style.borderColor = "#FFD700"; }}
+              onMouseOut={e => { e.target.style.background = "transparent"; e.target.style.borderColor = "rgba(255,215,0,0.4)"; }}>
+              🕰️ Take the Quiz
+            </a>
+          </div>
           <div style={{ marginTop: 24, color: "rgba(255,255,255,0.4)", fontSize: 14 }}>No spam. No credit card. Just pure nostalgia.</div>
         </div>
       </section>
@@ -373,7 +431,7 @@ export default function Home() {
               <div style={{ color: "#FFD700", fontWeight: "bold", marginBottom: 16, fontSize: 13, letterSpacing: 1 }}>EXPLORE</div>
               {["1920s Jazz Age", "1950s Rock & Roll", "1960s Revolution", "1980s Pop Culture", "1990s Digital Dawn"].map(item => (
                 <div key={item} style={{ marginBottom: 10 }}>
-                  <a href="https://benevolent-decade-dive-now.base44.app" target="_blank" style={{ color: "rgba(255,255,255,0.5)", fontSize: 14, textDecoration: "none", transition: "color 0.2s" }}
+                  <a href="https://benevolent-decade-dive-now.base44.app" target="_blank" style={{ color: "rgba(255,255,255,0.5)", fontSize: 14, textDecoration: "none" }}
                     onMouseOver={e => e.target.style.color = "#FFD700"}
                     onMouseOut={e => e.target.style.color = "rgba(255,255,255,0.5)"}>{item}</a>
                 </div>
@@ -388,6 +446,24 @@ export default function Home() {
                     onMouseOut={e => e.target.style.color = "rgba(255,255,255,0.5)"}>{item}</a>
                 </div>
               ))}
+            </div>
+            <div>
+              <div style={{ color: "#FFD700", fontWeight: "bold", marginBottom: 16, fontSize: 13, letterSpacing: 1 }}>FUN</div>
+              <div style={{ marginBottom: 10 }}>
+                <a href="/Quiz" style={{ color: "rgba(255,255,255,0.5)", fontSize: 14, textDecoration: "none" }}
+                  onMouseOver={e => e.target.style.color = "#FFD700"}
+                  onMouseOut={e => e.target.style.color = "rgba(255,255,255,0.5)"}>🕰️ Soul Decade Quiz</a>
+              </div>
+              <div style={{ marginBottom: 10 }}>
+                <a href="https://benevolent-decade-dive-now.base44.app" target="_blank" style={{ color: "rgba(255,255,255,0.5)", fontSize: 14, textDecoration: "none" }}
+                  onMouseOver={e => e.target.style.color = "#FFD700"}
+                  onMouseOut={e => e.target.style.color = "rgba(255,255,255,0.5)"}">Daily Trivia</a>
+              </div>
+              <div style={{ marginBottom: 10 }}>
+                <a href="https://benevolent-decade-dive-now.base44.app" target="_blank" style={{ color: "rgba(255,255,255,0.5)", fontSize: 14, textDecoration: "none" }}
+                  onMouseOver={e => e.target.style.color = "#FFD700"}
+                  onMouseOut={e => e.target.style.color = "rgba(255,255,255,0.5)"}>On This Day</a>
+              </div>
             </div>
           </div>
           <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 24, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
@@ -404,9 +480,6 @@ export default function Home() {
         }
         * { box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-        @media (max-width: 768px) {
-          nav > div:last-child a:not(:last-child) { display: none; }
-        }
       `}</style>
     </div>
   );
