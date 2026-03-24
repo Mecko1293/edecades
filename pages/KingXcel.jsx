@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const companies = [
   {
     name: "eDecades",
+    logo: "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/c843dbc26_image.png",
     domain: "eDecades.com",
     emoji: "🕰️",
     color: "#C9A84C",
@@ -16,6 +17,7 @@ const companies = [
   },
   {
     name: "CourseGek",
+    logo: "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/ec854eb8d_image.png",
     domain: "CourseGek.com",
     emoji: "🎓",
     color: "#7C3AED",
@@ -29,6 +31,7 @@ const companies = [
   },
   {
     name: "ResumeCrafted",
+    logo: "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/427225fcb_image.png",
     domain: "ResumeCrafted.com",
     emoji: "📄",
     color: "#4A90D9",
@@ -42,6 +45,7 @@ const companies = [
   },
   {
     name: "WheelMath",
+    logo: "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/106ee42e9_image.png",
     domain: "WheelMath.com",
     emoji: "📐",
     color: "#F59E0B",
@@ -55,6 +59,7 @@ const companies = [
   },
   {
     name: "CheapMedz",
+    logo: "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/a1db150cd_generated_image.png",
     domain: "CheapMedz.com",
     emoji: "💊",
     color: "#EF4444",
@@ -85,6 +90,13 @@ const values = [
 export default function KingXcel() {
   const [hoveredCompany, setHoveredCompany] = useState(null);
 
+  useEffect(() => {
+    document.title = "King Xcel Innovations";
+    const link = document.querySelector("link[rel~='icon']") || document.createElement("link");
+    link.rel = "icon"; link.href = "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/614b28868_image.png";
+    document.head.appendChild(link);
+  }, []);
+
   return (
     <div style={{ fontFamily: "'Inter', 'Segoe UI', sans-serif", background: "#080810", color: "#fff", overflowX: "hidden" }}>
 
@@ -96,12 +108,7 @@ export default function KingXcel() {
         padding: "16px 40px", display: "flex", alignItems: "center", justifyContent: "space-between"
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <div style={{
-            width: 42, height: 42, borderRadius: 12,
-            background: "linear-gradient(135deg, #C9A84C, #8B6914)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 20, boxShadow: "0 0 20px rgba(201,168,76,0.4)"
-          }}>👑</div>
+          <img src="https://media.base44.com/images/public/69c207112c5856fdf7bb496b/614b28868_image.png" alt="King Xcel Innovations" style={{ width: 42, height: 42, borderRadius: 12, objectFit: "cover", boxShadow: "0 0 20px rgba(201,168,76,0.4)" }} />
           <div>
             <div style={{ fontSize: 17, fontWeight: 900, color: "#fff", letterSpacing: -0.3 }}>
               King <span style={{ color: "#C9A84C" }}>Xcel</span> Innovations
@@ -230,13 +237,7 @@ export default function KingXcel() {
 
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                    <div style={{
-                      width: 52, height: 52, borderRadius: 14,
-                      background: `linear-gradient(135deg, ${co.color}, ${co.color}88)`,
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      fontSize: 24, boxShadow: `0 8px 20px ${co.color}30`,
-                      filter: co.status === "concept" ? "grayscale(30%)" : "none"
-                    }}>{co.emoji}</div>
+                    <img src={co.logo} alt={co.name} style={{ width: 52, height: 52, borderRadius: 14, objectFit: "cover", boxShadow: `0 8px 20px ${co.color}30`, filter: co.status === "concept" ? "grayscale(50%)" : "none" }} />
                     <div>
                       <div style={{ fontSize: 22, fontWeight: 800, color: "#fff" }}>{co.name}</div>
                       <div style={{ fontSize: 12, color: co.color, marginTop: 2 }}>{co.domain}</div>

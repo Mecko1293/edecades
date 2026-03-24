@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const templates = [
   { name: "Executive Pro", color: "#1E3A5F", accent: "#4A90D9", emoji: "💼", style: "Corporate & Bold" },
@@ -91,6 +91,13 @@ const stats = [
 
 export default function ResumeCrafted() {
   const [activeTemplate, setActiveTemplate] = useState(0);
+
+  useEffect(() => {
+    document.title = "ResumeCrafted — AI Resume Builder";
+    const link = document.querySelector("link[rel~='icon']") || document.createElement("link");
+    link.rel = "icon"; link.href = "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/427225fcb_image.png";
+    document.head.appendChild(link);
+  }, []);
   const [loadingPlan, setLoadingPlan] = useState(null);
   const [paymentStatus] = useState(() => {
     if (typeof window !== "undefined") {
@@ -144,12 +151,7 @@ export default function ResumeCrafted() {
         padding: "14px 40px", display: "flex", alignItems: "center", justifyContent: "space-between"
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{
-            width: 36, height: 36, borderRadius: 8,
-            background: "linear-gradient(135deg, #4A90D9, #1E3A5F)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 16, boxShadow: "0 0 12px rgba(74,144,217,0.5)"
-          }}>📄</div>
+          <img src="https://media.base44.com/images/public/69c207112c5856fdf7bb496b/427225fcb_image.png" alt="ResumeCrafted" style={{ width: 36, height: 36, borderRadius: 8, objectFit: "cover", boxShadow: "0 0 12px rgba(74,144,217,0.5)" }} />
           <span style={{ fontSize: 20, fontWeight: 800, color: "#fff" }}>Resume<span style={{ color: "#4A90D9" }}>Crafted</span></span>
         </div>
         <div style={{ display: "flex", gap: 28, alignItems: "center" }}>

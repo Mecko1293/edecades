@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const products = [
   {
@@ -73,6 +73,13 @@ const stats = [
 export default function Home() {
   const [hoveredProduct, setHoveredProduct] = useState(null);
 
+  useEffect(() => {
+    document.title = "King Xcel Innovations — Portfolio";
+    const link = document.querySelector("link[rel~='icon']") || document.createElement("link");
+    link.rel = "icon"; link.href = "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/614b28868_image.png";
+    document.head.appendChild(link);
+  }, []);
+
   return (
     <div style={{ fontFamily: "'Inter', 'Segoe UI', sans-serif", background: "#08080f", color: "#fff", minHeight: "100vh", overflowX: "hidden" }}>
 
@@ -84,12 +91,7 @@ export default function Home() {
         padding: "14px 40px", display: "flex", alignItems: "center", justifyContent: "space-between"
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <div style={{
-            width: 38, height: 38, borderRadius: 10,
-            background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 18, boxShadow: "0 0 15px rgba(99,102,241,0.5)"
-          }}>👑</div>
+          <img src="https://media.base44.com/images/public/69c207112c5856fdf7bb496b/614b28868_image.png" alt="King Xcel" style={{ width: 38, height: 38, borderRadius: 10, objectFit: "cover", boxShadow: "0 0 15px rgba(99,102,241,0.5)" }} />
           <div>
             <div style={{ fontSize: 16, fontWeight: 800, letterSpacing: -0.5 }}>King Xcel</div>
             <div style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", letterSpacing: 1, textTransform: "uppercase" }}>Innovations</div>

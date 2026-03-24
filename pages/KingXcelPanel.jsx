@@ -3,6 +3,7 @@ import { useState } from "react";
 const products = [
   {
     name: "CourseGek",
+    logo: "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/ec854eb8d_image.png",
     icon: "🎓",
     status: "live",
     color: "#7C3AED",
@@ -19,6 +20,7 @@ const products = [
   },
   {
     name: "ResumeCrafted",
+    logo: "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/427225fcb_image.png",
     icon: "📄",
     status: "live",
     color: "#4A90D9",
@@ -35,6 +37,7 @@ const products = [
   },
   {
     name: "eDecades",
+    logo: "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/c843dbc26_image.png",
     icon: "⏰",
     status: "live",
     color: "#FFD700",
@@ -50,6 +53,7 @@ const products = [
   },
   {
     name: "WheelMath",
+    logo: "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/106ee42e9_image.png",
     icon: "🔢",
     status: "coming_soon",
     color: "#F59E0B",
@@ -65,6 +69,7 @@ const products = [
   },
   {
     name: "CheapMedz",
+    logo: "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/a1db150cd_generated_image.png",
     icon: "💊",
     status: "coming_soon",
     color: "#EF4444",
@@ -118,12 +123,7 @@ export default function KingXcelPanel() {
         position: "sticky", top: 0, zIndex: 100
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <div style={{
-            width: 44, height: 44, borderRadius: 12,
-            background: "linear-gradient(135deg, #C9A84C, #8B6914)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 22, boxShadow: "0 0 20px rgba(201,168,76,0.4)"
-          }}>👑</div>
+          <img src="https://media.base44.com/images/public/69c207112c5856fdf7bb496b/614b28868_image.png" alt="King Xcel" style={{ width: 44, height: 44, borderRadius: 12, objectFit: "cover", boxShadow: "0 0 20px rgba(201,168,76,0.4)" }} />
           <div>
             <div style={{ fontSize: 18, fontWeight: 900, letterSpacing: -0.3 }}>King Xcel <span style={{ color: "#C9A84C" }}>Command Panel</span></div>
             <div style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", letterSpacing: 1 }}>INNOVATIONS · IRVING, TX · anthonykittles@outlook.com</div>

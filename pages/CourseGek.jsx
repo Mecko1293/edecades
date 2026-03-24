@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const categories = [
   { icon: "📐", name: "Mathematics", count: "1,240+ questions" },
@@ -79,6 +79,13 @@ const plans = [
 
 export default function CourseGek() {
   const [activeCategory, setActiveCategory] = useState(null);
+
+  useEffect(() => {
+    document.title = "CourseGek — Expert Homework Help";
+    const link = document.querySelector("link[rel~='icon']") || document.createElement("link");
+    link.rel = "icon"; link.href = "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/ec854eb8d_image.png";
+    document.head.appendChild(link);
+  }, []);
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loadingPlan, setLoadingPlan] = useState(null);
@@ -134,12 +141,7 @@ export default function CourseGek() {
         padding: "14px 40px", display: "flex", alignItems: "center", justifyContent: "space-between"
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{
-            width: 38, height: 38, borderRadius: 10,
-            background: "linear-gradient(135deg, #7C3AED, #4F46E5)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 18, boxShadow: "0 0 15px rgba(124,58,237,0.5)"
-          }}>🎓</div>
+          <img src="https://media.base44.com/images/public/69c207112c5856fdf7bb496b/ec854eb8d_image.png" alt="CourseGek" style={{ width: 38, height: 38, borderRadius: 10, objectFit: "cover", boxShadow: "0 0 15px rgba(124,58,237,0.5)" }} />
           <span style={{ fontSize: 20, fontWeight: 800, color: "#fff", letterSpacing: -0.5 }}>Course<span style={{ color: "#7C3AED" }}>Gek</span></span>
         </div>
         <div style={{ display: "flex", gap: 28, alignItems: "center" }}>
