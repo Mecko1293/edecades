@@ -26,18 +26,19 @@ const testimonials = [
 
 const plans = [
   {
-    name: "Student",
-    price: "Free",
+    name: "Single Question",
+    price: "$9.99",
     period: "",
     color: "#4CAF50",
+    planKey: "single",
     features: [
-      "Post up to 3 questions/month",
-      "Browse all subject categories",
-      "View tutor profiles & ratings",
-      "Basic chat with tutors",
-      "Money-back guarantee",
+      "One expert answer",
+      "Step-by-step explanation",
+      "Any subject covered",
+      "Avg 2hr response time",
+      "100% satisfaction guarantee",
     ],
-    cta: "Get Started Free",
+    cta: "Get Answer — $9.99",
     popular: false,
   },
   {
@@ -45,6 +46,7 @@ const plans = [
     price: "$14.99",
     period: "/month",
     color: "#7C3AED",
+    planKey: "pro_monthly",
     features: [
       "Unlimited question posts",
       "Priority matching with top tutors",
@@ -53,7 +55,7 @@ const plans = [
       "Access to past Q&A library",
       "Money-back guarantee",
     ],
-    cta: "Start Pro — 7 Days Free",
+    cta: "Start Pro — $14.99/mo",
     popular: true,
   },
   {
@@ -61,6 +63,7 @@ const plans = [
     price: "$19.99",
     period: "/month",
     color: "#F59E0B",
+    planKey: "tutor_monthly",
     features: [
       "List unlimited subjects",
       "Receive unlimited student bids",
@@ -69,7 +72,7 @@ const plans = [
       "Analytics dashboard",
       "CourseGek verified badge",
     ],
-    cta: "Become a Tutor",
+    cta: "Become a Tutor — $19.99/mo",
     popular: false,
   },
 ];
@@ -78,9 +81,50 @@ export default function CourseGek() {
   const [activeCategory, setActiveCategory] = useState(null);
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [loadingPlan, setLoadingPlan] = useState(null);
+  const [paymentStatus] = useState(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("payment");
+    }
+    return null;
+  });
+
+  const handleCheckout = async (planKey) => {
+    setLoadingPlan(planKey);
+    try {
+      const res = await fetch("/functions/createCourseGekCheckout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan: planKey }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    } catch (e) {
+      alert("Error connecting to payment server. Please try again.");
+    } finally {
+      setLoadingPlan(null);
+    }
+  };
 
   return (
     <div style={{ fontFamily: "'Inter', 'Segoe UI', sans-serif", background: "#0f0f1a", color: "#fff", overflowX: "hidden", margin: 0, padding: 0 }}>
+
+      {/* Payment Status Banner */}
+      {paymentStatus === "success" && (
+        <div style={{ background: "linear-gradient(135deg, #4CAF50, #2e7d32)", padding: "16px", textAlign: "center", fontWeight: 700, fontSize: 16 }}>
+          🎉 Payment successful! Your question is being matched with an expert tutor now.
+        </div>
+      )}
+      {paymentStatus === "cancelled" && (
+        <div style={{ background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.3)", padding: "16px", textAlign: "center", color: "#fca5a5", fontWeight: 600 }}>
+          Payment cancelled — no charge was made. You can try again anytime below.
+        </div>
+      )}
 
       {/* NAV */}
       <nav style={{
@@ -111,12 +155,12 @@ export default function CourseGek() {
           <a href="#tutors" style={{ color: "rgba(255,255,255,0.7)", textDecoration: "none", fontSize: 14 }}
             onMouseOver={e => e.target.style.color = "#a78bfa"}
             onMouseOut={e => e.target.style.color = "rgba(255,255,255,0.7)"}>Become a Tutor</a>
-          <a href="https://course-gek-23543b27.base44.app" style={{
+          <button onClick={() => handleCheckout("single")} style={{
             background: "linear-gradient(135deg, #7C3AED, #4F46E5)",
             color: "#fff", padding: "9px 22px", borderRadius: 25,
-            fontWeight: 700, textDecoration: "none", fontSize: 14,
+            fontWeight: 700, border: "none", cursor: "pointer", fontSize: 14,
             boxShadow: "0 4px 15px rgba(124,58,237,0.4)"
-          }}>Get Help Now →</a>
+          }}>Get Help Now →</button>
         </div>
       </nav>
 
@@ -127,7 +171,6 @@ export default function CourseGek() {
         display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
         textAlign: "center", padding: "120px 24px 80px", position: "relative", overflow: "hidden"
       }}>
-        {/* Glow orbs */}
         <div style={{ position: "absolute", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%)", top: "5%", left: "5%" }} />
         <div style={{ position: "absolute", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(79,70,229,0.1) 0%, transparent 70%)", bottom: "10%", right: "5%" }} />
 
@@ -155,31 +198,25 @@ export default function CourseGek() {
         </p>
 
         <div style={{ display: "flex", gap: 16, flexWrap: "wrap", justifyContent: "center", marginBottom: 60 }}>
-          <a href="https://course-gek-23543b27.base44.app" style={{
+          <button onClick={() => handleCheckout("single")} disabled={loadingPlan === "single"} style={{
             background: "linear-gradient(135deg, #7C3AED, #4F46E5)",
             color: "#fff", padding: "18px 48px", borderRadius: 40,
-            fontWeight: 700, textDecoration: "none", fontSize: 18,
-            boxShadow: "0 8px 30px rgba(124,58,237,0.5)", display: "inline-block"
-          }}
-            onMouseOver={e => { e.target.style.transform = "translateY(-3px)"; e.target.style.boxShadow = "0 14px 40px rgba(124,58,237,0.7)"; }}
-            onMouseOut={e => { e.target.style.transform = "translateY(0)"; e.target.style.boxShadow = "0 8px 30px rgba(124,58,237,0.5)"; }}>
-            🎓 Post a Question Free
-          </a>
-          <a href="#tutors" style={{
+            fontWeight: 700, border: "none", cursor: "pointer", fontSize: 18,
+            boxShadow: "0 8px 30px rgba(124,58,237,0.5)", opacity: loadingPlan === "single" ? 0.7 : 1
+          }}>
+            {loadingPlan === "single" ? "⏳ Loading..." : "🎓 Get an Answer — $9.99"}
+          </button>
+          <button onClick={() => handleCheckout("tutor_monthly")} style={{
             background: "transparent", color: "#a78bfa",
             padding: "18px 40px", borderRadius: 40, fontWeight: 700,
-            textDecoration: "none", fontSize: 18,
-            border: "2px solid rgba(124,58,237,0.5)", display: "inline-block"
-          }}
-            onMouseOver={e => { e.target.style.background = "rgba(124,58,237,0.1)"; e.target.style.borderColor = "#a78bfa"; }}
-            onMouseOut={e => { e.target.style.background = "transparent"; e.target.style.borderColor = "rgba(124,58,237,0.5)"; }}>
+            border: "2px solid rgba(124,58,237,0.5)", cursor: "pointer", fontSize: 18,
+          }}>
             💰 Earn as a Tutor
-          </a>
+          </button>
         </div>
 
-        {/* Stats */}
         <div style={{ display: "flex", gap: 56, flexWrap: "wrap", justifyContent: "center" }}>
-          {[["50K+", "Questions Answered"], ["10K+", "Expert Tutors"], ["4.9★", "Average Rating"], ["2hr", "Avg Response Time"]].map(([num, label]) => (
+          {[["$9.99", "Per Question"], ["50K+", "Questions Answered"], ["10K+", "Expert Tutors"], ["4.9★", "Average Rating"]].map(([num, label]) => (
             <div key={label} style={{ textAlign: "center" }}>
               <div style={{ fontSize: 32, fontWeight: 900, color: "#a78bfa" }}>{num}</div>
               <div style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", letterSpacing: 1, marginTop: 4 }}>{label}</div>
@@ -191,30 +228,26 @@ export default function CourseGek() {
       {/* HOW IT WORKS */}
       <section id="how-it-works" style={{ padding: "100px 24px", background: "#0f0f1a" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 64 }}>
-            <div style={{ color: "#a78bfa", fontSize: 13, letterSpacing: 3, textTransform: "uppercase", marginBottom: 12 }}>Simple Process</div>
-            <h2 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 900, margin: 0 }}>How CourseGek Works</h2>
-            <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 17, marginTop: 12 }}>Get expert homework help in 4 simple steps</p>
+          <div style={{ textAlign: "center", marginBottom: 60 }}>
+            <h2 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 900, marginBottom: 16 }}>How It Works</h2>
+            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 18, maxWidth: 500, margin: "0 auto" }}>Get expert help in 4 simple steps</p>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 28 }}>
-            {howItWorks.map((step, i) => (
-              <div key={i} style={{
-                background: "rgba(255,255,255,0.03)", border: "1px solid rgba(124,58,237,0.2)",
-                borderRadius: 20, padding: "36px 28px", textAlign: "center",
-                position: "relative", transition: "all 0.3s"
-              }}
-                onMouseOver={e => { e.currentTarget.style.border = "1px solid rgba(124,58,237,0.5)"; e.currentTarget.style.transform = "translateY(-6px)"; e.currentTarget.style.background = "rgba(124,58,237,0.06)"; }}
-                onMouseOut={e => { e.currentTarget.style.border = "1px solid rgba(124,58,237,0.2)"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.background = "rgba(255,255,255,0.03)"; }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 32 }}>
+            {howItWorks.map((item) => (
+              <div key={item.step} style={{
+                background: "rgba(255,255,255,0.04)", border: "1px solid rgba(124,58,237,0.2)",
+                borderRadius: 20, padding: "32px 24px", textAlign: "center", position: "relative"
+              }}>
                 <div style={{
-                  position: "absolute", top: -16, left: "50%", transform: "translateX(-50%)",
-                  width: 32, height: 32, borderRadius: "50%",
+                  position: "absolute", top: -14, left: "50%", transform: "translateX(-50%)",
                   background: "linear-gradient(135deg, #7C3AED, #4F46E5)",
+                  width: 28, height: 28, borderRadius: "50%",
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: 14, fontWeight: 900
-                }}>{step.step}</div>
-                <div style={{ fontSize: 44, marginBottom: 16, marginTop: 8 }}>{step.icon}</div>
-                <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 10 }}>{step.title}</h3>
-                <p style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", lineHeight: 1.7, margin: 0 }}>{step.desc}</p>
+                  fontSize: 13, fontWeight: 800
+                }}>{item.step}</div>
+                <div style={{ fontSize: 40, marginBottom: 16 }}>{item.icon}</div>
+                <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 10 }}>{item.title}</h3>
+                <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 14, lineHeight: 1.7 }}>{item.desc}</p>
               </div>
             ))}
           </div>
@@ -222,59 +255,101 @@ export default function CourseGek() {
       </section>
 
       {/* SUBJECTS */}
-      <section id="subjects" style={{ padding: "100px 24px", background: "linear-gradient(180deg, #0f0f1a 0%, #1a0f2e 100%)" }}>
+      <section id="subjects" style={{ padding: "100px 24px", background: "#0a0a14" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 60 }}>
-            <div style={{ color: "#a78bfa", fontSize: 13, letterSpacing: 3, textTransform: "uppercase", marginBottom: 12 }}>All Subjects Covered</div>
-            <h2 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 900, margin: 0 }}>What Can We Help You With?</h2>
+            <h2 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 900, marginBottom: 16 }}>Every Subject Covered</h2>
+            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 18 }}>From high school homework to college assignments</p>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 16 }}>
-            {categories.map((cat, i) => (
-              <div key={i} style={{
-                background: activeCategory === i ? "rgba(124,58,237,0.15)" : "rgba(255,255,255,0.03)",
-                border: activeCategory === i ? "1px solid #7C3AED" : "1px solid rgba(255,255,255,0.08)",
-                borderRadius: 16, padding: "24px 20px", cursor: "pointer",
-                transition: "all 0.2s", display: "flex", alignItems: "center", gap: 14
-              }}
-                onClick={() => setActiveCategory(i)}
-                onMouseOver={e => { if (activeCategory !== i) { e.currentTarget.style.borderColor = "rgba(124,58,237,0.4)"; e.currentTarget.style.background = "rgba(124,58,237,0.06)"; } }}
-                onMouseOut={e => { if (activeCategory !== i) { e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"; e.currentTarget.style.background = "rgba(255,255,255,0.03)"; } }}>
-                <div style={{ fontSize: 28 }}>{cat.icon}</div>
-                <div>
-                  <div style={{ fontWeight: 700, fontSize: 15, color: activeCategory === i ? "#a78bfa" : "#fff" }}>{cat.name}</div>
-                  <div style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", marginTop: 3 }}>{cat.count}</div>
-                </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 20 }}>
+            {categories.map((cat) => (
+              <div key={cat.name}
+                onClick={() => setActiveCategory(activeCategory === cat.name ? null : cat.name)}
+                style={{
+                  background: activeCategory === cat.name ? "rgba(124,58,237,0.2)" : "rgba(255,255,255,0.04)",
+                  border: `1px solid ${activeCategory === cat.name ? "#7C3AED" : "rgba(124,58,237,0.15)"}`,
+                  borderRadius: 16, padding: "24px 20px", cursor: "pointer", transition: "all 0.2s",
+                  textAlign: "center"
+                }}>
+                <div style={{ fontSize: 36, marginBottom: 10 }}>{cat.icon}</div>
+                <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 6 }}>{cat.name}</div>
+                <div style={{ fontSize: 12, color: "#a78bfa" }}>{cat.count}</div>
               </div>
             ))}
           </div>
-          <div style={{ textAlign: "center", marginTop: 40 }}>
-            <a href="https://course-gek-23543b27.base44.app" style={{
-              display: "inline-block", background: "linear-gradient(135deg, #7C3AED, #4F46E5)",
-              color: "#fff", padding: "14px 40px", borderRadius: 30,
-              fontWeight: 700, textDecoration: "none", fontSize: 16,
-              boxShadow: "0 6px 20px rgba(124,58,237,0.4)"
-            }}>Browse All Subjects →</a>
+        </div>
+      </section>
+
+      {/* PRICING */}
+      <section id="pricing" style={{ padding: "100px 24px", background: "#0f0f1a" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 60 }}>
+            <h2 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 900, marginBottom: 16 }}>Simple, Transparent Pricing</h2>
+            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 18 }}>Pay per question or go unlimited with a subscription</p>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 28, alignItems: "start" }}>
+            {plans.map((plan) => (
+              <div key={plan.name} style={{
+                background: plan.popular ? "rgba(124,58,237,0.12)" : "rgba(255,255,255,0.04)",
+                border: `2px solid ${plan.popular ? "#7C3AED" : "rgba(255,255,255,0.08)"}`,
+                borderRadius: 24, padding: "36px 28px", position: "relative",
+                boxShadow: plan.popular ? "0 0 40px rgba(124,58,237,0.2)" : "none"
+              }}>
+                {plan.popular && (
+                  <div style={{
+                    position: "absolute", top: -14, left: "50%", transform: "translateX(-50%)",
+                    background: "linear-gradient(135deg, #7C3AED, #4F46E5)",
+                    padding: "5px 20px", borderRadius: 20, fontSize: 12, fontWeight: 700, whiteSpace: "nowrap"
+                  }}>⭐ Most Popular</div>
+                )}
+                <h3 style={{ fontSize: 20, fontWeight: 800, marginBottom: 8 }}>{plan.name}</h3>
+                <div style={{ marginBottom: 28 }}>
+                  <span style={{ fontSize: 42, fontWeight: 900, color: plan.color }}>{plan.price}</span>
+                  <span style={{ color: "rgba(255,255,255,0.45)", fontSize: 14 }}>{plan.period}</span>
+                </div>
+                <ul style={{ listStyle: "none", padding: 0, margin: "0 0 32px", display: "flex", flexDirection: "column", gap: 12 }}>
+                  {plan.features.map(f => (
+                    <li key={f} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 14, color: "rgba(255,255,255,0.75)" }}>
+                      <span style={{ color: plan.color, fontSize: 16 }}>✓</span> {f}
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  onClick={() => handleCheckout(plan.planKey)}
+                  disabled={loadingPlan === plan.planKey}
+                  style={{
+                    width: "100%", padding: "15px", borderRadius: 30,
+                    background: plan.popular ? "linear-gradient(135deg, #7C3AED, #4F46E5)" : "transparent",
+                    border: plan.popular ? "none" : `2px solid ${plan.color}`,
+                    color: plan.popular ? "#fff" : plan.color,
+                    fontWeight: 700, fontSize: 15, cursor: "pointer",
+                    opacity: loadingPlan === plan.planKey ? 0.7 : 1,
+                    boxShadow: plan.popular ? "0 6px 20px rgba(124,58,237,0.4)" : "none"
+                  }}>
+                  {loadingPlan === plan.planKey ? "⏳ Loading..." : plan.cta}
+                </button>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* TESTIMONIALS */}
-      <section style={{ padding: "100px 24px", background: "#0f0f1a" }}>
-        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+      <section style={{ padding: "100px 24px", background: "#0a0a14" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 60 }}>
-            <div style={{ color: "#a78bfa", fontSize: 13, letterSpacing: 3, textTransform: "uppercase", marginBottom: 12 }}>Student Reviews</div>
-            <h2 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 900 }}>Students Love CourseGek</h2>
+            <h2 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 900, marginBottom: 16 }}>Students Love CourseGek</h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 24 }}>
-            {testimonials.map((t, i) => (
-              <div key={i} style={{
-                background: "rgba(124,58,237,0.06)", border: "1px solid rgba(124,58,237,0.2)",
-                borderRadius: 20, padding: "32px 28px"
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 28 }}>
+            {testimonials.map((t) => (
+              <div key={t.name} style={{
+                background: "rgba(255,255,255,0.04)", border: "1px solid rgba(124,58,237,0.15)",
+                borderRadius: 20, padding: "28px"
               }}>
-                <div style={{ fontSize: 22, marginBottom: 14 }}>⭐⭐⭐⭐⭐</div>
-                <p style={{ fontSize: 15, color: "rgba(255,255,255,0.8)", lineHeight: 1.7, fontStyle: "italic", marginBottom: 24 }}>"{t.quote}"</p>
+                <div style={{ fontSize: 32, marginBottom: 16 }}>⭐⭐⭐⭐⭐</div>
+                <p style={{ color: "rgba(255,255,255,0.75)", lineHeight: 1.7, marginBottom: 20, fontStyle: "italic" }}>"{t.quote}"</p>
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                  <div style={{ fontSize: 34 }}>{t.avatar}</div>
+                  <div style={{ fontSize: 32 }}>{t.avatar}</div>
                   <div>
                     <div style={{ fontWeight: 700 }}>{t.name}</div>
                     <div style={{ fontSize: 12, color: "#a78bfa" }}>{t.grade} · {t.subject}</div>
@@ -286,170 +361,44 @@ export default function CourseGek() {
         </div>
       </section>
 
-      {/* PRICING */}
-      <section id="pricing" style={{ padding: "100px 24px", background: "linear-gradient(180deg, #0f0f1a 0%, #1a0f2e 100%)" }}>
-        <div style={{ maxWidth: 1050, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 64 }}>
-            <div style={{ color: "#a78bfa", fontSize: 13, letterSpacing: 3, textTransform: "uppercase", marginBottom: 12 }}>Simple Pricing</div>
-            <h2 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 900, margin: 0 }}>Plans for Students & Tutors</h2>
-            <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 17, marginTop: 12 }}>Start free. Upgrade when you need more.</p>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 24 }}>
-            {plans.map((plan, i) => (
-              <div key={i} style={{
-                background: plan.popular ? `linear-gradient(135deg, rgba(124,58,237,0.15), rgba(79,70,229,0.1))` : "rgba(255,255,255,0.03)",
-                border: plan.popular ? "2px solid #7C3AED" : "1px solid rgba(255,255,255,0.1)",
-                borderRadius: 24, padding: "40px 32px", position: "relative",
-                boxShadow: plan.popular ? "0 0 50px rgba(124,58,237,0.2)" : "none"
-              }}>
-                {plan.popular && (
-                  <div style={{
-                    position: "absolute", top: -14, left: "50%", transform: "translateX(-50%)",
-                    background: "linear-gradient(135deg, #7C3AED, #4F46E5)",
-                    color: "#fff", padding: "6px 20px", borderRadius: 20,
-                    fontSize: 12, fontWeight: 700, whiteSpace: "nowrap"
-                  }}>⭐ MOST POPULAR</div>
-                )}
-                <div style={{ fontSize: 15, color: plan.color, fontWeight: 700, marginBottom: 8, textTransform: "uppercase", letterSpacing: 1 }}>{plan.name}</div>
-                <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginBottom: 8 }}>
-                  <span style={{ fontSize: 48, fontWeight: 900, color: "#fff" }}>{plan.price}</span>
-                  <span style={{ fontSize: 16, color: "rgba(255,255,255,0.5)" }}>{plan.period}</span>
-                </div>
-                <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 24, marginBottom: 28 }}>
-                  {plan.features.map((f, j) => (
-                    <div key={j} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 12 }}>
-                      <div style={{ color: plan.color, fontSize: 14, marginTop: 1, flexShrink: 0 }}>✓</div>
-                      <span style={{ fontSize: 14, color: "rgba(255,255,255,0.75)" }}>{f}</span>
-                    </div>
-                  ))}
-                </div>
-                <a href="https://course-gek-23543b27.base44.app" style={{
-                  display: "block", textAlign: "center",
-                  background: plan.popular ? "linear-gradient(135deg, #7C3AED, #4F46E5)" : `${plan.color}22`,
-                  color: plan.popular ? "#fff" : plan.color,
-                  border: plan.popular ? "none" : `1px solid ${plan.color}66`,
-                  padding: "14px 24px", borderRadius: 30,
-                  fontWeight: 700, textDecoration: "none", fontSize: 15,
-                  boxShadow: plan.popular ? "0 6px 20px rgba(124,58,237,0.4)" : "none"
-                }}>{plan.cta}</a>
-              </div>
-            ))}
-          </div>
-          <p style={{ textAlign: "center", color: "rgba(255,255,255,0.4)", fontSize: 13, marginTop: 24 }}>
-            All plans include our money-back guarantee. Questions are priced by the student and tutor — CourseGek takes a small 15% platform fee per transaction.
-          </p>
-        </div>
-      </section>
-
       {/* TUTOR CTA */}
-      <section id="tutors" style={{ padding: "100px 24px", background: "#0f0f1a" }}>
-        <div style={{ maxWidth: 900, margin: "0 auto" }}>
-          <div style={{
-            background: "linear-gradient(135deg, rgba(124,58,237,0.15), rgba(79,70,229,0.1))",
-            border: "1px solid rgba(124,58,237,0.3)", borderRadius: 28,
-            padding: "64px 48px", textAlign: "center",
-            boxShadow: "0 0 60px rgba(124,58,237,0.1)"
-          }}>
-            <div style={{ fontSize: 56, marginBottom: 20 }}>💰</div>
-            <h2 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 900, marginBottom: 16 }}>
-              Earn Money Doing What You Know
-            </h2>
-            <p style={{ fontSize: 18, color: "rgba(255,255,255,0.65)", maxWidth: 580, margin: "0 auto 16px", lineHeight: 1.7 }}>
-              Top tutors on CourseGek earn <strong style={{ color: "#a78bfa" }}>$1,000–$3,000+ per month</strong> answering homework questions from their phone or laptop. No experience required — just knowledge.
-            </p>
-            <div style={{ display: "flex", gap: 32, justifyContent: "center", flexWrap: "wrap", marginBottom: 40 }}>
-              {[["Set your own price", "💵"], ["Work when you want", "⏰"], ["Get paid instantly", "⚡"], ["All subjects welcome", "📚"]].map(([text, icon]) => (
-                <div key={text} style={{ display: "flex", alignItems: "center", gap: 8, color: "rgba(255,255,255,0.7)", fontSize: 15 }}>
-                  <span>{icon}</span><span>{text}</span>
-                </div>
-              ))}
-            </div>
-            <a href="https://course-gek-23543b27.base44.app" style={{
-              display: "inline-block",
-              background: "linear-gradient(135deg, #F59E0B, #D97706)",
-              color: "#000", padding: "18px 56px", borderRadius: 40,
-              fontWeight: 800, textDecoration: "none", fontSize: 18,
-              boxShadow: "0 8px 30px rgba(245,158,11,0.4)"
-            }}>Start Earning Today →</a>
-          </div>
-        </div>
-      </section>
-
-      {/* FINAL CTA */}
-      <section style={{ padding: "100px 24px 80px", background: "linear-gradient(135deg, #1a0f2e, #0f0f1a)", textAlign: "center" }}>
-        <div style={{ maxWidth: 700, margin: "0 auto" }}>
-          <h2 style={{ fontSize: "clamp(32px, 5vw, 60px)", fontWeight: 900, marginBottom: 20, lineHeight: 1.1 }}>
-            Stop struggling.<br />
-            <span style={{ background: "linear-gradient(135deg, #a78bfa, #7C3AED)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-              Start getting answers.
-            </span>
+      <section id="tutors" style={{ padding: "100px 24px", background: "linear-gradient(135deg, #1a0f2e, #0f1a2e)" }}>
+        <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
+          <div style={{ fontSize: 60, marginBottom: 24 }}>💰</div>
+          <h2 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 900, marginBottom: 20 }}>
+            Earn Money Sharing Your Knowledge
           </h2>
-          <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 18, marginBottom: 40, lineHeight: 1.7 }}>
-            Join thousands of students getting expert help on CourseGek. Free to start. No credit card needed.
+          <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 18, lineHeight: 1.8, marginBottom: 40 }}>
+            Join thousands of tutors earning $30–$80/hr helping students succeed. Set your own hours, pick your subjects, get paid fast.
           </p>
-          <a href="https://course-gek-23543b27.base44.app" style={{
-            display: "inline-block",
-            background: "linear-gradient(135deg, #7C3AED, #4F46E5)",
-            color: "#fff", padding: "20px 64px", borderRadius: 50,
-            fontWeight: 800, textDecoration: "none", fontSize: 20,
-            boxShadow: "0 10px 40px rgba(124,58,237,0.5)"
-          }}>🎓 Get Help Now — It's Free</a>
-          <div style={{ marginTop: 20, color: "rgba(255,255,255,0.35)", fontSize: 13 }}>
-            No credit card · 100% satisfaction guarantee · 50,000+ questions answered
-          </div>
+          <button onClick={() => handleCheckout("tutor_monthly")} disabled={loadingPlan === "tutor_monthly"} style={{
+            background: "linear-gradient(135deg, #F59E0B, #D97706)",
+            color: "#000", padding: "18px 52px", borderRadius: 40,
+            fontWeight: 800, fontSize: 18, border: "none", cursor: "pointer",
+            boxShadow: "0 8px 30px rgba(245,158,11,0.4)",
+            opacity: loadingPlan === "tutor_monthly" ? 0.7 : 1
+          }}>
+            {loadingPlan === "tutor_monthly" ? "⏳ Loading..." : "🚀 Become a Tutor — $19.99/mo"}
+          </button>
+          <p style={{ color: "rgba(255,255,255,0.35)", fontSize: 13, marginTop: 16 }}>Cancel anytime. First month free for early signups.</p>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer style={{ background: "#080810", padding: "48px 40px 32px", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 32, marginBottom: 40 }}>
-          <div style={{ maxWidth: 280 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
-              <span style={{ fontSize: 20 }}>🎓</span>
-              <span style={{ fontSize: 18, fontWeight: 800 }}>Course<span style={{ color: "#7C3AED" }}>Gek</span></span>
-            </div>
-            <p style={{ color: "rgba(255,255,255,0.45)", fontSize: 13, lineHeight: 1.7 }}>
-              The #1 marketplace for homework help and academic tutoring. Get expert answers fast.
-            </p>
-          </div>
-          <div>
-            <div style={{ color: "#a78bfa", fontWeight: 700, fontSize: 12, letterSpacing: 1, marginBottom: 14 }}>STUDENTS</div>
-            {["Post a Question", "Browse Tutors", "How It Works", "Pricing", "FAQ"].map(item => (
-              <div key={item} style={{ marginBottom: 8 }}>
-                <a href="https://course-gek-23543b27.base44.app" style={{ color: "rgba(255,255,255,0.45)", fontSize: 13, textDecoration: "none" }}
-                  onMouseOver={e => e.target.style.color = "#a78bfa"}
-                  onMouseOut={e => e.target.style.color = "rgba(255,255,255,0.45)"}>{item}</a>
-              </div>
-            ))}
-          </div>
-          <div>
-            <div style={{ color: "#a78bfa", fontWeight: 700, fontSize: 12, letterSpacing: 1, marginBottom: 14 }}>TUTORS</div>
-            {["Become a Tutor", "How to Earn", "Tutor Dashboard", "Payout Info", "Top Earners"].map(item => (
-              <div key={item} style={{ marginBottom: 8 }}>
-                <a href="https://course-gek-23543b27.base44.app" style={{ color: "rgba(255,255,255,0.45)", fontSize: 13, textDecoration: "none" }}
-                  onMouseOver={e => e.target.style.color = "#a78bfa"}
-                  onMouseOut={e => e.target.style.color = "rgba(255,255,255,0.45)"}>{item}</a>
-              </div>
-            ))}
-          </div>
-          <div>
-            <div style={{ color: "#a78bfa", fontWeight: 700, fontSize: 12, letterSpacing: 1, marginBottom: 14 }}>COMPANY</div>
-            {["About Us", "Contact", "Privacy Policy", "Terms of Service", "King Xcel Innovations"].map(item => (
-              <div key={item} style={{ marginBottom: 8 }}>
-                <a href="https://course-gek-23543b27.base44.app" style={{ color: "rgba(255,255,255,0.45)", fontSize: 13, textDecoration: "none" }}
-                  onMouseOver={e => e.target.style.color = "#a78bfa"}
-                  onMouseOut={e => e.target.style.color = "rgba(255,255,255,0.45)"}>{item}</a>
-              </div>
-            ))}
-          </div>
+      <footer style={{ background: "#07070f", padding: "48px 24px", textAlign: "center", borderTop: "1px solid rgba(124,58,237,0.15)" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginBottom: 20 }}>
+          <div style={{
+            width: 32, height: 32, borderRadius: 8,
+            background: "linear-gradient(135deg, #7C3AED, #4F46E5)",
+            display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16
+          }}>🎓</div>
+          <span style={{ fontSize: 18, fontWeight: 800 }}>Course<span style={{ color: "#7C3AED" }}>Gek</span></span>
         </div>
-        <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: 20, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
-          <div style={{ color: "rgba(255,255,255,0.25)", fontSize: 12 }}>© 2025 CourseGek · A King Xcel Innovations Company · CourseGek.com</div>
-          <div style={{ color: "rgba(255,255,255,0.25)", fontSize: 12 }}>Expert homework help for every student</div>
-        </div>
+        <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 13, marginBottom: 12 }}>
+          A King Xcel Innovations product · <a href="/KingXcel" style={{ color: "#a78bfa", textDecoration: "none" }}>About Us</a>
+        </p>
+        <p style={{ color: "rgba(255,255,255,0.2)", fontSize: 12 }}>© 2025 CourseGek. All rights reserved.</p>
       </footer>
-
-      <style>{`* { box-sizing: border-box; } html { scroll-behavior: smooth; }`}</style>
     </div>
   );
 }

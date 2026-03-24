@@ -5,17 +5,17 @@
     "ResumeCrafted": {
       "title": "ResumeCrafted"
     },
-    "Home": {
-      "title": "Home"
-    },
-    "CourseGek": {
-      "title": "CourseGek"
-    },
     "Quiz": {
       "title": "Quiz"
     },
     "KingXcel": {
       "title": "KingXcel"
+    },
+    "CourseGek": {
+      "title": "CourseGek"
+    },
+    "Home": {
+      "title": "Home"
     }
   }
 }
