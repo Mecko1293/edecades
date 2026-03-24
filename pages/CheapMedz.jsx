@@ -389,6 +389,104 @@ export default function CheapMedz() {
         </div>
       </section>
 
+
+      {/* AFFILIATE PARTNERS SECTION */}
+      <section style={{ padding: "90px 24px", background: "#070c16" }}>
+        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 56 }}>
+            <div style={{ color: "#EF4444", fontSize: 12, letterSpacing: 3, textTransform: "uppercase", marginBottom: 12 }}>How We Make Money</div>
+            <h2 style={{ fontSize: "clamp(24px, 4vw, 46px)", fontWeight: 900, marginBottom: 14 }}>Free for Users. Powered by Partners.</h2>
+            <p style={{ color: "rgba(255,255,255,0.45)", fontSize: 17, maxWidth: 600, margin: "0 auto", lineHeight: 1.8 }}>
+              CheapMedz is free to use because we earn referral commissions from our pharmacy and discount card partners — at <strong style={{ color: "#fca5a5" }}>no extra cost to you</strong>. You always see the real lowest price.
+            </p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 22, marginBottom: 48 }}>
+            {[
+              {
+                icon: "💊",
+                title: "Pharmacy Discount Card Programs",
+                desc: "Partners like GoodRx, RxSaver, NeedyMeds, and Blink Health pay referral fees when users redeem our discount codes at their partner pharmacies.",
+                revenue: "Referral per redemption",
+                color: "#EF4444",
+                partners: "GoodRx · Blink Health · RxSaver"
+              },
+              {
+                icon: "🏪",
+                title: "Pharmacy Chain Partnerships",
+                desc: "Retail pharmacies including CVS, Walgreens, Walmart, and Costco pay CPC (cost-per-click) and CPA fees for sending customers their way.",
+                revenue: "Cost-per-click + referral",
+                color: "#F59E0B",
+                partners: "CVS · Walgreens · Walmart · Costco"
+              },
+              {
+                icon: "🌐",
+                title: "Online & Mail Order Pharmacies",
+                desc: "Online pharmacies like HealthWarehouse, Amazon Pharmacy, and Cost Plus Drugs pay affiliate commissions on filled prescriptions referred from our platform.",
+                revenue: "Commission per prescription",
+                color: "#22C55E",
+                partners: "Amazon Pharmacy · Cost Plus Drugs"
+              },
+              {
+                icon: "🏥",
+                title: "Telehealth & PBM Partners",
+                desc: "Telehealth platforms and pharmacy benefit managers pay for qualified patient referrals who need prescriptions written and filled through their services.",
+                revenue: "Per qualified lead",
+                color: "#3B82F6",
+                partners: "Ro · Hims · Mark Cuban Cost Plus"
+              },
+            ].map((item, i) => (
+              <div key={i} style={{
+                background: "rgba(255,255,255,0.02)", border: `1px solid ${item.color}22`,
+                borderRadius: 18, padding: "28px",
+                transition: "border 0.2s"
+              }}
+                onMouseOver={e => e.currentTarget.style.borderColor = item.color + "55"}
+                onMouseOut={e => e.currentTarget.style.borderColor = item.color + "22"}>
+                <div style={{
+                  width: 44, height: 44, borderRadius: 10, marginBottom: 14,
+                  background: `${item.color}18`, border: `1px solid ${item.color}30`,
+                  display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20
+                }}>{item.icon}</div>
+                <h3 style={{ fontSize: 16, fontWeight: 800, marginBottom: 8 }}>{item.title}</h3>
+                <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, lineHeight: 1.7, marginBottom: 14 }}>{item.desc}</p>
+                <div style={{ fontSize: 11, color: item.color, fontWeight: 700, marginBottom: 6, textTransform: "uppercase", letterSpacing: 0.5 }}>💰 {item.revenue}</div>
+                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.3)" }}>Potential partners: {item.partners}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Revenue Potential */}
+          <div style={{
+            background: "rgba(239,68,68,0.06)", border: "1px solid rgba(239,68,68,0.2)",
+            borderRadius: 20, padding: "32px 36px",
+            display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 28
+          }}>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", letterSpacing: 1, textTransform: "uppercase", marginBottom: 8 }}>Avg Affiliate Commission</div>
+              <div style={{ fontSize: 30, fontWeight: 900, color: "#EF4444" }}>$1–$8</div>
+              <div style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>per discount card redemption</div>
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", letterSpacing: 1, textTransform: "uppercase", marginBottom: 8 }}>Avg Rx Referral Fee</div>
+              <div style={{ fontSize: 30, fontWeight: 900, color: "#F59E0B" }}>$5–$25</div>
+              <div style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>per online pharmacy referral</div>
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", letterSpacing: 1, textTransform: "uppercase", marginBottom: 8 }}>GoodRx Revenue (2023)</div>
+              <div style={{ fontSize: 30, fontWeight: 900, color: "#22C55E" }}>$800M+</div>
+              <div style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>same affiliate model</div>
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", letterSpacing: 1, textTransform: "uppercase", marginBottom: 8 }}>U.S. Rx Market Size</div>
+              <div style={{ fontSize: 30, fontWeight: 900, color: "#3B82F6" }}>$650B</div>
+              <div style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>annual prescription spend</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
       {/* WAITLIST */}
       <section id="waitlist" style={{ padding: "90px 24px", background: "#060b14" }}>
         <div style={{ maxWidth: 620, margin: "0 auto", textAlign: "center" }}>

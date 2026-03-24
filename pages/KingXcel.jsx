@@ -67,7 +67,7 @@ const companies = [
     tagline: "Find the Best Prices on Your Medications",
     description: "A medication price comparison platform helping Americans find the lowest cost prescriptions at pharmacies near them. Domain registered — platform in concept development.",
     features: ["Price Comparison", "Pharmacy Locator", "Prescription Savings", "No Membership Required"],
-    url: "#",
+    url: "https://antonio-app-264b69b7.base44.app/CheapMedz",
     category: "Healthcare",
     status: "concept",
   },
@@ -278,12 +278,12 @@ export default function KingXcel() {
                     boxShadow: `0 6px 20px ${co.color}30`
                   }}>Visit {co.name} →</a>
                 ) : (
-                  <div style={{
+                  <a href={co.url} target="_blank" rel="noreferrer" style={{
                     display: "inline-flex", alignItems: "center", gap: 8,
-                    background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.25)",
-                    color: "rgba(255,255,255,0.4)", padding: "12px 28px", borderRadius: 30,
-                    fontWeight: 700, fontSize: 14
-                  }}>🔜 Coming Soon — Domain Registered</div>
+                    background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.35)",
+                    color: "#fca5a5", padding: "12px 28px", borderRadius: 30,
+                    fontWeight: 700, fontSize: 14, textDecoration: "none"
+                  }}>🔜 Preview Concept Page →</a>
                 )}
               </div>
             ))}
