@@ -2,8 +2,8 @@
   "app_id": "69c20d11eb474c1d264b69b7",
   "slug": "antonio-app-264b69b7",
   "pages": {
-    "Quiz": {
-      "title": "Quiz"
+    "ResumeCrafted": {
+      "title": "ResumeCrafted"
     },
     "Home": {
       "title": "Home"
@@ -11,8 +11,11 @@
     "CourseGek": {
       "title": "CourseGek"
     },
-    "ResumeCrafted": {
-      "title": "ResumeCrafted"
+    "Quiz": {
+      "title": "Quiz"
+    },
+    "KingXcel": {
+      "title": "KingXcel"
     }
   }
 }
