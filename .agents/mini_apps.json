@@ -16,6 +16,9 @@
     },
     "Home": {
       "title": "Home"
+    },
+    "KingXcelPanel": {
+      "title": "KingXcelPanel"
     }
   }
 }
