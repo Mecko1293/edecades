@@ -20,31 +20,34 @@ const features = [
 
 const plans = [
   {
-    name: "Free",
-    price: "$0",
-    period: "",
-    color: "#27AE60",
+    name: "Single Download",
+    price: "$4.99",
+    period: "/resume",
+    color: "#9B59B6",
+    planKey: "single",
     highlight: false,
     features: [
-      "1 resume",
-      "5 basic templates",
-      "PDF download (watermarked)",
-      "Real-time editor",
-      "Basic AI suggestions",
+      "One resume download",
+      "All premium templates",
+      "No subscription needed",
+      "Clean PDF — no watermark",
+      "Full AI suggestions",
+      "Valid forever",
     ],
-    cta: "Start for Free",
+    cta: "Buy Single Download — $4.99",
   },
   {
-    name: "Pro",
+    name: "Pro Monthly",
     price: "$9.99",
     period: "/month",
     color: "#4A90D9",
+    planKey: "pro_monthly",
     highlight: true,
-    annualPrice: "$79/year (save 34%)",
+    annualNote: "Or save 34% at $79/year",
     features: [
       "Unlimited resumes",
       "50+ premium templates",
-      "Clean PDF downloads (no watermark)",
+      "Clean PDF downloads",
       "Full AI writing assistant",
       "ATS score checker",
       "Shareable resume link",
@@ -54,20 +57,21 @@ const plans = [
     cta: "Start 7-Day Free Trial",
   },
   {
-    name: "One-Time Download",
-    price: "$4.99",
-    period: "/resume",
-    color: "#9B59B6",
+    name: "Pro Annual",
+    price: "$79",
+    period: "/year",
+    color: "#27AE60",
+    planKey: "pro_annual",
     highlight: false,
+    savingsBadge: "Save 34%",
     features: [
-      "Single resume download",
-      "All premium templates",
-      "No subscription needed",
-      "Clean PDF — no watermark",
-      "Full AI suggestions",
-      "Valid forever",
+      "Everything in Pro Monthly",
+      "Best value — $6.58/mo",
+      "Priority AI processing",
+      "Early access to new features",
+      "Dedicated support",
     ],
-    cta: "Buy Single Download",
+    cta: "Get Pro Annual — $79/yr",
   },
 ];
 
@@ -87,10 +91,50 @@ const stats = [
 
 export default function ResumeCrafted() {
   const [activeTemplate, setActiveTemplate] = useState(0);
-  const [billingAnnual, setBillingAnnual] = useState(false);
+  const [loadingPlan, setLoadingPlan] = useState(null);
+  const [paymentStatus] = useState(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("payment");
+    }
+    return null;
+  });
+
+  const handleCheckout = async (planKey) => {
+    setLoadingPlan(planKey);
+    try {
+      const res = await fetch("/functions/createResumeCraftedCheckout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan: planKey }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    } catch (e) {
+      alert("Error connecting to payment server. Please try again.");
+    } finally {
+      setLoadingPlan(null);
+    }
+  };
 
   return (
     <div style={{ fontFamily: "'Inter', 'Segoe UI', sans-serif", background: "#0a0e1a", color: "#fff", overflowX: "hidden" }}>
+
+      {/* Payment Status Banner */}
+      {paymentStatus === "success" && (
+        <div style={{ background: "linear-gradient(135deg, #27AE60, #1a7a42)", padding: "16px", textAlign: "center", fontWeight: 700, fontSize: 16 }}>
+          🎉 Payment successful! Your ResumeCrafted account is ready. Start building your resume now.
+        </div>
+      )}
+      {paymentStatus === "cancelled" && (
+        <div style={{ background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.3)", padding: "16px", textAlign: "center", color: "#fca5a5", fontWeight: 600 }}>
+          Payment cancelled — no charge was made. You can try again anytime below.
+        </div>
+      )}
 
       {/* NAV */}
       <nav style={{
@@ -114,12 +158,12 @@ export default function ResumeCrafted() {
               onMouseOver={e => e.target.style.color = "#4A90D9"}
               onMouseOut={e => e.target.style.color = "rgba(255,255,255,0.65)"}>{item}</a>
           ))}
-          <a href="https://resume-dashing-craft-pro.base44.app" style={{
+          <button onClick={() => handleCheckout("pro_monthly")} style={{
             background: "linear-gradient(135deg, #4A90D9, #1E6BB0)",
             color: "#fff", padding: "9px 22px", borderRadius: 25,
-            fontWeight: 700, textDecoration: "none", fontSize: 14,
+            fontWeight: 700, border: "none", cursor: "pointer", fontSize: 14,
             boxShadow: "0 4px 15px rgba(74,144,217,0.4)"
-          }}>Build My Resume →</a>
+          }}>Build My Resume →</button>
         </div>
       </nav>
 
@@ -157,30 +201,24 @@ export default function ResumeCrafted() {
         </p>
 
         <div style={{ display: "flex", gap: 16, flexWrap: "wrap", justifyContent: "center", marginBottom: 64 }}>
-          <a href="https://resume-dashing-craft-pro.base44.app" style={{
-            display: "inline-block",
+          <button onClick={() => handleCheckout("pro_monthly")} disabled={loadingPlan === "pro_monthly"} style={{
             background: "linear-gradient(135deg, #4A90D9, #1E6BB0)",
             color: "#fff", padding: "18px 52px", borderRadius: 40,
-            fontWeight: 700, textDecoration: "none", fontSize: 18,
-            boxShadow: "0 8px 30px rgba(74,144,217,0.5)"
-          }}
-            onMouseOver={e => { e.target.style.transform = "translateY(-3px)"; e.target.style.boxShadow = "0 14px 40px rgba(74,144,217,0.7)"; }}
-            onMouseOut={e => { e.target.style.transform = "translateY(0)"; e.target.style.boxShadow = "0 8px 30px rgba(74,144,217,0.5)"; }}>
-            📄 Build My Resume Free
-          </a>
-          <a href="#templates" style={{
-            display: "inline-block", background: "transparent", color: "#74B9E8",
+            fontWeight: 700, border: "none", cursor: "pointer", fontSize: 18,
+            boxShadow: "0 8px 30px rgba(74,144,217,0.5)",
+            opacity: loadingPlan === "pro_monthly" ? 0.7 : 1
+          }}>
+            {loadingPlan === "pro_monthly" ? "⏳ Loading..." : "📄 Start Free Trial — $9.99/mo"}
+          </button>
+          <button onClick={() => handleCheckout("single")} style={{
+            background: "transparent", color: "#74B9E8",
             padding: "18px 40px", borderRadius: 40, fontWeight: 700,
-            textDecoration: "none", fontSize: 18,
-            border: "2px solid rgba(74,144,217,0.4)"
-          }}
-            onMouseOver={e => { e.target.style.background = "rgba(74,144,217,0.08)"; e.target.style.borderColor = "#4A90D9"; }}
-            onMouseOut={e => { e.target.style.background = "transparent"; e.target.style.borderColor = "rgba(74,144,217,0.4)"; }}>
-            View Templates →
-          </a>
+            border: "2px solid rgba(74,144,217,0.4)", cursor: "pointer", fontSize: 18,
+          }}>
+            Buy Single Resume — $4.99
+          </button>
         </div>
 
-        {/* Stats */}
         <div style={{ display: "flex", gap: 52, flexWrap: "wrap", justifyContent: "center" }}>
           {stats.map(([num, label]) => (
             <div key={label} style={{ textAlign: "center" }}>
@@ -198,25 +236,22 @@ export default function ResumeCrafted() {
             <div style={{ color: "#4A90D9", fontSize: 13, letterSpacing: 3, textTransform: "uppercase", marginBottom: 12 }}>Simple Process</div>
             <h2 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 900 }}>Your Perfect Resume in 4 Steps</h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))", gap: 28 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 28 }}>
             {steps.map((step, i) => (
               <div key={i} style={{
-                background: "rgba(255,255,255,0.03)", border: "1px solid rgba(74,144,217,0.15)",
-                borderRadius: 20, padding: "36px 24px", textAlign: "center",
-                transition: "all 0.3s", position: "relative"
-              }}
-                onMouseOver={e => { e.currentTarget.style.border = "1px solid rgba(74,144,217,0.5)"; e.currentTarget.style.transform = "translateY(-6px)"; e.currentTarget.style.background = "rgba(74,144,217,0.05)"; }}
-                onMouseOut={e => { e.currentTarget.style.border = "1px solid rgba(74,144,217,0.15)"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.background = "rgba(255,255,255,0.03)"; }}>
+                background: "rgba(74,144,217,0.06)", border: "1px solid rgba(74,144,217,0.15)",
+                borderRadius: 20, padding: "32px 24px", textAlign: "center", position: "relative"
+              }}>
                 <div style={{
                   position: "absolute", top: -14, left: "50%", transform: "translateX(-50%)",
-                  width: 28, height: 28, borderRadius: "50%",
                   background: "linear-gradient(135deg, #4A90D9, #1E6BB0)",
+                  width: 28, height: 28, borderRadius: "50%",
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: 13, fontWeight: 900
+                  fontSize: 13, fontWeight: 800
                 }}>{i + 1}</div>
-                <div style={{ fontSize: 42, marginBottom: 16, marginTop: 8 }}>{step.icon}</div>
+                <div style={{ fontSize: 40, marginBottom: 16 }}>{step.icon}</div>
                 <h3 style={{ fontSize: 17, fontWeight: 700, marginBottom: 10 }}>{step.title}</h3>
-                <p style={{ fontSize: 14, color: "rgba(255,255,255,0.55)", lineHeight: 1.7, margin: 0 }}>{step.desc}</p>
+                <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 14, lineHeight: 1.7 }}>{step.desc}</p>
               </div>
             ))}
           </div>
@@ -224,37 +259,37 @@ export default function ResumeCrafted() {
       </section>
 
       {/* TEMPLATES */}
-      <section id="templates" style={{ padding: "100px 24px", background: "linear-gradient(180deg, #0a0e1a 0%, #0e1d35 100%)" }}>
+      <section id="templates" style={{ padding: "100px 24px", background: "#070b15" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 60 }}>
-            <div style={{ color: "#4A90D9", fontSize: 13, letterSpacing: 3, textTransform: "uppercase", marginBottom: 12 }}>Professional Templates</div>
-            <h2 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 900 }}>50+ Templates. Every Industry.</h2>
-            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 17, marginTop: 12 }}>Designed by recruiters and HR professionals to get you noticed.</p>
+          <div style={{ textAlign: "center", marginBottom: 64 }}>
+            <div style={{ color: "#4A90D9", fontSize: 13, letterSpacing: 3, textTransform: "uppercase", marginBottom: 12 }}>Templates</div>
+            <h2 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 900 }}>50+ Professional Designs</h2>
+            <p style={{ color: "rgba(255,255,255,0.45)", fontSize: 17, marginTop: 12 }}>Every template is recruiter-approved and ATS-friendly</p>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 20 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 20 }}>
             {templates.map((t, i) => (
               <div key={i} onClick={() => setActiveTemplate(i)} style={{
-                background: activeTemplate === i ? `${t.color}` : "rgba(255,255,255,0.03)",
-                border: activeTemplate === i ? `2px solid ${t.accent}` : "1px solid rgba(255,255,255,0.08)",
-                borderRadius: 18, padding: "28px 20px", cursor: "pointer",
-                transition: "all 0.25s", textAlign: "center",
-                boxShadow: activeTemplate === i ? `0 8px 30px ${t.accent}40` : "none"
-              }}
-                onMouseOver={e => { if (activeTemplate !== i) { e.currentTarget.style.borderColor = t.accent + "80"; e.currentTarget.style.background = t.color + "40"; } }}
-                onMouseOut={e => { if (activeTemplate !== i) { e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"; e.currentTarget.style.background = "rgba(255,255,255,0.03)"; } }}>
+                background: activeTemplate === i ? `${t.color}99` : t.color,
+                border: `2px solid ${activeTemplate === i ? t.accent : "transparent"}`,
+                borderRadius: 16, padding: "28px 20px", cursor: "pointer",
+                textAlign: "center", transition: "all 0.2s",
+                boxShadow: activeTemplate === i ? `0 0 20px ${t.accent}44` : "none"
+              }}>
                 <div style={{ fontSize: 36, marginBottom: 12 }}>{t.emoji}</div>
-                <div style={{ fontWeight: 700, fontSize: 15, color: activeTemplate === i ? "#fff" : "rgba(255,255,255,0.85)", marginBottom: 6 }}>{t.name}</div>
-                <div style={{ fontSize: 12, color: activeTemplate === i ? t.accent : "rgba(255,255,255,0.4)" }}>{t.style}</div>
+                <div style={{ fontSize: 15, fontWeight: 700, color: "#fff", marginBottom: 6 }}>{t.name}</div>
+                <div style={{ fontSize: 12, color: t.accent }}>{t.style}</div>
               </div>
             ))}
           </div>
           <div style={{ textAlign: "center", marginTop: 40 }}>
-            <a href="https://resume-dashing-craft-pro.base44.app" style={{
-              display: "inline-block", background: "linear-gradient(135deg, #4A90D9, #1E6BB0)",
+            <button onClick={() => handleCheckout("pro_monthly")} style={{
+              background: "linear-gradient(135deg, #4A90D9, #1E6BB0)",
               color: "#fff", padding: "14px 40px", borderRadius: 30,
-              fontWeight: 700, textDecoration: "none", fontSize: 16,
+              fontWeight: 700, border: "none", cursor: "pointer", fontSize: 16,
               boxShadow: "0 6px 20px rgba(74,144,217,0.4)"
-            }}>Use This Template Free →</a>
+            }}>
+              Unlock All 50+ Templates →
+            </button>
           </div>
         </div>
       </section>
@@ -262,21 +297,19 @@ export default function ResumeCrafted() {
       {/* FEATURES */}
       <section id="features" style={{ padding: "100px 24px", background: "#0a0e1a" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 60 }}>
-            <div style={{ color: "#4A90D9", fontSize: 13, letterSpacing: 3, textTransform: "uppercase", marginBottom: 12 }}>Everything You Need</div>
-            <h2 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 900 }}>Built to Get You Hired</h2>
+          <div style={{ textAlign: "center", marginBottom: 64 }}>
+            <div style={{ color: "#4A90D9", fontSize: 13, letterSpacing: 3, textTransform: "uppercase", marginBottom: 12 }}>Features</div>
+            <h2 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 900 }}>Everything You Need to Get Hired</h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(290px, 1fr))", gap: 24 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 24 }}>
             {features.map((f, i) => (
               <div key={i} style={{
-                background: "rgba(255,255,255,0.03)", border: "1px solid rgba(74,144,217,0.12)",
-                borderRadius: 18, padding: "32px 28px", transition: "all 0.3s"
-              }}
-                onMouseOver={e => { e.currentTarget.style.background = "rgba(74,144,217,0.06)"; e.currentTarget.style.borderColor = "rgba(74,144,217,0.35)"; e.currentTarget.style.transform = "translateY(-4px)"; }}
-                onMouseOut={e => { e.currentTarget.style.background = "rgba(255,255,255,0.03)"; e.currentTarget.style.borderColor = "rgba(74,144,217,0.12)"; e.currentTarget.style.transform = "translateY(0)"; }}>
-                <div style={{ fontSize: 38, marginBottom: 16 }}>{f.icon}</div>
+                background: "rgba(74,144,217,0.05)", border: "1px solid rgba(74,144,217,0.12)",
+                borderRadius: 18, padding: "28px"
+              }}>
+                <div style={{ fontSize: 36, marginBottom: 16 }}>{f.icon}</div>
                 <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 10 }}>{f.title}</h3>
-                <p style={{ fontSize: 14, color: "rgba(255,255,255,0.55)", lineHeight: 1.7, margin: 0 }}>{f.desc}</p>
+                <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 14, lineHeight: 1.7 }}>{f.desc}</p>
               </div>
             ))}
           </div>
@@ -284,136 +317,83 @@ export default function ResumeCrafted() {
       </section>
 
       {/* PRICING */}
-      <section id="pricing" style={{ padding: "100px 24px", background: "linear-gradient(180deg, #0a0e1a 0%, #0e1d35 100%)" }}>
-        <div style={{ maxWidth: 1050, margin: "0 auto" }}>
+      <section id="pricing" style={{ padding: "100px 24px", background: "#070b15" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 64 }}>
-            <div style={{ color: "#4A90D9", fontSize: 13, letterSpacing: 3, textTransform: "uppercase", marginBottom: 12 }}>Simple Pricing</div>
-            <h2 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 900 }}>Start Free. Upgrade Anytime.</h2>
-            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 17, marginTop: 12 }}>No hidden fees. Cancel anytime.</p>
+            <div style={{ color: "#4A90D9", fontSize: 13, letterSpacing: 3, textTransform: "uppercase", marginBottom: 12 }}>Pricing</div>
+            <h2 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 900 }}>Simple, Honest Pricing</h2>
+            <p style={{ color: "rgba(255,255,255,0.45)", fontSize: 17, marginTop: 12 }}>No hidden fees. Cancel anytime.</p>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(290px, 1fr))", gap: 24 }}>
-            {plans.map((plan, i) => (
-              <div key={i} style={{
-                background: plan.highlight ? "linear-gradient(135deg, rgba(74,144,217,0.15), rgba(30,58,95,0.2))" : "rgba(255,255,255,0.03)",
-                border: plan.highlight ? "2px solid #4A90D9" : "1px solid rgba(255,255,255,0.1)",
-                borderRadius: 24, padding: "40px 32px", position: "relative",
-                boxShadow: plan.highlight ? "0 0 50px rgba(74,144,217,0.2)" : "none"
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 28, alignItems: "start" }}>
+            {plans.map((plan) => (
+              <div key={plan.name} style={{
+                background: plan.highlight ? "rgba(74,144,217,0.1)" : "rgba(255,255,255,0.03)",
+                border: `2px solid ${plan.highlight ? "#4A90D9" : "rgba(255,255,255,0.08)"}`,
+                borderRadius: 24, padding: "36px 28px", position: "relative",
+                boxShadow: plan.highlight ? "0 0 40px rgba(74,144,217,0.2)" : "none"
               }}>
                 {plan.highlight && (
                   <div style={{
                     position: "absolute", top: -14, left: "50%", transform: "translateX(-50%)",
                     background: "linear-gradient(135deg, #4A90D9, #1E6BB0)",
-                    color: "#fff", padding: "6px 20px", borderRadius: 20,
-                    fontSize: 12, fontWeight: 700, whiteSpace: "nowrap"
-                  }}>⭐ MOST POPULAR</div>
+                    padding: "5px 20px", borderRadius: 20, fontSize: 12, fontWeight: 700, whiteSpace: "nowrap"
+                  }}>⭐ Most Popular</div>
                 )}
-                <div style={{ fontSize: 14, color: plan.color, fontWeight: 700, marginBottom: 8, textTransform: "uppercase", letterSpacing: 1 }}>{plan.name}</div>
-                <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginBottom: 4 }}>
-                  <span style={{ fontSize: 48, fontWeight: 900 }}>{plan.price}</span>
-                  <span style={{ fontSize: 16, color: "rgba(255,255,255,0.45)" }}>{plan.period}</span>
+                {plan.savingsBadge && (
+                  <div style={{
+                    position: "absolute", top: -14, left: "50%", transform: "translateX(-50%)",
+                    background: "linear-gradient(135deg, #27AE60, #1a7a42)",
+                    padding: "5px 20px", borderRadius: 20, fontSize: 12, fontWeight: 700, whiteSpace: "nowrap"
+                  }}>💰 {plan.savingsBadge}</div>
+                )}
+                <h3 style={{ fontSize: 20, fontWeight: 800, marginBottom: 8 }}>{plan.name}</h3>
+                <div style={{ marginBottom: 28 }}>
+                  <span style={{ fontSize: 42, fontWeight: 900, color: plan.color }}>{plan.price}</span>
+                  <span style={{ color: "rgba(255,255,255,0.4)", fontSize: 14 }}>{plan.period}</span>
+                  {plan.annualNote && <div style={{ fontSize: 12, color: "#27AE60", marginTop: 4 }}>{plan.annualNote}</div>}
                 </div>
-                {plan.annualPrice && (
-                  <div style={{ fontSize: 12, color: "#27AE60", marginBottom: 16, fontWeight: 600 }}>💰 {plan.annualPrice}</div>
-                )}
-                <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 24, marginTop: 16, marginBottom: 28 }}>
-                  {plan.features.map((f, j) => (
-                    <div key={j} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 12 }}>
-                      <span style={{ color: plan.color, fontSize: 14, flexShrink: 0 }}>✓</span>
-                      <span style={{ fontSize: 14, color: "rgba(255,255,255,0.72)" }}>{f}</span>
-                    </div>
+                <ul style={{ listStyle: "none", padding: 0, margin: "0 0 32px", display: "flex", flexDirection: "column", gap: 12 }}>
+                  {plan.features.map(f => (
+                    <li key={f} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 14, color: "rgba(255,255,255,0.75)" }}>
+                      <span style={{ color: plan.color, fontSize: 16 }}>✓</span> {f}
+                    </li>
                   ))}
-                </div>
-                <a href="https://resume-dashing-craft-pro.base44.app" style={{
-                  display: "block", textAlign: "center",
-                  background: plan.highlight ? "linear-gradient(135deg, #4A90D9, #1E6BB0)" : `${plan.color}22`,
-                  color: plan.highlight ? "#fff" : plan.color,
-                  border: plan.highlight ? "none" : `1px solid ${plan.color}55`,
-                  padding: "14px 24px", borderRadius: 30,
-                  fontWeight: 700, textDecoration: "none", fontSize: 15,
-                  boxShadow: plan.highlight ? "0 6px 20px rgba(74,144,217,0.4)" : "none"
-                }}>{plan.cta}</a>
+                </ul>
+                <button
+                  onClick={() => handleCheckout(plan.planKey)}
+                  disabled={loadingPlan === plan.planKey}
+                  style={{
+                    width: "100%", padding: "15px", borderRadius: 30,
+                    background: plan.highlight ? "linear-gradient(135deg, #4A90D9, #1E6BB0)" : "transparent",
+                    border: plan.highlight ? "none" : `2px solid ${plan.color}`,
+                    color: plan.highlight ? "#fff" : plan.color,
+                    fontWeight: 700, fontSize: 15, cursor: "pointer",
+                    opacity: loadingPlan === plan.planKey ? 0.7 : 1,
+                    boxShadow: plan.highlight ? "0 6px 20px rgba(74,144,217,0.4)" : "none"
+                  }}>
+                  {loadingPlan === plan.planKey ? "⏳ Loading..." : plan.cta}
+                </button>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FINAL CTA */}
-      <section style={{ padding: "100px 24px 80px", background: "#0a0e1a", textAlign: "center" }}>
-        <div style={{ maxWidth: 680, margin: "0 auto" }}>
-          <div style={{ fontSize: 56, marginBottom: 24 }}>📄</div>
-          <h2 style={{ fontSize: "clamp(30px, 5vw, 58px)", fontWeight: 900, marginBottom: 20, lineHeight: 1.1 }}>
-            Your dream job is<br />
-            <span style={{ background: "linear-gradient(135deg, #74B9E8, #4A90D9)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-              one resume away.
-            </span>
-          </h2>
-          <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 18, marginBottom: 40 }}>
-            Join 500,000+ job seekers who built their winning resume with ResumeCrafted. Free to start — takes 3 minutes.
-          </p>
-          <a href="https://resume-dashing-craft-pro.base44.app" style={{
-            display: "inline-block",
-            background: "linear-gradient(135deg, #4A90D9, #1E6BB0)",
-            color: "#fff", padding: "20px 64px", borderRadius: 50,
-            fontWeight: 800, textDecoration: "none", fontSize: 20,
-            boxShadow: "0 10px 40px rgba(74,144,217,0.5)"
-          }}>📄 Build My Resume Now — Free</a>
-          <div style={{ marginTop: 18, color: "rgba(255,255,255,0.3)", fontSize: 13 }}>
-            No credit card · Free templates included · Download in minutes
           </div>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer style={{ background: "#060810", padding: "48px 40px 32px", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 32, marginBottom: 40 }}>
-          <div style={{ maxWidth: 280 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
-              <span style={{ fontSize: 18 }}>📄</span>
-              <span style={{ fontSize: 18, fontWeight: 800 }}>Resume<span style={{ color: "#4A90D9" }}>Crafted</span></span>
-            </div>
-            <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 13, lineHeight: 1.7 }}>
-              AI-powered resume builder trusted by 500,000+ job seekers worldwide. Land more interviews, faster.
-            </p>
-          </div>
-          <div>
-            <div style={{ color: "#4A90D9", fontWeight: 700, fontSize: 12, letterSpacing: 1, marginBottom: 14 }}>PRODUCT</div>
-            {["Resume Builder", "Templates", "AI Writing", "ATS Checker", "Cover Letter"].map(item => (
-              <div key={item} style={{ marginBottom: 8 }}>
-                <a href="https://resume-dashing-craft-pro.base44.app" style={{ color: "rgba(255,255,255,0.4)", fontSize: 13, textDecoration: "none" }}
-                  onMouseOver={e => e.target.style.color = "#4A90D9"}
-                  onMouseOut={e => e.target.style.color = "rgba(255,255,255,0.4)"}>{item}</a>
-              </div>
-            ))}
-          </div>
-          <div>
-            <div style={{ color: "#4A90D9", fontWeight: 700, fontSize: 12, letterSpacing: 1, marginBottom: 14 }}>RESOURCES</div>
-            {["Resume Tips", "Career Blog", "Interview Prep", "Salary Guide", "Job Search Tips"].map(item => (
-              <div key={item} style={{ marginBottom: 8 }}>
-                <a href="https://resume-dashing-craft-pro.base44.app" style={{ color: "rgba(255,255,255,0.4)", fontSize: 13, textDecoration: "none" }}
-                  onMouseOver={e => e.target.style.color = "#4A90D9"}
-                  onMouseOut={e => e.target.style.color = "rgba(255,255,255,0.4)"}>{item}</a>
-              </div>
-            ))}
-          </div>
-          <div>
-            <div style={{ color: "#4A90D9", fontWeight: 700, fontSize: 12, letterSpacing: 1, marginBottom: 14 }}>COMPANY</div>
-            {["About Us", "Pricing", "Privacy Policy", "Terms of Service", "King Xcel Innovations"].map(item => (
-              <div key={item} style={{ marginBottom: 8 }}>
-                <a href="https://resume-dashing-craft-pro.base44.app" style={{ color: "rgba(255,255,255,0.4)", fontSize: 13, textDecoration: "none" }}
-                  onMouseOver={e => e.target.style.color = "#4A90D9"}
-                  onMouseOut={e => e.target.style.color = "rgba(255,255,255,0.4)"}>{item}</a>
-              </div>
-            ))}
-          </div>
+      <footer style={{ background: "#060910", padding: "48px 24px", textAlign: "center", borderTop: "1px solid rgba(74,144,217,0.1)" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginBottom: 16 }}>
+          <div style={{
+            width: 30, height: 30, borderRadius: 8,
+            background: "linear-gradient(135deg, #4A90D9, #1E3A5F)",
+            display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14
+          }}>📄</div>
+          <span style={{ fontSize: 16, fontWeight: 800 }}>Resume<span style={{ color: "#4A90D9" }}>Crafted</span></span>
         </div>
-        <div style={{ borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: 20, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
-          <div style={{ color: "rgba(255,255,255,0.2)", fontSize: 12 }}>© 2025 ResumeCrafted · A King Xcel Innovations Company · ResumeCrafted.com</div>
-          <div style={{ color: "rgba(255,255,255,0.2)", fontSize: 12 }}>Build a resume that gets you hired.</div>
-        </div>
+        <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 13, marginBottom: 8 }}>
+          A King Xcel Innovations product · <a href="/KingXcel" style={{ color: "#4A90D9", textDecoration: "none" }}>About Us</a>
+        </p>
+        <p style={{ color: "rgba(255,255,255,0.2)", fontSize: 12 }}>© 2025 ResumeCrafted. All rights reserved.</p>
       </footer>
-
-      <style>{`* { box-sizing: border-box; } html { scroll-behavior: smooth; }`}</style>
     </div>
   );
 }
