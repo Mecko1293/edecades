@@ -99,6 +99,7 @@ const quickLinks = [
   { label: "CourseGek App", url: "https://course-gek-23543b27.base44.app", icon: "🎓", note: "Live app" },
   { label: "ResumeCrafted App", url: "https://resume-dashing-craft-pro.base44.app", icon: "📄", note: "Live app" },
   { label: "eDecades App", url: "https://benevolent-decade-dive-now.base44.app", icon: "⏰", note: "Live app" },
+  { label: "CheapMedz Landing", url: "https://antonio-app-264b69b7.base44.app/CheapMedz", icon: "💊", note: "Concept page" },
   { label: "Stripe Dashboard", url: "https://dashboard.stripe.com", icon: "💳", note: "Check payout status" },
 ];
 
