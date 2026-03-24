@@ -12,6 +12,7 @@ const companies = [
     features: ["Decade Communities", "Vintage Marketplace", "Live Trivia & Games", "Historical Archives"],
     url: "https://benevolent-decade-dive-now.base44.app",
     category: "Social Network",
+    status: "live",
   },
   {
     name: "CourseGek",
@@ -24,6 +25,7 @@ const companies = [
     features: ["Expert Tutors", "All Subjects", "Money-Back Guarantee", "Earn as a Tutor"],
     url: "https://course-gek-23543b27.base44.app",
     category: "EdTech Marketplace",
+    status: "live",
   },
   {
     name: "ResumeCrafted",
@@ -36,6 +38,7 @@ const companies = [
     features: ["50+ Pro Templates", "AI Writing Assistant", "ATS Score Checker", "One-Click PDF Export"],
     url: "https://resume-dashing-craft-pro.base44.app",
     category: "Career Tools",
+    status: "live",
   },
   {
     name: "WheelMath",
@@ -48,11 +51,25 @@ const companies = [
     features: ["Daily Challenges", "3 Difficulty Levels", "Classroom Licenses", "No Login Required"],
     url: "https://pie-math-quest.base44.app",
     category: "EdTech Game",
+    status: "live",
+  },
+  {
+    name: "CheapMedz",
+    domain: "CheapMedz.com",
+    emoji: "💊",
+    color: "#EF4444",
+    bg: "#1a0808",
+    tagline: "Find the Best Prices on Your Medications",
+    description: "A medication price comparison platform helping Americans find the lowest cost prescriptions at pharmacies near them. Domain registered — platform in concept development.",
+    features: ["Price Comparison", "Pharmacy Locator", "Prescription Savings", "No Membership Required"],
+    url: "#",
+    category: "Healthcare",
+    status: "concept",
   },
 ];
 
 const stats = [
-  { value: "4", label: "Digital Platforms" },
+  { value: "5", label: "Digital Platforms" },
   { value: "500K+", label: "Users Served" },
   { value: "2025", label: "Founded" },
   { value: "100%", label: "USA Based" },
@@ -67,7 +84,6 @@ const values = [
 
 export default function KingXcel() {
   const [hoveredCompany, setHoveredCompany] = useState(null);
-  const [activeTab, setActiveTab] = useState(0);
 
   return (
     <div style={{ fontFamily: "'Inter', 'Segoe UI', sans-serif", background: "#080810", color: "#fff", overflowX: "hidden" }}>
@@ -109,30 +125,23 @@ export default function KingXcel() {
         display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
         textAlign: "center", padding: "140px 24px 100px", position: "relative", overflow: "hidden"
       }}>
-        {/* Background crown watermark */}
         <div style={{
           position: "absolute", fontSize: 400, opacity: 0.025,
           top: "50%", left: "50%", transform: "translate(-50%, -55%)",
           pointerEvents: "none", userSelect: "none", lineHeight: 1
         }}>👑</div>
-
-        {/* Gold glow orbs */}
         <div style={{ position: "absolute", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%)", top: "10%", left: "0%" }} />
         <div style={{ position: "absolute", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(139,105,20,0.07) 0%, transparent 70%)", bottom: "10%", right: "0%" }} />
 
         <div style={{
           display: "inline-flex", alignItems: "center", gap: 8,
           background: "rgba(201,168,76,0.1)", border: "1px solid rgba(201,168,76,0.3)",
-          borderRadius: 30, padding: "8px 22px", marginBottom: 32, fontSize: 13, color: "#C9A84C",
-          letterSpacing: 0.5
+          borderRadius: 30, padding: "8px 22px", marginBottom: 32, fontSize: 13, color: "#C9A84C", letterSpacing: 0.5
         }}>
           👑 King Xcel Innovations · Digital Technology Company
         </div>
 
-        <h1 style={{
-          fontSize: "clamp(38px, 7vw, 80px)", fontWeight: 900, lineHeight: 1.05,
-          marginBottom: 28, letterSpacing: -1.5
-        }}>
+        <h1 style={{ fontSize: "clamp(38px, 7vw, 80px)", fontWeight: 900, lineHeight: 1.05, marginBottom: 28, letterSpacing: -1.5 }}>
           Building Digital Platforms<br />
           <span style={{
             background: "linear-gradient(135deg, #E8C870 0%, #C9A84C 50%, #8B6914 100%)",
@@ -140,18 +149,14 @@ export default function KingXcel() {
           }}>That Matter</span>
         </h1>
 
-        <p style={{
-          fontSize: "clamp(16px, 2vw, 20px)", color: "rgba(255,255,255,0.55)",
-          maxWidth: 660, lineHeight: 1.85, marginBottom: 56
-        }}>
-          King Xcel Innovations is a U.S.-based digital technology company building a portfolio of innovative web platforms in education, career development, social networking, and interactive learning.
+        <p style={{ fontSize: "clamp(16px, 2vw, 20px)", color: "rgba(255,255,255,0.55)", maxWidth: 660, lineHeight: 1.85, marginBottom: 56 }}>
+          King Xcel Innovations is a U.S.-based digital technology company building a portfolio of innovative web platforms in education, career development, social networking, healthcare, and interactive learning.
         </p>
 
-        {/* Stats row */}
         <div style={{
           display: "flex", gap: 0, flexWrap: "wrap", justifyContent: "center",
           background: "rgba(201,168,76,0.05)", border: "1px solid rgba(201,168,76,0.15)",
-          borderRadius: 20, overflow: "hidden", maxWidth: 680, width: "100%"
+          borderRadius: 20, overflow: "hidden", maxWidth: 780, width: "100%"
         }}>
           {stats.map((s, i) => (
             <div key={i} style={{
@@ -184,7 +189,7 @@ export default function KingXcel() {
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 72 }}>
             <div style={{ color: "#C9A84C", fontSize: 12, letterSpacing: 3, textTransform: "uppercase", marginBottom: 14 }}>Our Portfolio</div>
-            <h2 style={{ fontSize: "clamp(28px, 4vw, 52px)", fontWeight: 900, margin: 0 }}>Four Platforms. One Vision.</h2>
+            <h2 style={{ fontSize: "clamp(28px, 4vw, 52px)", fontWeight: 900, margin: 0 }}>Five Platforms. One Vision.</h2>
             <p style={{ color: "rgba(255,255,255,0.45)", fontSize: 17, marginTop: 14, maxWidth: 520, margin: "14px auto 0" }}>
               Each company is independently operated, purpose-built, and designed to lead its market.
             </p>
@@ -196,21 +201,41 @@ export default function KingXcel() {
                 onMouseEnter={() => setHoveredCompany(i)}
                 onMouseLeave={() => setHoveredCompany(null)}
                 style={{
-                  background: hoveredCompany === i ? `${co.bg}` : "rgba(255,255,255,0.02)",
-                  border: hoveredCompany === i ? `1px solid ${co.color}60` : "1px solid rgba(255,255,255,0.07)",
-                  borderRadius: 24, padding: "40px 36px",
-                  transition: "all 0.3s",
-                  boxShadow: hoveredCompany === i ? `0 20px 60px ${co.color}18` : "none",
-                  transform: hoveredCompany === i ? "translateY(-4px)" : "none",
-                  cursor: "default"
+                  background: hoveredCompany === i ? co.bg : "rgba(255,255,255,0.02)",
+                  border: `1px solid ${hoveredCompany === i ? co.color + "40" : "rgba(255,255,255,0.06)"}`,
+                  borderRadius: 24, padding: "36px 32px",
+                  transition: "all 0.3s ease",
+                  opacity: co.status === "concept" ? 0.85 : 1,
+                  position: "relative", overflow: "hidden"
                 }}>
-                <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 20 }}>
+
+                {/* Concept Mode Banner */}
+                {co.status === "concept" && (
+                  <div style={{
+                    position: "absolute", top: 16, right: 16,
+                    background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.35)",
+                    color: "#EF4444", fontSize: 10, fontWeight: 800,
+                    padding: "4px 12px", borderRadius: 20, letterSpacing: 1, textTransform: "uppercase"
+                  }}>🔬 Concept Mode · Not Started</div>
+                )}
+
+                {co.status === "live" && (
+                  <div style={{
+                    position: "absolute", top: 16, right: 16,
+                    background: "rgba(74,222,128,0.12)", border: "1px solid rgba(74,222,128,0.3)",
+                    color: "#4ade80", fontSize: 10, fontWeight: 800,
+                    padding: "4px 12px", borderRadius: 20, letterSpacing: 1, textTransform: "uppercase"
+                  }}>● Live</div>
+                )}
+
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
                     <div style={{
                       width: 52, height: 52, borderRadius: 14,
-                      background: `linear-gradient(135deg, ${co.color}30, ${co.color}15)`,
-                      border: `1px solid ${co.color}40`,
-                      display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24
+                      background: `linear-gradient(135deg, ${co.color}, ${co.color}88)`,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      fontSize: 24, boxShadow: `0 8px 20px ${co.color}30`,
+                      filter: co.status === "concept" ? "grayscale(30%)" : "none"
                     }}>{co.emoji}</div>
                     <div>
                       <div style={{ fontSize: 22, fontWeight: 800, color: "#fff" }}>{co.name}</div>
@@ -220,8 +245,7 @@ export default function KingXcel() {
                   <div style={{
                     fontSize: 11, color: co.color, fontWeight: 700,
                     background: `${co.color}15`, border: `1px solid ${co.color}30`,
-                    padding: "5px 14px", borderRadius: 20, letterSpacing: 0.5,
-                    whiteSpace: "nowrap"
+                    padding: "5px 14px", borderRadius: 20, letterSpacing: 0.5, whiteSpace: "nowrap"
                   }}>{co.category}</div>
                 </div>
 
@@ -236,21 +260,30 @@ export default function KingXcel() {
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 28 }}>
                   {co.features.map((f, j) => (
                     <span key={j} style={{
-                      fontSize: 12, color: "rgba(255,255,255,0.65)",
+                      fontSize: 12, color: co.status === "concept" ? "rgba(255,255,255,0.35)" : "rgba(255,255,255,0.65)",
                       background: "rgba(255,255,255,0.05)",
                       border: "1px solid rgba(255,255,255,0.08)",
                       padding: "5px 14px", borderRadius: 20
-                    }}>✓ {f}</span>
+                    }}>{co.status === "concept" ? "○" : "✓"} {f}</span>
                   ))}
                 </div>
 
-                <a href={co.url} target="_blank" rel="noreferrer" style={{
-                  display: "inline-flex", alignItems: "center", gap: 8,
-                  background: `linear-gradient(135deg, ${co.color}, ${co.color}aa)`,
-                  color: "#000", padding: "12px 28px", borderRadius: 30,
-                  fontWeight: 700, textDecoration: "none", fontSize: 14,
-                  boxShadow: `0 6px 20px ${co.color}30`
-                }}>Visit {co.name} →</a>
+                {co.status === "live" ? (
+                  <a href={co.url} target="_blank" rel="noreferrer" style={{
+                    display: "inline-flex", alignItems: "center", gap: 8,
+                    background: `linear-gradient(135deg, ${co.color}, ${co.color}aa)`,
+                    color: "#000", padding: "12px 28px", borderRadius: 30,
+                    fontWeight: 700, textDecoration: "none", fontSize: 14,
+                    boxShadow: `0 6px 20px ${co.color}30`
+                  }}>Visit {co.name} →</a>
+                ) : (
+                  <div style={{
+                    display: "inline-flex", alignItems: "center", gap: 8,
+                    background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.25)",
+                    color: "rgba(255,255,255,0.4)", padding: "12px 28px", borderRadius: 30,
+                    fontWeight: 700, fontSize: 14
+                  }}>🔜 Coming Soon — Domain Registered</div>
+                )}
               </div>
             ))}
           </div>
@@ -273,38 +306,25 @@ export default function KingXcel() {
                 King Xcel Innovations is a U.S.-based digital technology company dedicated to building platforms that educate, connect, and empower people online.
               </p>
               <p style={{ fontSize: 16, color: "rgba(255,255,255,0.58)", lineHeight: 1.9, marginBottom: 32 }}>
-                Our portfolio spans social networking, educational marketplaces, career development tools, and interactive learning games — each product designed to lead its market and deliver real value to real users.
+                Our portfolio spans social networking, educational marketplaces, career development tools, healthcare technology, and interactive learning games — each product designed to lead its market and deliver real value to real users.
               </p>
               <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-                <div style={{
-                  background: "rgba(201,168,76,0.08)", border: "1px solid rgba(201,168,76,0.2)",
-                  borderRadius: 14, padding: "16px 24px", textAlign: "center"
-                }}>
-                  <div style={{ fontSize: 24, fontWeight: 900, color: "#C9A84C" }}>4</div>
-                  <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginTop: 4, letterSpacing: 1 }}>PLATFORMS</div>
-                </div>
-                <div style={{
-                  background: "rgba(201,168,76,0.08)", border: "1px solid rgba(201,168,76,0.2)",
-                  borderRadius: 14, padding: "16px 24px", textAlign: "center"
-                }}>
-                  <div style={{ fontSize: 24, fontWeight: 900, color: "#C9A84C" }}>USA</div>
-                  <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginTop: 4, letterSpacing: 1 }}>BASED</div>
-                </div>
-                <div style={{
-                  background: "rgba(201,168,76,0.08)", border: "1px solid rgba(201,168,76,0.2)",
-                  borderRadius: 14, padding: "16px 24px", textAlign: "center"
-                }}>
-                  <div style={{ fontSize: 24, fontWeight: 900, color: "#C9A84C" }}>2025</div>
-                  <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginTop: 4, letterSpacing: 1 }}>FOUNDED</div>
-                </div>
+                {[["5", "PLATFORMS"], ["USA", "BASED"], ["2025", "FOUNDED"]].map(([val, label]) => (
+                  <div key={label} style={{
+                    background: "rgba(201,168,76,0.08)", border: "1px solid rgba(201,168,76,0.2)",
+                    borderRadius: 14, padding: "16px 24px", textAlign: "center"
+                  }}>
+                    <div style={{ fontSize: 24, fontWeight: 900, color: "#C9A84C" }}>{val}</div>
+                    <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginTop: 4, letterSpacing: 1 }}>{label}</div>
+                  </div>
+                ))}
               </div>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
               {values.map((v, i) => (
                 <div key={i} style={{
                   background: "rgba(255,255,255,0.02)", border: "1px solid rgba(201,168,76,0.1)",
-                  borderRadius: 18, padding: "28px 22px",
-                  transition: "all 0.3s"
+                  borderRadius: 18, padding: "28px 22px", transition: "all 0.3s"
                 }}
                   onMouseOver={e => { e.currentTarget.style.background = "rgba(201,168,76,0.05)"; e.currentTarget.style.borderColor = "rgba(201,168,76,0.25)"; }}
                   onMouseOut={e => { e.currentTarget.style.background = "rgba(255,255,255,0.02)"; e.currentTarget.style.borderColor = "rgba(201,168,76,0.1)"; }}>
@@ -328,7 +348,7 @@ export default function KingXcel() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 20 }}>
             {[
               { icon: "💳", title: "SaaS Subscriptions", desc: "Monthly and annual subscription plans for premium platform access across all products.", price: "From $4.99/mo" },
-              { icon: "🎓", title: "Tutoring Marketplace", desc: "Transaction-based platform fees for homework help and academic tutoring sessions.", price: "15% platform fee" },
+              { icon: "🎓", title: "Tutoring Marketplace", desc: "Transaction-based platform fees for homework help and academic tutoring sessions.", price: "From $9.99/answer" },
               { icon: "📄", title: "Resume Downloads", desc: "One-time purchase for professional resume PDF downloads with premium templates.", price: "From $4.99" },
               { icon: "🏫", title: "Classroom Licenses", desc: "Annual licenses for schools and educators to use WheelMath in classroom settings.", price: "From $99/yr" },
             ].map((p, i) => (
@@ -351,8 +371,7 @@ export default function KingXcel() {
         <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
           <div style={{
             background: "rgba(201,168,76,0.06)", border: "1px solid rgba(201,168,76,0.2)",
-            borderRadius: 28, padding: "64px 48px",
-            boxShadow: "0 0 60px rgba(201,168,76,0.06)"
+            borderRadius: 28, padding: "64px 48px", boxShadow: "0 0 60px rgba(201,168,76,0.06)"
           }}>
             <div style={{ fontSize: 48, marginBottom: 20 }}>👑</div>
             <h2 style={{ fontSize: "clamp(26px, 4vw, 44px)", fontWeight: 900, marginBottom: 16 }}>
@@ -361,21 +380,16 @@ export default function KingXcel() {
             <p style={{ fontSize: 16, color: "rgba(255,255,255,0.55)", lineHeight: 1.8, marginBottom: 36, maxWidth: 480, margin: "0 auto 36px" }}>
               Interested in partnerships, advertising, or business inquiries? We'd love to hear from you.
             </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 14, alignItems: "center" }}>
-              <div style={{ display: "flex", gap: 14, flexWrap: "wrap", justifyContent: "center" }}>
-                {companies.map((co, i) => (
-                  <a key={i} href={co.url} target="_blank" rel="noreferrer" style={{
-                    display: "inline-flex", alignItems: "center", gap: 6,
-                    background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)",
-                    padding: "10px 20px", borderRadius: 25,
-                    color: "rgba(255,255,255,0.7)", textDecoration: "none", fontSize: 14,
-                    transition: "all 0.2s"
-                  }}
-                    onMouseOver={e => { e.currentTarget.style.borderColor = co.color + "60"; e.currentTarget.style.color = co.color; }}
-                    onMouseOut={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"; e.currentTarget.style.color = "rgba(255,255,255,0.7)"; }}>
-                    {co.emoji} {co.name}
-                  </a>
-                ))}
+            <div style={{ display: "flex", flexDirection: "column", gap: 16, alignItems: "center" }}>
+              <a href="mailto:anthonykittles@outlook.com" style={{
+                display: "inline-flex", alignItems: "center", gap: 10,
+                background: "linear-gradient(135deg, #C9A84C, #8B6914)",
+                color: "#000", padding: "16px 40px", borderRadius: 30,
+                fontWeight: 800, textDecoration: "none", fontSize: 15,
+                boxShadow: "0 8px 25px rgba(201,168,76,0.3)"
+              }}>📬 anthonykittles@outlook.com</a>
+              <div style={{ fontSize: 14, color: "rgba(255,255,255,0.3)" }}>
+                📍 205 Seva Ct, Irving, Texas 75061
               </div>
             </div>
           </div>
@@ -383,31 +397,18 @@ export default function KingXcel() {
       </section>
 
       {/* FOOTER */}
-      <footer style={{ background: "#04040a", padding: "40px 40px 28px", borderTop: "1px solid rgba(201,168,76,0.08)" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 20 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <span style={{ fontSize: 20 }}>👑</span>
-            <span style={{ fontSize: 16, fontWeight: 800 }}>King <span style={{ color: "#C9A84C" }}>Xcel</span> Innovations</span>
-          </div>
-          <div style={{ display: "flex", gap: 28, flexWrap: "wrap" }}>
-            {companies.map((co, i) => (
-              <a key={i} href={co.url} target="_blank" rel="noreferrer" style={{ color: "rgba(255,255,255,0.35)", fontSize: 13, textDecoration: "none" }}
-                onMouseOver={e => e.target.style.color = "#C9A84C"}
-                onMouseOut={e => e.target.style.color = "rgba(255,255,255,0.35)"}>{co.emoji} {co.name}</a>
-            ))}
-          </div>
-          <div style={{ color: "rgba(255,255,255,0.2)", fontSize: 12 }}>
-            © 2025 King Xcel Innovations · KingXcelInnovations.com · All Rights Reserved
-          </div>
+      <footer style={{ background: "#04040a", padding: "40px 24px", textAlign: "center", borderTop: "1px solid rgba(201,168,76,0.08)" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginBottom: 16 }}>
+          <div style={{
+            width: 32, height: 32, borderRadius: 8,
+            background: "linear-gradient(135deg, #C9A84C, #8B6914)",
+            display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16
+          }}>👑</div>
+          <span style={{ fontSize: 16, fontWeight: 800 }}>King <span style={{ color: "#C9A84C" }}>Xcel</span> Innovations</span>
         </div>
-        <div style={{ maxWidth: 1100, margin: "16px auto 0", borderTop: "1px solid rgba(255,255,255,0.04)", paddingTop: 16 }}>
-          <p style={{ color: "rgba(255,255,255,0.18)", fontSize: 11, lineHeight: 1.7, margin: 0, textAlign: "center" }}>
-            King Xcel Innovations is a digital technology company operating SaaS platforms and digital marketplaces. Products and services include software subscriptions, educational marketplace transactions, resume builder tools, and interactive educational games. All transactions processed securely via Stripe. United States.
-          </p>
-        </div>
+        <p style={{ color: "rgba(255,255,255,0.2)", fontSize: 12 }}>© 2025 King Xcel Innovations. All rights reserved. · Irving, Texas</p>
       </footer>
 
-      <style>{`* { box-sizing: border-box; } html { scroll-behavior: smooth; } @media (max-width: 768px) { nav > div:last-child { display: none; } }`}</style>
     </div>
   );
 }
