@@ -1,6 +1,6 @@
 # CheapMedz Affiliate Outreach Emails
 **Date:** 2026-03-24
-**From:** Anthony Kittles — anthonykittles@outlook.com
+**From:** Anthony D. Kittles — anthonykittles@outlook.com
 **Company:** King Xcel Innovations | CheapMedz.com
 
 ---
@@ -16,7 +16,7 @@
 
 Hi GoodRx Partnerships Team,
 
-My name is Anthony Kittles, founder of CheapMedz (CheapMedz.com) — a prescription price comparison platform currently in development under King Xcel Innovations, a U.S.-based digital technology company based in Irving, Texas.
+My name is Anthony D. Kittles, founder of CheapMedz (CheapMedz.com) — a prescription price comparison platform currently in development under King Xcel Innovations, a U.S.-based digital technology company based in Irving, Texas.
 
 CheapMedz is being built to help uninsured and underinsured Americans compare medication prices and find savings at pharmacies near them — a mission very aligned with GoodRx's.
 
@@ -27,7 +27,7 @@ I've reviewed your developer/API program and believe CheapMedz is an ideal publi
 Would you be open to a brief call to discuss partnership terms?
 
 Best regards,
-Anthony Kittles
+Anthony D. Kittles
 Founder, King Xcel Innovations | CheapMedz.com
 📧 anthonykittles@outlook.com
 🌐 https://antonio-app-264b69b7.base44.app/CheapMedz
@@ -46,7 +46,7 @@ Founder, King Xcel Innovations | CheapMedz.com
 
 Hi Blink Health Partnerships Team,
 
-I'm Anthony Kittles, founder of CheapMedz (CheapMedz.com), a prescription medication price comparison platform launching under King Xcel Innovations.
+I'm Anthony D. Kittles, founder of CheapMedz (CheapMedz.com), a prescription medication price comparison platform launching under King Xcel Innovations.
 
 Our platform is designed to help Americans compare drug prices across pharmacies — and Blink Health's model of negotiated prescription prices is exactly the kind of solution our users need. I'd love to feature Blink Health as a featured partner and drive qualified traffic your way through affiliate links embedded in our price comparison results.
 
@@ -55,7 +55,7 @@ I've noted that Blink Health has an affiliate program through FlexOffers offerin
 Would you be open to discussing a direct partnership arrangement?
 
 Best,
-Anthony Kittles
+Anthony D. Kittles
 Founder, King Xcel Innovations | CheapMedz.com
 📧 anthonykittles@outlook.com
 🌐 https://antonio-app-264b69b7.base44.app/CheapMedz
@@ -73,7 +73,7 @@ Founder, King Xcel Innovations | CheapMedz.com
 
 Hi Mark,
 
-My name is Anthony Kittles, founder of CheapMedz (CheapMedz.com) — a prescription price comparison platform I'm building under King Xcel Innovations, based in Irving, Texas.
+My name is Anthony D. Kittles, founder of CheapMedz (CheapMedz.com) — a prescription price comparison platform I'm building under King Xcel Innovations, based in Irving, Texas.
 
 CheapMedz helps Americans find the lowest prescription prices near them. Cost Plus Drugs is one of the most important stories in affordable healthcare right now, and I want to make sure every CheapMedz user knows about your pricing.
 
@@ -83,7 +83,7 @@ This is a win-win: more Americans discover your platform, and CheapMedz earns a 
 
 Would love to connect and explore this.
 
-Anthony Kittles
+Anthony D. Kittles
 Founder, King Xcel Innovations | CheapMedz.com
 📧 anthonykittles@outlook.com
 🌐 https://antonio-app-264b69b7.base44.app/CheapMedz
@@ -96,8 +96,9 @@ Founder, King Xcel Innovations | CheapMedz.com
 **Commission:** Up to 10% — Amazon Pharmacy products qualify
 **Note:** Apply through standard Amazon Associates. No special approval needed. Easy to get in — need 3 sales within first 6 months to stay active.
 
-### EMAIL / APPLICATION NOTES:
+### APPLICATION NOTES:
 - Apply at: affiliate-program.amazon.com
+- Name to use: Anthony D. Kittles
 - In the "How do you drive traffic" section mention: price comparison platform, SEO, email list
 - Website to submit: https://antonio-app-264b69b7.base44.app/CheapMedz (or CheapMedz.com once live)
 - No cold email needed — purely a form application
@@ -115,7 +116,7 @@ Founder, King Xcel Innovations | CheapMedz.com
 
 Hi RxSpark Partnerships Team,
 
-My name is Anthony Kittles, founder of CheapMedz (CheapMedz.com), a prescription price comparison and savings platform being developed under King Xcel Innovations in Irving, Texas.
+My name is Anthony D. Kittles, founder of CheapMedz (CheapMedz.com), a prescription price comparison and savings platform being developed under King Xcel Innovations in Irving, Texas.
 
 I came across your Affiliate Partner Program and I'm very interested in applying. CheapMedz users are exactly your target audience — people actively looking to save on prescriptions. Featuring RxSpark discount cards within our platform would provide immediate value to our users and drive consistent qualified traffic to RxSpark.
 
@@ -124,7 +125,7 @@ I've begun the application process at rxspark.com/become-a-partner/organization 
 Our concept page is live at the link below. We'd be proud to feature the RxSpark logo and branding on our cards.
 
 Best regards,
-Anthony Kittles
+Anthony D. Kittles
 Founder, King Xcel Innovations | CheapMedz.com
 📧 anthonykittles@outlook.com
 🌐 https://antonio-app-264b69b7.base44.app/CheapMedz
