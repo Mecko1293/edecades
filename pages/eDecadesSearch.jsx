@@ -39,6 +39,7 @@ export default function eDecadesSearch() {
 
   useEffect(() => {
     inputRef.current?.focus();
+    document.title = "Search — eDecades";
   }, []);
 
   const doSearch = async (q) => {
@@ -149,10 +150,11 @@ export default function eDecadesSearch() {
       <div style={{
         background: "rgba(10,10,20,0.95)", backdropFilter: "blur(20px)",
         borderBottom: "1px solid rgba(255,215,0,0.1)",
-        padding: "20px 32px", display: "flex", alignItems: "center", gap: 16,
+        padding: "16px 24px", display: "flex", alignItems: "center", gap: 16,
         position: "sticky", top: 0, zIndex: 100
       }}>
-        <a href="https://benevolent-decade-dive-now.base44.app" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 10 }}>
+        {/* Logo + back link */}
+        <a href="https://benevolent-decade-dive-now.base44.app" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
           <div style={{
             width: 40, height: 40, borderRadius: 12,
             background: "linear-gradient(135deg, #FFD700, #FF8C00)",
@@ -189,6 +191,14 @@ export default function eDecadesSearch() {
               style={{ position: "absolute", right: 16, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", color: "rgba(255,255,255,0.4)", cursor: "pointer", fontSize: 18 }}>✕</button>
           )}
         </div>
+
+        {/* Back to eDecades button */}
+        <a href="https://benevolent-decade-dive-now.base44.app" style={{
+          flexShrink: 0, background: "rgba(255,215,0,0.12)",
+          border: "1px solid rgba(255,215,0,0.3)", color: "#FFD700",
+          padding: "9px 18px", borderRadius: 30, fontSize: 13, fontWeight: 600,
+          textDecoration: "none", whiteSpace: "nowrap"
+        }}>← Back to eDecades</a>
       </div>
 
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "32px 24px" }}>
@@ -204,15 +214,9 @@ export default function eDecadesSearch() {
               Explore decades, discover notable figures, find members, posts, historical events, artifacts, and more.
             </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
-              {["1980s music", "Michael Jackson", "fashion trends", "hip hop", "World War II", "The Beatles", "moon landing", "disco era"].map(s => (
+              {["1980s music","Michael Jackson","fashion trends","hip hop","World War II","The Beatles","moon landing","disco era"].map(s => (
                 <button key={s} onClick={() => { setQuery(s); doSearch(s); }}
-                  style={{
-                    background: "rgba(255,215,0,0.1)", border: "1px solid rgba(255,215,0,0.2)",
-                    color: "#FFD700", padding: "8px 18px", borderRadius: 30, fontSize: 13,
-                    cursor: "pointer", transition: "all 0.2s"
-                  }}
-                  onMouseOver={e => { e.target.style.background = "rgba(255,215,0,0.2)"; e.target.style.borderColor = "rgba(255,215,0,0.5)"; }}
-                  onMouseOut={e => { e.target.style.background = "rgba(255,215,0,0.1)"; e.target.style.borderColor = "rgba(255,215,0,0.2)"; }}>
+                  style={{ background: "rgba(255,215,0,0.1)", border: "1px solid rgba(255,215,0,0.2)", color: "#FFD700", padding: "8px 18px", borderRadius: 30, fontSize: 13, cursor: "pointer" }}>
                   {s}
                 </button>
               ))}
@@ -220,30 +224,21 @@ export default function eDecadesSearch() {
           </div>
         )}
 
-        {/* Loading */}
         {loading && (
           <div style={{ textAlign: "center", padding: "80px 24px" }}>
-            <div style={{ fontSize: 48, marginBottom: 16, animation: "spin 1s linear infinite" }}>⏳</div>
-            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 16 }}>Searching across all of eDecades...</p>
-            <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
+            <div style={{ fontSize: 48 }}>⏳</div>
+            <p style={{ color: "rgba(255,255,255,0.5)", marginTop: 16 }}>Searching across all of eDecades...</p>
           </div>
         )}
 
-        {/* Results */}
         {!loading && searched && (
           <>
-            {/* Stats bar */}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24, flexWrap: "wrap", gap: 12 }}>
-              <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 14 }}>
-                {results.length > 0 ? (
-                  <><span style={{ color: "#FFD700", fontWeight: 700 }}>{results.length}</span> results for "<span style={{ color: "#fff" }}>{query}</span>"</>
-                ) : (
-                  <>No results for "<span style={{ color: "#fff" }}>{query}</span>"</>
-                )}
-              </div>
+            <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 14, marginBottom: 24 }}>
+              {results.length > 0
+                ? <><span style={{ color: "#FFD700", fontWeight: 700 }}>{results.length}</span> results for "<span style={{ color: "#fff" }}>{query}</span>"</>
+                : <>No results for "<span style={{ color: "#fff" }}>{query}</span>"</>}
             </div>
 
-            {/* Category filter pills */}
             {results.length > 0 && (
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 28 }}>
                 {CATEGORIES.map(cat => {
@@ -251,15 +246,13 @@ export default function eDecadesSearch() {
                   if (cat !== "All" && count === 0) return null;
                   const isActive = activeCategory === cat;
                   return (
-                    <button key={cat} onClick={() => setActiveCategory(cat)}
-                      style={{
-                        padding: "7px 16px", borderRadius: 30, fontSize: 13, cursor: "pointer",
-                        border: isActive ? "1.5px solid #FFD700" : "1.5px solid rgba(255,255,255,0.12)",
-                        background: isActive ? "rgba(255,215,0,0.15)" : "rgba(255,255,255,0.05)",
-                        color: isActive ? "#FFD700" : "rgba(255,255,255,0.6)",
-                        fontWeight: isActive ? 700 : 400,
-                        transition: "all 0.2s"
-                      }}>
+                    <button key={cat} onClick={() => setActiveCategory(cat)} style={{
+                      padding: "7px 16px", borderRadius: 30, fontSize: 13, cursor: "pointer",
+                      border: isActive ? "1.5px solid #FFD700" : "1.5px solid rgba(255,255,255,0.12)",
+                      background: isActive ? "rgba(255,215,0,0.15)" : "rgba(255,255,255,0.05)",
+                      color: isActive ? "#FFD700" : "rgba(255,255,255,0.6)",
+                      fontWeight: isActive ? 700 : 400
+                    }}>
                       {cat} {count > 0 && <span style={{ opacity: 0.7 }}>({count})</span>}
                     </button>
                   );
@@ -267,60 +260,44 @@ export default function eDecadesSearch() {
               </div>
             )}
 
-            {/* No results */}
             {results.length === 0 && (
               <div style={{ textAlign: "center", padding: "60px 24px" }}>
-                <div style={{ fontSize: 56, marginBottom: 16 }}>🕰️</div>
-                <h3 style={{ fontSize: 22, fontWeight: 700, marginBottom: 10 }}>Nothing found for "{query}"</h3>
-                <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 15 }}>Try a different term — a decade, person, song, or era.</p>
+                <div style={{ fontSize: 56 }}>🕰️</div>
+                <h3 style={{ fontSize: 22, fontWeight: 700, margin: "16px 0 10px" }}>Nothing found for "{query}"</h3>
+                <p style={{ color: "rgba(255,255,255,0.4)" }}>Try a different term — a decade, person, song, or era.</p>
               </div>
             )}
 
-            {/* Result cards */}
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {filtered.map((item, i) => {
                 const colors = typeColors[item.type] || { bg: "#6366f1", color: "#fff" };
                 const icon = typeIcons[item.type] || "•";
-                const isHovered = hoveredItem === i;
                 return (
                   <div key={`${item.type}-${item.id}`}
                     onMouseOver={() => setHoveredItem(i)}
                     onMouseOut={() => setHoveredItem(null)}
                     style={{
                       display: "flex", alignItems: "center", gap: 16,
-                      background: isHovered ? "rgba(255,215,0,0.06)" : "rgba(255,255,255,0.04)",
-                      border: `1px solid ${isHovered ? "rgba(255,215,0,0.2)" : "rgba(255,255,255,0.08)"}`,
-                      borderRadius: 14, padding: "16px 20px",
-                      cursor: "pointer", transition: "all 0.2s",
-                      transform: isHovered ? "translateX(4px)" : "none"
+                      background: hoveredItem === i ? "rgba(255,215,0,0.06)" : "rgba(255,255,255,0.04)",
+                      border: `1px solid ${hoveredItem === i ? "rgba(255,215,0,0.2)" : "rgba(255,255,255,0.08)"}`,
+                      borderRadius: 14, padding: "16px 20px", cursor: "pointer",
+                      transition: "all 0.2s",
+                      transform: hoveredItem === i ? "translateX(4px)" : "none"
                     }}>
-                    {/* Avatar / icon */}
                     <div style={{
                       width: 48, height: 48, borderRadius: 12, flexShrink: 0, overflow: "hidden",
                       background: item.image ? "transparent" : colors.bg,
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      fontSize: 22
+                      display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22
                     }}>
                       {item.image
-                        ? <img src={item.image} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={e => { e.target.style.display="none"; e.target.parentNode.innerText = icon; }} />
+                        ? <img src={item.image} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={e => { e.target.style.display = "none"; }} />
                         : icon}
                     </div>
-
-                    {/* Text */}
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontWeight: 700, fontSize: 15, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.title}</div>
                       <div style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", marginTop: 3, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.subtitle}</div>
                     </div>
-
-                    {/* Type badge */}
-                    <div style={{
-                      padding: "4px 12px", borderRadius: 20, fontSize: 11, fontWeight: 700,
-                      background: colors.bg, color: colors.color, flexShrink: 0, letterSpacing: 0.3
-                    }}>
-                      {item.type}
-                    </div>
-
-                    {/* Arrow */}
+                    <div style={{ padding: "4px 12px", borderRadius: 20, fontSize: 11, fontWeight: 700, background: colors.bg, color: colors.color, flexShrink: 0 }}>{item.type}</div>
                     <div style={{ color: "rgba(255,255,255,0.25)", fontSize: 18, flexShrink: 0 }}>›</div>
                   </div>
                 );
@@ -329,6 +306,19 @@ export default function eDecadesSearch() {
           </>
         )}
       </div>
+
+      {/* FLOATING BUTTON — back to eDecades */}
+      <a href="https://benevolent-decade-dive-now.base44.app"
+        style={{
+          position: "fixed", bottom: 28, right: 28, zIndex: 999,
+          background: "linear-gradient(135deg, #FFD700, #FF8C00)",
+          color: "#000", fontWeight: 800, fontSize: 14,
+          padding: "14px 22px", borderRadius: 50,
+          textDecoration: "none", display: "flex", alignItems: "center", gap: 8,
+          boxShadow: "0 8px 30px rgba(255,215,0,0.4)",
+        }}>
+        ⏰ Go to eDecades
+      </a>
     </div>
   );
 }

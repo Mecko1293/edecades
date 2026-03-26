@@ -5,26 +5,26 @@
     "CheapMedz": {
       "title": "CheapMedz"
     },
-    "CourseGek": {
-      "title": "CourseGek"
-    },
-    "Home": {
-      "title": "Home"
-    },
-    "KingXcel": {
-      "title": "KingXcel"
+    "ResumeCrafted": {
+      "title": "ResumeCrafted"
     },
     "KingXcelPanel": {
       "title": "KingXcelPanel"
     },
-    "Quiz": {
-      "title": "Quiz"
+    "KingXcel": {
+      "title": "KingXcel"
     },
-    "ResumeCrafted": {
-      "title": "ResumeCrafted"
+    "Home": {
+      "title": "Home"
+    },
+    "CourseGek": {
+      "title": "CourseGek"
     },
     "eDecadesSearch": {
       "title": "eDecadesSearch"
+    },
+    "Quiz": {
+      "title": "Quiz"
     }
   }
 }
