@@ -2,26 +2,29 @@
   "app_id": "69c20d11eb474c1d264b69b7",
   "slug": "antonio-app-264b69b7",
   "pages": {
-    "KingXcelPanel": {
-      "title": "KingXcelPanel"
+    "CheapMedz": {
+      "title": "CheapMedz"
     },
     "CourseGek": {
       "title": "CourseGek"
     },
-    "ResumeCrafted": {
-      "title": "ResumeCrafted"
-    },
     "Home": {
       "title": "Home"
-    },
-    "Quiz": {
-      "title": "Quiz"
     },
     "KingXcel": {
       "title": "KingXcel"
     },
-    "CheapMedz": {
-      "title": "CheapMedz"
+    "KingXcelPanel": {
+      "title": "KingXcelPanel"
+    },
+    "Quiz": {
+      "title": "Quiz"
+    },
+    "ResumeCrafted": {
+      "title": "ResumeCrafted"
+    },
+    "eDecadesSearch": {
+      "title": "eDecadesSearch"
     }
   }
 }
