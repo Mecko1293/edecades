@@ -1,0 +1,77 @@
+{
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "sport": {
+      "type": "string",
+      "enum": [
+        "NBA",
+        "NFL",
+        "MLB",
+        "NHL",
+        "Soccer",
+        "Boxing",
+        "Tennis",
+        "Golf",
+        "Olympics",
+        "Other"
+      ]
+    },
+    "position": {
+      "type": "string"
+    },
+    "team": {
+      "type": "string"
+    },
+    "decade": {
+      "type": "string",
+      "enum": [
+        "1920s",
+        "1930s",
+        "1940s",
+        "1950s",
+        "1960s",
+        "1970s",
+        "1980s",
+        "1990s",
+        "2000s",
+        "2010s",
+        "2020s"
+      ]
+    },
+    "years_active": {
+      "type": "string"
+    },
+    "mvp_awards": {
+      "type": "string"
+    },
+    "career_highlights": {
+      "type": "string"
+    },
+    "iconic_moment": {
+      "type": "string"
+    },
+    "stats_summary": {
+      "type": "string"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "nationality": {
+      "type": "string"
+    },
+    "hall_of_fame": {
+      "type": "boolean"
+    },
+    "championships": {
+      "type": "number"
+    },
+    "fan_votes": {
+      "type": "number"
+    }
+  },
+  "required": [],
+  "name": "SportsMVP"
+}
