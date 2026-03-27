@@ -1,8 +1,5 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.23';
-
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
     const body = await req.json().catch(() => ({}));
     const { prompt, decade, style, gender } = body;
 
@@ -10,8 +7,26 @@ Deno.serve(async (req) => {
       return Response.json({ error: "Prompt is required" }, { status: 400 });
     }
 
-    const result = await base44.media.generateImage({ prompt });
-    return Response.json({ url: result.url, decade, style, gender });
+    const appId = Deno.env.get("BASE44_APP_ID") || "";
+    const apiKey = Deno.env.get("BASE44_API_KEY") || "";
+
+    const response = await fetch(`https://api.base44.com/api/apps/${appId}/integrations/generate-image`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "api_key": apiKey,
+      },
+      body: JSON.stringify({ prompt }),
+    });
+
+    if (!response.ok) {
+      const err = await response.text();
+      console.error("Image gen error:", err);
+      return Response.json({ error: `Image generation failed: ${err}` }, { status: 500 });
+    }
+
+    const data = await response.json();
+    return Response.json({ url: data.url, decade, style, gender });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }
