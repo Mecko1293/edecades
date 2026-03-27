@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Decade, Post, UserProfile, Group, NotableFigure, ForumTopic, HistoricalEvent, Artifact, MediaContent } from "@/api/entities";
 
-const CATEGORIES = ["All", "Decades", "Posts", "Members", "Groups", "Notable Figures", "Historical Events", "Artifacts", "Media", "Forums"];
+const CATEGORIES = ["All", "Decades", "Posts", "Members", "Groups", "Notable Figures", "Historical Events", "Artifacts", "Media", "Forums", "Wikipedia"];
 
 const typeColors = {
   "Decade":           { bg: "#FFD700", color: "#000" },
@@ -13,6 +13,7 @@ const typeColors = {
   "Artifact":         { bg: "#8B5CF6", color: "#fff" },
   "Media":            { bg: "#06B6D4", color: "#fff" },
   "Forum":            { bg: "#84CC16", color: "#000" },
+  "Wikipedia":        { bg: "#E8E8E8", color: "#000" },
 };
 
 const typeIcons = {
@@ -25,15 +26,52 @@ const typeIcons = {
   "Artifact":         "🏺",
   "Media":            "🎬",
   "Forum":            "💬",
+  "Wikipedia":        "📖",
 };
+
+async function fetchWikipediaResults(query) {
+  try {
+    // Search Wikipedia for matching articles
+    const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&srlimit=6&format=json&origin=*`;
+    const searchRes = await fetch(searchUrl);
+    const searchData = await searchRes.json();
+    const hits = searchData?.query?.search || [];
+
+    if (hits.length === 0) return [];
+
+    // Get summaries + thumbnails for top results
+    const pageIds = hits.map(h => h.pageid).join("|");
+    const summaryUrl = `https://en.wikipedia.org/w/api.php?action=query&pageids=${pageIds}&prop=extracts|pageimages&exintro=true&explaintext=true&pithumbsize=200&format=json&origin=*`;
+    const summaryRes = await fetch(summaryUrl);
+    const summaryData = await summaryRes.json();
+    const pages = summaryData?.query?.pages || {};
+
+    return hits.map(hit => {
+      const page = pages[hit.pageid] || {};
+      const extract = (page.extract || hit.snippet.replace(/<[^>]+>/g, "") || "").slice(0, 180);
+      return {
+        type: "Wikipedia",
+        id: `wiki_${hit.pageid}`,
+        title: hit.title,
+        subtitle: extract + (extract.length >= 180 ? "..." : ""),
+        image: page.thumbnail?.source || null,
+        url: `https://en.wikipedia.org/wiki/${encodeURIComponent(hit.title.replace(/ /g, "_"))}`,
+      };
+    });
+  } catch (e) {
+    console.error("Wikipedia fetch failed:", e);
+    return [];
+  }
+}
 
 export default function eDecadesSearch() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+  const [wikiResults, setWikiResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [wikiLoading, setWikiLoading] = useState(false);
   const [searched, setSearched] = useState(false);
   const [activeCategory, setActiveCategory] = useState("All");
-  const [hoveredItem, setHoveredItem] = useState(null);
   const debounceRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -45,14 +83,17 @@ export default function eDecadesSearch() {
   const doSearch = async (q) => {
     if (!q || q.trim().length < 2) {
       setResults([]);
+      setWikiResults([]);
       setSearched(false);
       return;
     }
     setLoading(true);
+    setWikiLoading(true);
     setSearched(true);
     const term = q.toLowerCase().trim();
     const all = [];
 
+    // --- eDecades entities search ---
     try {
       const [decades, posts, profiles, groups, figures, topics, events, artifacts, media] = await Promise.all([
         Decade.list(),
@@ -110,6 +151,15 @@ export default function eDecadesSearch() {
     all.sort((a, b) => order.indexOf(a.type) - order.indexOf(b.type));
     setResults(all);
     setLoading(false);
+
+    // --- Wikipedia fallback (always runs in parallel) ---
+    try {
+      const wiki = await fetchWikipediaResults(q);
+      setWikiResults(wiki);
+    } catch (e) {
+      setWikiResults([]);
+    }
+    setWikiLoading(false);
   };
 
   const handleInput = (e) => {
@@ -119,8 +169,12 @@ export default function eDecadesSearch() {
     debounceRef.current = setTimeout(() => doSearch(val), 400);
   };
 
+  const allResults = [...results, ...wikiResults];
+
   const filtered = activeCategory === "All"
-    ? results
+    ? allResults
+    : activeCategory === "Wikipedia"
+    ? wikiResults
     : results.filter(r => {
         const map = {
           "Decades": "Decade", "Posts": "Post", "Members": "Member", "Groups": "Group",
@@ -131,14 +185,20 @@ export default function eDecadesSearch() {
       });
 
   const categoryCounts = {};
+  const catMap = {
+    "Decades": "Decade", "Posts": "Post", "Members": "Member", "Groups": "Group",
+    "Notable Figures": "Notable Figure", "Historical Events": "Historical Event",
+    "Artifacts": "Artifact", "Media": "Media", "Forums": "Forum"
+  };
   for (const cat of CATEGORIES.slice(1)) {
-    const map = {
-      "Decades": "Decade", "Posts": "Post", "Members": "Member", "Groups": "Group",
-      "Notable Figures": "Notable Figure", "Historical Events": "Historical Event",
-      "Artifacts": "Artifact", "Media": "Media", "Forums": "Forum"
-    };
-    categoryCounts[cat] = results.filter(r => r.type === map[cat]).length;
+    if (cat === "Wikipedia") {
+      categoryCounts[cat] = wikiResults.length;
+    } else {
+      categoryCounts[cat] = results.filter(r => r.type === catMap[cat]).length;
+    }
   }
+
+  const isLoading = loading || wikiLoading;
 
   return (
     <div style={{
@@ -153,7 +213,6 @@ export default function eDecadesSearch() {
         padding: "16px 24px", display: "flex", alignItems: "center", gap: 16,
         position: "sticky", top: 0, zIndex: 100
       }}>
-        {/* Logo + back link */}
         <a href="https://benevolent-decade-dive-now.base44.app" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
           <div style={{
             width: 40, height: 40, borderRadius: 12,
@@ -167,7 +226,6 @@ export default function eDecadesSearch() {
           </div>
         </a>
 
-        {/* SEARCH BAR */}
         <div style={{ flex: 1, maxWidth: 700, position: "relative" }}>
           <div style={{ position: "absolute", left: 16, top: "50%", transform: "translateY(-50%)", fontSize: 18, pointerEvents: "none" }}>🔍</div>
           <input
@@ -187,12 +245,11 @@ export default function eDecadesSearch() {
             onBlur={e => e.target.style.borderColor = "rgba(255,215,0,0.25)"}
           />
           {query && (
-            <button onClick={() => { setQuery(""); setResults([]); setSearched(false); inputRef.current?.focus(); }}
+            <button onClick={() => { setQuery(""); setResults([]); setWikiResults([]); setSearched(false); inputRef.current?.focus(); }}
               style={{ position: "absolute", right: 16, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", color: "rgba(255,255,255,0.4)", cursor: "pointer", fontSize: 18 }}>✕</button>
           )}
         </div>
 
-        {/* Back to eDecades button */}
         <a href="https://benevolent-decade-dive-now.base44.app" style={{
           flexShrink: 0, background: "rgba(255,215,0,0.12)",
           border: "1px solid rgba(255,215,0,0.3)", color: "#FFD700",
@@ -203,20 +260,18 @@ export default function eDecadesSearch() {
 
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "32px 24px" }}>
 
-        {/* Hero state — no search yet */}
-        {!searched && !loading && (
+        {/* Hero state */}
+        {!searched && !isLoading && (
           <div style={{ textAlign: "center", padding: "80px 24px" }}>
             <div style={{ fontSize: 72, marginBottom: 24 }}>🔍</div>
-            <h1 style={{ fontSize: 36, fontWeight: 900, marginBottom: 16, letterSpacing: -1 }}>
-              Search <span style={{ color: "#FFD700" }}>eDecades</span>
-            </h1>
-            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 18, maxWidth: 500, margin: "0 auto 48px" }}>
-              Explore decades, discover notable figures, find members, posts, historical events, artifacts, and more.
+            <h1 style={{ fontSize: 36, fontWeight: 900, marginBottom: 12 }}>Search Everything</h1>
+            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 18, marginBottom: 40 }}>
+              Explore eDecades content + Wikipedia results — all in one search.
             </p>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
-              {["1980s music","Michael Jackson","fashion trends","hip hop","World War II","The Beatles","moon landing","disco era"].map(s => (
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center", maxWidth: 600, margin: "0 auto" }}>
+              {["Michael Jackson", "1980s fashion", "Moon Landing", "Disco era", "Hip-Hop history", "The Beatles", "Cold War", "Elvis Presley"].map(s => (
                 <button key={s} onClick={() => { setQuery(s); doSearch(s); }}
-                  style={{ background: "rgba(255,215,0,0.1)", border: "1px solid rgba(255,215,0,0.2)", color: "#FFD700", padding: "8px 18px", borderRadius: 30, fontSize: 13, cursor: "pointer" }}>
+                  style={{ background: "rgba(255,215,0,0.08)", border: "1px solid rgba(255,215,0,0.2)", color: "#FFD700", padding: "8px 18px", borderRadius: 30, cursor: "pointer", fontSize: 13, fontWeight: 600 }}>
                   {s}
                 </button>
               ))}
@@ -224,101 +279,138 @@ export default function eDecadesSearch() {
           </div>
         )}
 
-        {loading && (
-          <div style={{ textAlign: "center", padding: "80px 24px" }}>
-            <div style={{ fontSize: 48 }}>⏳</div>
-            <p style={{ color: "rgba(255,255,255,0.5)", marginTop: 16 }}>Searching across all of eDecades...</p>
+        {/* Loading */}
+        {isLoading && (
+          <div style={{ textAlign: "center", padding: "60px 24px" }}>
+            <div style={{ fontSize: 48, marginBottom: 16, animation: "spin 1s linear infinite", display: "inline-block" }}>⏳</div>
+            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 16 }}>Searching eDecades + Wikipedia...</p>
           </div>
         )}
 
-        {!loading && searched && (
+        {/* Results */}
+        {searched && !isLoading && (
           <>
-            <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 14, marginBottom: 24 }}>
-              {results.length > 0
-                ? <><span style={{ color: "#FFD700", fontWeight: 700 }}>{results.length}</span> results for "<span style={{ color: "#fff" }}>{query}</span>"</>
-                : <>No results for "<span style={{ color: "#fff" }}>{query}</span>"</>}
+            {/* Category tabs */}
+            <div style={{ display: "flex", gap: 8, overflowX: "auto", paddingBottom: 8, marginBottom: 24, scrollbarWidth: "none" }}>
+              {CATEGORIES.map(cat => {
+                const count = cat === "All" ? allResults.length : categoryCounts[cat] || 0;
+                const isWiki = cat === "Wikipedia";
+                return (
+                  <button key={cat} onClick={() => setActiveCategory(cat)} style={{
+                    flexShrink: 0,
+                    padding: "8px 16px", borderRadius: 30, fontSize: 13, fontWeight: 700, cursor: "pointer",
+                    border: activeCategory === cat ? "none" : "1px solid rgba(255,255,255,0.12)",
+                    background: activeCategory === cat
+                      ? isWiki ? "linear-gradient(135deg, #E8E8E8, #bbb)" : "linear-gradient(135deg, #FFD700, #FF8C00)"
+                      : "rgba(255,255,255,0.05)",
+                    color: activeCategory === cat ? (isWiki ? "#000" : "#000") : "rgba(255,255,255,0.6)",
+                    transition: "all 0.2s",
+                  }}>
+                    {isWiki ? "📖 " : ""}{cat} {count > 0 ? `(${count})` : ""}
+                  </button>
+                );
+              })}
             </div>
 
-            {results.length > 0 && (
-              <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 28 }}>
-                {CATEGORIES.map(cat => {
-                  const count = cat === "All" ? results.length : (categoryCounts[cat] || 0);
-                  if (cat !== "All" && count === 0) return null;
-                  const isActive = activeCategory === cat;
-                  return (
-                    <button key={cat} onClick={() => setActiveCategory(cat)} style={{
-                      padding: "7px 16px", borderRadius: 30, fontSize: 13, cursor: "pointer",
-                      border: isActive ? "1.5px solid #FFD700" : "1.5px solid rgba(255,255,255,0.12)",
-                      background: isActive ? "rgba(255,215,0,0.15)" : "rgba(255,255,255,0.05)",
-                      color: isActive ? "#FFD700" : "rgba(255,255,255,0.6)",
-                      fontWeight: isActive ? 700 : 400
-                    }}>
-                      {cat} {count > 0 && <span style={{ opacity: 0.7 }}>({count})</span>}
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-
-            {results.length === 0 && (
+            {/* No results */}
+            {filtered.length === 0 && (
               <div style={{ textAlign: "center", padding: "60px 24px" }}>
-                <div style={{ fontSize: 56 }}>🕰️</div>
-                <h3 style={{ fontSize: 22, fontWeight: 700, margin: "16px 0 10px" }}>Nothing found for "{query}"</h3>
-                <p style={{ color: "rgba(255,255,255,0.4)" }}>Try a different term — a decade, person, song, or era.</p>
+                <div style={{ fontSize: 48, marginBottom: 16 }}>🤷</div>
+                <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 18, fontWeight: 600 }}>No results found for "{query}"</p>
+                <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 14, marginTop: 8 }}>Try a different search term</p>
               </div>
             )}
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {filtered.map((item, i) => {
-                const colors = typeColors[item.type] || { bg: "#6366f1", color: "#fff" };
+            {/* Wikipedia banner (shown in All view when wiki results exist) */}
+            {activeCategory === "All" && wikiResults.length > 0 && results.length === 0 && (
+              <div style={{
+                background: "rgba(232,232,232,0.07)", border: "1px solid rgba(232,232,232,0.15)",
+                borderRadius: 12, padding: "12px 18px", marginBottom: 20,
+                display: "flex", alignItems: "center", gap: 10, fontSize: 14, color: "rgba(255,255,255,0.5)"
+              }}>
+                <span style={{ fontSize: 20 }}>📖</span>
+                <span>No eDecades content found — showing <strong style={{ color: "#E8E8E8" }}>Wikipedia results</strong> below.</span>
+              </div>
+            )}
+
+            {/* Results grid */}
+            <div style={{ display: "grid", gap: 12 }}>
+              {filtered.map((item) => {
+                const tc = typeColors[item.type] || { bg: "#666", color: "#fff" };
                 const icon = typeIcons[item.type] || "•";
+                const isWiki = item.type === "Wikipedia";
+
                 return (
-                  <div key={`${item.type}-${item.id}`}
-                    onMouseOver={() => setHoveredItem(i)}
-                    onMouseOut={() => setHoveredItem(null)}
+                  <div key={item.id}
+                    onClick={() => isWiki && item.url ? window.open(item.url, "_blank") : null}
                     style={{
+                      background: isWiki ? "rgba(232,232,232,0.05)" : "rgba(255,255,255,0.04)",
+                      border: isWiki ? "1px solid rgba(232,232,232,0.15)" : "1px solid rgba(255,255,255,0.08)",
+                      borderRadius: 16, padding: "16px 20px",
                       display: "flex", alignItems: "center", gap: 16,
-                      background: hoveredItem === i ? "rgba(255,215,0,0.06)" : "rgba(255,255,255,0.04)",
-                      border: `1px solid ${hoveredItem === i ? "rgba(255,215,0,0.2)" : "rgba(255,255,255,0.08)"}`,
-                      borderRadius: 14, padding: "16px 20px", cursor: "pointer",
+                      cursor: isWiki ? "pointer" : "default",
                       transition: "all 0.2s",
-                      transform: hoveredItem === i ? "translateX(4px)" : "none"
-                    }}>
-                    <div style={{
-                      width: 48, height: 48, borderRadius: 12, flexShrink: 0, overflow: "hidden",
-                      background: item.image ? "transparent" : colors.bg,
-                      display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22
-                    }}>
-                      {item.image
-                        ? <img src={item.image} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={e => { e.target.style.display = "none"; }} />
-                        : icon}
-                    </div>
+                    }}
+                    onMouseOver={e => { e.currentTarget.style.background = isWiki ? "rgba(232,232,232,0.1)" : "rgba(255,255,255,0.08)"; e.currentTarget.style.borderColor = isWiki ? "rgba(232,232,232,0.3)" : "rgba(255,215,0,0.2)"; }}
+                    onMouseOut={e => { e.currentTarget.style.background = isWiki ? "rgba(232,232,232,0.05)" : "rgba(255,255,255,0.04)"; e.currentTarget.style.borderColor = isWiki ? "rgba(232,232,232,0.15)" : "rgba(255,255,255,0.08)"; }}
+                  >
+                    {/* Thumbnail */}
+                    {item.image ? (
+                      <img src={item.image} alt="" style={{ width: 52, height: 52, borderRadius: 10, objectFit: "cover", flexShrink: 0, border: "1px solid rgba(255,255,255,0.1)" }} />
+                    ) : (
+                      <div style={{
+                        width: 52, height: 52, borderRadius: 10, flexShrink: 0,
+                        background: isWiki ? "rgba(232,232,232,0.1)" : "rgba(255,215,0,0.08)",
+                        display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22
+                      }}>{icon}</div>
+                    )}
+
+                    {/* Content */}
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontWeight: 700, fontSize: 15, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.title}</div>
-                      <div style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", marginTop: 3, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.subtitle}</div>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                        <span style={{
+                          background: tc.bg, color: tc.color,
+                          padding: "2px 10px", borderRadius: 30, fontSize: 11, fontWeight: 800,
+                          flexShrink: 0
+                        }}>{icon} {item.type}</span>
+                        {isWiki && (
+                          <span style={{ fontSize: 11, color: "rgba(255,255,255,0.3)" }}>↗ Opens Wikipedia</span>
+                        )}
+                      </div>
+                      <div style={{ fontWeight: 700, fontSize: 15, color: "#fff", marginBottom: 3, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                        {item.title}
+                      </div>
+                      <div style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", lineHeight: 1.5, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+                        {item.subtitle}
+                      </div>
                     </div>
-                    <div style={{ padding: "4px 12px", borderRadius: 20, fontSize: 11, fontWeight: 700, background: colors.bg, color: colors.color, flexShrink: 0 }}>{item.type}</div>
-                    <div style={{ color: "rgba(255,255,255,0.25)", fontSize: 18, flexShrink: 0 }}>›</div>
+
+                    {isWiki && (
+                      <div style={{ flexShrink: 0, color: "rgba(255,255,255,0.25)", fontSize: 20 }}>→</div>
+                    )}
                   </div>
                 );
               })}
             </div>
+
+            {/* Wikipedia attribution */}
+            {wikiResults.length > 0 && (activeCategory === "All" || activeCategory === "Wikipedia") && (
+              <div style={{ textAlign: "center", marginTop: 32, color: "rgba(255,255,255,0.2)", fontSize: 12 }}>
+                📖 Wikipedia results provided by the{" "}
+                <a href="https://www.mediawiki.org/wiki/API:Main_page" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(255,255,255,0.35)" }}>
+                  Wikipedia API
+                </a>
+                {" "}· Content licensed under CC BY-SA
+              </div>
+            )}
           </>
         )}
       </div>
 
-      {/* FLOATING BUTTON — back to eDecades */}
-      <a href="https://benevolent-decade-dive-now.base44.app"
-        style={{
-          position: "fixed", bottom: 28, right: 28, zIndex: 999,
-          background: "linear-gradient(135deg, #FFD700, #FF8C00)",
-          color: "#000", fontWeight: 800, fontSize: 14,
-          padding: "14px 22px", borderRadius: 50,
-          textDecoration: "none", display: "flex", alignItems: "center", gap: 8,
-          boxShadow: "0 8px 30px rgba(255,215,0,0.4)",
-        }}>
-        ⏰ Go to eDecades
-      </a>
+      <style>{`
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        ::-webkit-scrollbar { display: none; }
+      `}</style>
     </div>
   );
 }
