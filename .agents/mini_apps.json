@@ -2,38 +2,41 @@
   "app_id": "69c20d11eb474c1d264b69b7",
   "slug": "antonio-app-264b69b7",
   "pages": {
-    "MusicRandomizer": {
-      "title": "MusicRandomizer"
-    },
-    "ResumeCrafted": {
-      "title": "ResumeCrafted"
-    },
-    "Home": {
-      "title": "Home"
+    "KingXcelPanel": {
+      "title": "KingXcelPanel"
     },
     "eDecadesSearch": {
       "title": "eDecadesSearch"
     },
-    "KingXcelPanel": {
-      "title": "KingXcelPanel"
+    "CheapMedz": {
+      "title": "CheapMedz"
     },
     "CourseGek": {
       "title": "CourseGek"
     },
-    "KingXcel": {
-      "title": "KingXcel"
+    "ResumeCrafted": {
+      "title": "ResumeCrafted"
     },
     "Quiz": {
       "title": "Quiz"
     },
-    "CheapMedz": {
-      "title": "CheapMedz"
-    },
     "SportsMVPs": {
       "title": "SportsMVPs"
     },
+    "Home": {
+      "title": "Home"
+    },
+    "MusicRandomizer": {
+      "title": "MusicRandomizer"
+    },
+    "KingXcel": {
+      "title": "KingXcel"
+    },
     "GenealogyExplorer": {
       "title": "GenealogyExplorer"
+    },
+    "AvatarGenerator": {
+      "title": "AvatarGenerator"
     }
   }
 }
