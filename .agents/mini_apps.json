@@ -2,35 +2,8 @@
   "app_id": "69c20d11eb474c1d264b69b7",
   "slug": "antonio-app-264b69b7",
   "pages": {
-    "KingXcel": {
-      "title": "KingXcel"
-    },
-    "Home": {
-      "title": "Home"
-    },
-    "CourseGek": {
-      "title": "CourseGek"
-    },
     "KingXcelPanel": {
       "title": "KingXcelPanel"
-    },
-    "GenealogyExplorer": {
-      "title": "GenealogyExplorer"
-    },
-    "DecadeVisuals": {
-      "title": "DecadeVisuals"
-    },
-    "AvatarGenerator": {
-      "title": "AvatarGenerator"
-    },
-    "CheapMedz": {
-      "title": "CheapMedz"
-    },
-    "eDecadesSearch": {
-      "title": "eDecadesSearch"
-    },
-    "MusicRandomizer": {
-      "title": "MusicRandomizer"
     },
     "ResumeCrafted": {
       "title": "ResumeCrafted"
@@ -40,6 +13,33 @@
     },
     "SportsMVPs": {
       "title": "SportsMVPs"
+    },
+    "DecadeVisuals": {
+      "title": "DecadeVisuals"
+    },
+    "KingXcel": {
+      "title": "KingXcel"
+    },
+    "CheapMedz": {
+      "title": "CheapMedz"
+    },
+    "CourseGek": {
+      "title": "CourseGek"
+    },
+    "GenealogyExplorer": {
+      "title": "GenealogyExplorer"
+    },
+    "Home": {
+      "title": "Home"
+    },
+    "eDecadesSearch": {
+      "title": "eDecadesSearch"
+    },
+    "AvatarGenerator": {
+      "title": "AvatarGenerator"
+    },
+    "MusicRandomizer": {
+      "title": "MusicRandomizer"
     }
   }
 }

@@ -1,265 +1,84 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-const products = [
-  {
-    name: "eDecades",
-    tagline: "The World's First Decade-Themed Social Network",
-    description: "Connect with people who share your era. Explore culture, music, and history by decade — from the 1900s to today.",
-    icon: "⏰",
-    color: "#FFD700",
-    gradient: "linear-gradient(135deg, #FFD700, #FF8C00)",
-    bg: "rgba(255,215,0,0.08)",
-    border: "rgba(255,215,0,0.25)",
-    url: "https://benevolent-decade-dive-now.base44.app",
-    badge: "Social Platform",
-  },
-  {
-    name: "CourseGek",
-    tagline: "Expert Homework Help — $9.99 Per Question",
-    description: "Post your homework question and get a full expert answer from a verified tutor. Any subject, any time, satisfaction guaranteed.",
-    icon: "🎓",
-    color: "#7C3AED",
-    gradient: "linear-gradient(135deg, #7C3AED, #4F46E5)",
-    bg: "rgba(124,58,237,0.08)",
-    border: "rgba(124,58,237,0.25)",
-    url: "/CourseGek",
-    badge: "EdTech Marketplace",
-  },
-  {
-    name: "ResumeCrafted",
-    tagline: "AI-Powered Resumes That Get You Hired",
-    description: "Professional, ATS-optimized resumes built by AI. Stand out from the pile and land more interviews — fast.",
-    icon: "📄",
-    color: "#10B981",
-    gradient: "linear-gradient(135deg, #10B981, #059669)",
-    bg: "rgba(16,185,129,0.08)",
-    border: "rgba(16,185,129,0.25)",
-    url: "/ResumeCrafted",
-    badge: "Career Tools",
-  },
-  {
-    name: "WheelMath",
-    tagline: "Math Made Visual & Fun",
-    description: "Interactive math tools and visual calculators for students. From basic arithmetic to advanced calculus — see the math come alive.",
-    icon: "🔢",
-    color: "#F59E0B",
-    gradient: "linear-gradient(135deg, #F59E0B, #D97706)",
-    bg: "rgba(245,158,11,0.08)",
-    border: "rgba(245,158,11,0.25)",
-    url: "#",
-    badge: "Education · Coming Soon",
-  },
-  {
-    name: "CheapMedz",
-    tagline: "Find the Best Prices on Medications",
-    description: "Compare prescription drug prices across pharmacies. Save money on the medications you need without sacrificing quality.",
-    icon: "💊",
-    color: "#EF4444",
-    gradient: "linear-gradient(135deg, #EF4444, #DC2626)",
-    bg: "rgba(239,68,68,0.08)",
-    border: "rgba(239,68,68,0.25)",
-    url: "#",
-    badge: "Healthcare · Coming Soon",
-  },
-];
-
-const stats = [
-  { number: "5", label: "Products Built" },
-  { number: "Irving, TX", label: "Headquartered" },
-  { number: "2025", label: "Founded" },
-  { number: "∞", label: "Ideas in Progress" },
+const DECADES = [
+  { id: "1920s", emoji: "🎷", label: "1920s", tagline: "The Roaring Twenties", bg: "#1a0a00", accent: "#FFD700", colors: ["#FFD700","#000000","#C0A060","#8B0000","#F5DEB3","#2F2F2F"], colorNames: ["Gatsby Gold","Jet Black","Champagne","Art Deco Red","Cream","Charcoal"], fashion: ["Flapper dresses with fringe","Cloche hats over bobbed hair","Men's pinstripe suits","Art Deco geometric jewelry"], inventions: ["Television (1927)","Penicillin (1928)","Talking Pictures / Jazz Singer (1927)"], culture: ["Charleston dance craze","Speakeasies & bootleg gin","Jazz music everywhere","Women's suffrage","Rise of cinema"] },
+  { id: "1930s", emoji: "🎬", label: "1930s", tagline: "The Golden Age of Hollywood", bg: "#0a0f0f", accent: "#C0A060", colors: ["#708090","#2F4F4F","#8B7355","#C0A060","#F5F5DC","#4A4A4A"], colorNames: ["Steel Gray","Depression Green","Khaki","Champagne","Ivory","Shadow"], fashion: ["Bias-cut silk gowns","Wide-leg high-waisted trousers","Fedora hats","Platform shoes"], inventions: ["Nylon (1935)","Radar (1935)","Jet Engine prototype (1937)"], culture: ["The Great Depression","The New Deal","Big Band & Swing","Hollywood's golden era","Radio becomes king"] },
+  { id: "1940s", emoji: "✈️", label: "1940s", tagline: "War Years & Victory", bg: "#0a0005", accent: "#4169E1", colors: ["#8B0000","#4169E1","#F5DEB3","#228B22","#C0A060","#2F2F2F"], colorNames: ["Victory Red","Navy Blue","Wheat","Army Green","Brass","Blackout"], fashion: ["Military-structured shoulders","Rosie the Riveter overalls","Victory Rolls hairstyle","Utility clothing"], inventions: ["Atomic Bomb (1945)","Microwave Oven (1945)","ENIAC Computer (1945)"], culture: ["World War II","Rationing & Victory Gardens","Swing dancing","Rise of suburbia","Birth of the teenager"] },
+  { id: "1950s", emoji: "🎸", label: "1950s", tagline: "Rock & Roll Is Born", bg: "#0a000f", accent: "#FF69B4", colors: ["#FF69B4","#00CED1","#FF4500","#FFFF00","#98FB98","#000000"], colorNames: ["Poodle Pink","Turquoise","Flame Red","Sunny Yellow","Mint","Black"], fashion: ["Full poodle skirts","Greaser leather jackets","New Look hourglass silhouette","Cat-eye sunglasses"], inventions: ["Color TV (1953)","Credit Card (1950)","DNA Double Helix (1953)"], culture: ["Birth of rock & roll","Drive-in movies & diners","Cold War anxiety","TV becomes king","Baby Boom"] },
+  { id: "1960s", emoji: "☮️", label: "1960s", tagline: "Peace, Love & Revolution", bg: "#00080f", accent: "#FF6347", colors: ["#FF6347","#4169E1","#FFFF00","#FF69B4","#90EE90","#FF8C00"], colorNames: ["Tomato Red","Royal Blue","Psychedelic Yellow","Hot Pink","Lime","Tangerine"], fashion: ["Mini skirts","Mod geometric prints","Hippie tie-dye & bell-bottoms","Go-go boots"], inventions: ["ARPANET / Internet (1969)","Moon Landing Apollo 11 (1969)","Laser (1960)"], culture: ["Civil Rights Movement","Woodstock & counterculture","British Invasion","Space Race","Assassination of JFK"] },
+  { id: "1970s", emoji: "🕺", label: "1970s", tagline: "Funk, Disco & Soul", bg: "#0f0800", accent: "#FF8C00", colors: ["#FF8C00","#8B4513","#DAA520","#556B2F","#CD853F","#2F1B00"], colorNames: ["Burnt Orange","Saddle Brown","Goldenrod","Olive","Peru","Dark Chocolate"], fashion: ["Bell-bottom pants","Platform shoes","Mood rings","Leisure suits"], inventions: ["Personal Computer (1975)","VCR (1971)","MRI Scanner (1977)"], culture: ["Disco fever","Watergate scandal","Punk rock emerges","Star Wars (1977)","Environmental movement"] },
+  { id: "1980s", emoji: "🎮", label: "1980s", tagline: "Neon, Power & Pop", bg: "#0f000f", accent: "#FF00FF", colors: ["#FF00FF","#00FFFF","#FF6600","#FFFF00","#FF1493","#7B00FF"], colorNames: ["Hot Magenta","Electric Cyan","Neon Orange","Laser Yellow","Deep Pink","Ultraviolet"], fashion: ["Power shoulders","Leg warmers","Acid-wash jeans","Big hair & scrunchies"], inventions: ["IBM PC (1981)","CD Player (1982)","DNA Fingerprinting (1984)"], culture: ["MTV launches","Video games boom","Cold War tension","AIDS crisis","Reaganomics"] },
+  { id: "1990s", emoji: "📼", label: "1990s", tagline: "Grunge, Hip-Hop & the Web", bg: "#000f05", accent: "#00FF7F", colors: ["#00FF7F","#8B008B","#FFD700","#1E90FF","#FF4500","#2F2F2F"], colorNames: ["Spring Green","Dark Magenta","Gold","Dodger Blue","Orange Red","Charcoal"], fashion: ["Grunge flannel shirts","Baggy jeans & Timberlands","Slip dresses","Frosted tips"], inventions: ["World Wide Web (1991)","DVD (1995)","Dolly the Sheep cloned (1996)"], culture: ["Rise of hip-hop","Grunge & Nirvana","Internet goes mainstream","Reality TV begins","Fall of the Berlin Wall"] },
+  { id: "2000s", emoji: "📱", label: "2000s", tagline: "Y2K & the Digital Age", bg: "#000a0f", accent: "#00BFFF", colors: ["#00BFFF","#FF69B4","#C0C0C0","#7B68EE","#FFD700","#000000"], colorNames: ["Deep Sky Blue","Pink","Silver","Medium Slate","Gold","Black"], fashion: ["Low-rise jeans","Von Dutch trucker hats","Juicy Couture tracksuits","Flip phones as fashion"], inventions: ["iPod (2001)","Facebook (2004)","YouTube (2005)"], culture: ["9/11 changes everything","War on Terror","Reality TV explosion","Social media birth","Harry Potter mania"] },
+  { id: "2010s", emoji: "🤳", label: "2010s", tagline: "Social Media & Streaming", bg: "#0f080a", accent: "#E1306C", colors: ["#E1306C","#833AB4","#405DE6","#FCAF45","#FD1D1D","#C13584"], colorNames: ["Instagram Pink","Purple","Electric Blue","Amber","Red","Magenta"], fashion: ["Athleisure & yoga pants","Normcore","Hypebeast sneaker culture","Man buns"], inventions: ["iPhone revolutionizes everything","Netflix streaming (2010)","Self-driving car prototypes"], culture: ["Black Lives Matter","#MeToo movement","Streaming kills cable","TikTok emerges","COVID-19 pandemic begins"] },
 ];
 
 export default function Home() {
-  const [hoveredProduct, setHoveredProduct] = useState(null);
-
-  useEffect(() => {
-    document.title = "King Xcel Innovations — Portfolio";
-    const link = document.querySelector("link[rel~='icon']") || document.createElement("link");
-    link.rel = "icon"; link.href = "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/614b28868_image.png";
-    document.head.appendChild(link);
-  }, []);
-
+  const [active, setActive] = useState("1980s");
+  const dec = DECADES.find(d => d.id === active);
   return (
-    <div style={{ fontFamily: "'Inter', 'Segoe UI', sans-serif", background: "#08080f", color: "#fff", minHeight: "100vh", overflowX: "hidden" }}>
-
-      {/* NAV */}
-      <nav style={{
-        position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000,
-        background: "rgba(8,8,15,0.95)", backdropFilter: "blur(20px)",
-        borderBottom: "1px solid rgba(255,255,255,0.06)",
-        padding: "14px 40px", display: "flex", alignItems: "center", justifyContent: "space-between"
-      }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <img src="https://media.base44.com/images/public/69c207112c5856fdf7bb496b/614b28868_image.png" alt="King Xcel" style={{ width: 38, height: 38, borderRadius: 10, objectFit: "cover", boxShadow: "0 0 15px rgba(99,102,241,0.5)" }} />
-          <div>
-            <div style={{ fontSize: 16, fontWeight: 800, letterSpacing: -0.5 }}>King Xcel</div>
-            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", letterSpacing: 1, textTransform: "uppercase" }}>Innovations</div>
-          </div>
+    <div style={{ minHeight: "100vh", background: "#0a0a0a", fontFamily: "'Segoe UI', sans-serif", color: "#fff" }}>
+      <div style={{ textAlign: "center", padding: "48px 24px 24px", background: "linear-gradient(180deg, #000 0%, transparent 100%)" }}>
+        <div style={{ fontSize: 13, letterSpacing: 4, color: "#FFD700", textTransform: "uppercase", marginBottom: 12 }}>eDecades Visual Archive</div>
+        <h1 style={{ fontSize: "clamp(28px, 6vw, 52px)", fontWeight: 900, margin: 0, background: "linear-gradient(135deg, #FFD700, #FF8C00)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Decade by Decade</h1>
+        <p style={{ color: "rgba(255,255,255,0.5)", marginTop: 12, fontSize: 16 }}>Colors · Fashion · Inventions · Culture</p>
+      </div>
+      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 10, padding: "20px 24px" }}>
+        {DECADES.map(d => (
+          <button key={d.id} onClick={() => setActive(d.id)} style={{ padding: "10px 20px", borderRadius: 50, border: "2px solid", borderColor: active === d.id ? dec.accent : "rgba(255,255,255,0.15)", background: active === d.id ? dec.accent : "transparent", color: active === d.id ? "#000" : "#fff", fontWeight: 700, fontSize: 14, cursor: "pointer", transition: "all 0.2s" }}>
+            {d.emoji} {d.label}
+          </button>
+        ))}
+      </div>
+      <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 20px 60px" }}>
+        <div style={{ borderRadius: 24, background: `linear-gradient(135deg, ${dec.bg}, #111)`, border: `1px solid ${dec.accent}33`, padding: "40px 32px", marginBottom: 24, textAlign: "center" }}>
+          <div style={{ fontSize: 72, marginBottom: 16 }}>{dec.emoji}</div>
+          <h2 style={{ fontSize: "clamp(24px, 5vw, 42px)", fontWeight: 900, margin: "0 0 8px", color: dec.accent }}>{dec.label}</h2>
+          <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 18, margin: 0 }}>{dec.tagline}</p>
         </div>
-        <div style={{ display: "flex", gap: 24, alignItems: "center" }}>
-          <a href="#products" style={{ color: "rgba(255,255,255,0.6)", textDecoration: "none", fontSize: 14 }}
-            onMouseOver={e => e.target.style.color = "#fff"}
-            onMouseOut={e => e.target.style.color = "rgba(255,255,255,0.6)"}>Products</a>
-          <a href="#about" style={{ color: "rgba(255,255,255,0.6)", textDecoration: "none", fontSize: 14 }}
-            onMouseOver={e => e.target.style.color = "#fff"}
-            onMouseOut={e => e.target.style.color = "rgba(255,255,255,0.6)"}>About</a>
-          <a href="mailto:anthonykittles@outlook.com" style={{
-            background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
-            color: "#fff", padding: "9px 22px", borderRadius: 25,
-            fontWeight: 700, textDecoration: "none", fontSize: 14,
-            boxShadow: "0 4px 15px rgba(99,102,241,0.4)"
-          }}>Contact Us</a>
-        </div>
-      </nav>
-
-      {/* HERO */}
-      <section style={{
-        minHeight: "100vh",
-        background: "linear-gradient(135deg, #08080f 0%, #0f0820 50%, #080f08 100%)",
-        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-        textAlign: "center", padding: "120px 24px 80px", position: "relative", overflow: "hidden"
-      }}>
-        <div style={{ position: "absolute", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%)", top: 0, left: "10%" }} />
-        <div style={{ position: "absolute", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%)", bottom: "10%", right: "10%" }} />
-
-        <div style={{
-          display: "inline-flex", alignItems: "center", gap: 8,
-          background: "rgba(99,102,241,0.12)", border: "1px solid rgba(99,102,241,0.3)",
-          borderRadius: 30, padding: "8px 20px", marginBottom: 28, fontSize: 13, color: "#a5b4fc"
-        }}>
-          👑 King Xcel Innovations · Irving, Texas
-        </div>
-
-        <h1 style={{
-          fontSize: "clamp(40px, 7vw, 80px)", fontWeight: 900, lineHeight: 1.1,
-          marginBottom: 24, letterSpacing: -2,
-        }}>
-          Building the Next Wave of<br />
-          <span style={{
-            background: "linear-gradient(135deg, #a5b4fc 0%, #6366f1 50%, #8b5cf6 100%)",
-            WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent"
-          }}>Digital Products</span>
-        </h1>
-
-        <p style={{ fontSize: "clamp(16px, 2vw, 20px)", color: "rgba(255,255,255,0.55)", maxWidth: 600, lineHeight: 1.8, marginBottom: 48 }}>
-          We build tools people actually use — from social platforms and educational marketplaces to career tools and healthcare tech.
-        </p>
-
-        <div style={{ display: "flex", gap: 16, flexWrap: "wrap", justifyContent: "center" }}>
-          <a href="#products" style={{
-            background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
-            color: "#fff", padding: "16px 44px", borderRadius: 40,
-            fontWeight: 700, textDecoration: "none", fontSize: 17,
-            boxShadow: "0 8px 30px rgba(99,102,241,0.4)"
-          }}>Explore Our Products</a>
-          <a href="mailto:anthonykittles@outlook.com" style={{
-            background: "transparent", color: "#a5b4fc",
-            padding: "16px 40px", borderRadius: 40, fontWeight: 700,
-            textDecoration: "none", fontSize: 17,
-            border: "2px solid rgba(99,102,241,0.4)"
-          }}>Get In Touch</a>
-        </div>
-
-        {/* Stats */}
-        <div style={{ display: "flex", gap: 56, flexWrap: "wrap", justifyContent: "center", marginTop: 72 }}>
-          {stats.map(({ number, label }) => (
-            <div key={label} style={{ textAlign: "center" }}>
-              <div style={{ fontSize: 28, fontWeight: 900, color: "#a5b4fc" }}>{number}</div>
-              <div style={{ fontSize: 12, color: "rgba(255,255,255,0.35)", letterSpacing: 1, marginTop: 4, textTransform: "uppercase" }}>{label}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* PRODUCTS */}
-      <section id="products" style={{ padding: "100px 24px", background: "#08080f" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 64 }}>
-            <h2 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 900, marginBottom: 16 }}>Our Products</h2>
-            <p style={{ color: "rgba(255,255,255,0.45)", fontSize: 18 }}>Five platforms. One mission — build things that matter.</p>
-          </div>
-
-          <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-            {products.map((product, i) => (
-              <a
-                key={product.name}
-                href={product.url}
-                style={{ textDecoration: "none", color: "inherit" }}
-                onMouseOver={() => setHoveredProduct(product.name)}
-                onMouseOut={() => setHoveredProduct(null)}
-              >
-                <div style={{
-                  background: hoveredProduct === product.name ? product.bg : "rgba(255,255,255,0.03)",
-                  border: `1px solid ${hoveredProduct === product.name ? product.border : "rgba(255,255,255,0.07)"}`,
-                  borderRadius: 20, padding: "32px 36px",
-                  display: "flex", alignItems: "center", gap: 32,
-                  transition: "all 0.25s ease",
-                  cursor: "pointer",
-                  transform: hoveredProduct === product.name ? "translateX(6px)" : "none"
-                }}>
-                  <div style={{
-                    width: 64, height: 64, borderRadius: 16, flexShrink: 0,
-                    background: product.gradient,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: 28, boxShadow: `0 8px 24px ${product.border}`
-                  }}>{product.icon}</div>
-
-                  <div style={{ flex: 1 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 6 }}>
-                      <h3 style={{ fontSize: 22, fontWeight: 800, margin: 0 }}>{product.name}</h3>
-                      <span style={{
-                        background: product.bg, border: `1px solid ${product.border}`,
-                        color: product.color, padding: "3px 12px", borderRadius: 20,
-                        fontSize: 11, fontWeight: 700, letterSpacing: 0.5
-                      }}>{product.badge}</span>
-                    </div>
-                    <p style={{ color: product.color, fontWeight: 700, fontSize: 14, margin: "0 0 6px" }}>{product.tagline}</p>
-                    <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 14, lineHeight: 1.6, margin: 0 }}>{product.description}</p>
-                  </div>
-
-                  <div style={{ color: product.color, fontSize: 24, flexShrink: 0, opacity: hoveredProduct === product.name ? 1 : 0.3, transition: "opacity 0.2s" }}>→</div>
-                </div>
-              </a>
+        <div style={{ borderRadius: 20, background: "#111", border: "1px solid rgba(255,255,255,0.08)", padding: "28px", marginBottom: 20 }}>
+          <h3 style={{ margin: "0 0 20px", color: dec.accent, fontSize: 18, fontWeight: 800, textTransform: "uppercase", letterSpacing: 2 }}>🎨 Signature Colors</h3>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+            {dec.colors.map((c, i) => (
+              <div key={i} style={{ textAlign: "center" }}>
+                <div style={{ width: 60, height: 60, borderRadius: 12, background: c, border: "2px solid rgba(255,255,255,0.1)", marginBottom: 6 }} />
+                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.5)", maxWidth: 60 }}>{dec.colorNames[i]}</div>
+              </div>
             ))}
           </div>
         </div>
-      </section>
-
-      {/* ABOUT */}
-      <section id="about" style={{ padding: "100px 24px", background: "linear-gradient(135deg, #0c0820, #080f0c)" }}>
-        <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center" }}>
-          <div style={{ fontSize: 56, marginBottom: 24 }}>👑</div>
-          <h2 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 900, marginBottom: 24 }}>About King Xcel Innovations</h2>
-          <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 18, lineHeight: 1.9, marginBottom: 20 }}>
-            King Xcel Innovations is an Irving, Texas-based digital product studio focused on building platforms that solve real problems for real people.
-          </p>
-          <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 18, lineHeight: 1.9, marginBottom: 48 }}>
-            From connecting communities around shared history, to helping students ace their assignments, to making job searching smarter — we ship products that make a difference.
-          </p>
-          <a href="mailto:anthonykittles@outlook.com" style={{
-            background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
-            color: "#fff", padding: "16px 44px", borderRadius: 40,
-            fontWeight: 700, textDecoration: "none", fontSize: 17,
-            boxShadow: "0 8px 30px rgba(99,102,241,0.4)", display: "inline-block"
-          }}>📬 Reach Out — anthonykittles@outlook.com</a>
+        <div style={{ borderRadius: 20, background: "#111", border: "1px solid rgba(255,255,255,0.08)", padding: "28px", marginBottom: 20 }}>
+          <h3 style={{ margin: "0 0 20px", color: dec.accent, fontSize: 18, fontWeight: 800, textTransform: "uppercase", letterSpacing: 2 }}>👗 Fashion Highlights</h3>
+          <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 12 }}>
+            {dec.fashion.map((f, i) => (
+              <li key={i} style={{ background: "rgba(255,255,255,0.04)", borderRadius: 12, padding: "14px 16px", borderLeft: `3px solid ${dec.accent}`, color: "rgba(255,255,255,0.8)", fontSize: 14 }}>{f}</li>
+            ))}
+          </ul>
         </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer style={{ background: "#05050a", padding: "48px 24px", textAlign: "center", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginBottom: 16 }}>
-          <div style={{
-            width: 32, height: 32, borderRadius: 8,
-            background: "linear-gradient(135deg, #6366f1, #8b5cf6)",
-            display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16
-          }}>👑</div>
-          <span style={{ fontSize: 16, fontWeight: 800 }}>King Xcel Innovations</span>
+        <div style={{ borderRadius: 20, background: "#111", border: "1px solid rgba(255,255,255,0.08)", padding: "28px", marginBottom: 20 }}>
+          <h3 style={{ margin: "0 0 20px", color: dec.accent, fontSize: 18, fontWeight: 800, textTransform: "uppercase", letterSpacing: 2 }}>💡 Game-Changing Inventions</h3>
+          <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 10 }}>
+            {dec.inventions.map((inv, i) => (
+              <li key={i} style={{ display: "flex", alignItems: "center", gap: 12, background: "rgba(255,255,255,0.04)", borderRadius: 12, padding: "14px 16px" }}>
+                <span style={{ fontSize: 20 }}>⚡</span>
+                <span style={{ color: "rgba(255,255,255,0.85)", fontSize: 15 }}>{inv}</span>
+              </li>
+            ))}
+          </ul>
         </div>
-        <p style={{ color: "rgba(255,255,255,0.25)", fontSize: 13, marginBottom: 8 }}>205 Seva Ct, Irving, Texas 75061</p>
-        <p style={{ color: "rgba(255,255,255,0.15)", fontSize: 12 }}>© 2025 King Xcel Innovations. All rights reserved.</p>
-      </footer>
-
+        <div style={{ borderRadius: 20, background: "#111", border: "1px solid rgba(255,255,255,0.08)", padding: "28px", marginBottom: 32 }}>
+          <h3 style={{ margin: "0 0 20px", color: dec.accent, fontSize: 18, fontWeight: 800, textTransform: "uppercase", letterSpacing: 2 }}>🌍 Defining the Culture</h3>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+            {dec.culture.map((c, i) => (
+              <span key={i} style={{ background: `${dec.accent}22`, border: `1px solid ${dec.accent}55`, borderRadius: 50, padding: "8px 16px", fontSize: 13, color: dec.accent }}>{c}</span>
+            ))}
+          </div>
+        </div>
+        <div style={{ textAlign: "center" }}>
+          <a href="https://benevolent-decade-dive-now.base44.app" style={{ background: "linear-gradient(135deg, #FFD700, #FF8C00)", color: "#000", padding: "14px 32px", borderRadius: 50, fontWeight: 900, fontSize: 16, textDecoration: "none", display: "inline-block" }}>← Back to eDecades</a>
+          <p style={{ color: "rgba(255,255,255,0.2)", fontSize: 12, marginTop: 20 }}>eDecades Visual Archive · Decade by Decade</p>
+        </div>
+      </div>
     </div>
   );
 }
