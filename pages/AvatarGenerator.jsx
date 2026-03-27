@@ -2,18 +2,19 @@ import { useState } from "react";
 import { Sparkles, Download, RefreshCw, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { base44 } from "@/api/base44Client";
 
 const DECADES = [
-  { label: "1920s", emoji: "🎷", vibe: "Jazz Age & Glamour", bg: "from-yellow-900 to-amber-800" },
-  { label: "1930s", emoji: "🎬", vibe: "Hollywood Golden Era", bg: "from-gray-800 to-zinc-700" },
-  { label: "1940s", emoji: "✈️", vibe: "Wartime & Swing Era", bg: "from-olive-800 to-green-900" },
-  { label: "1950s", emoji: "🎸", vibe: "Rock & Roll & Diners", bg: "from-pink-800 to-red-700" },
-  { label: "1960s", emoji: "☮️", vibe: "Hippie & Mod Culture", bg: "from-purple-800 to-indigo-700" },
-  { label: "1970s", emoji: "🪩", vibe: "Disco & Funk", bg: "from-orange-800 to-yellow-700" },
-  { label: "1980s", emoji: "🕹️", vibe: "Neon & Synth Pop", bg: "from-fuchsia-800 to-pink-700" },
-  { label: "1990s", emoji: "📼", vibe: "Grunge & Hip-Hop", bg: "from-slate-700 to-gray-600" },
-  { label: "2000s", emoji: "💿", vibe: "Y2K & Pop Culture", bg: "from-cyan-800 to-blue-700" },
-  { label: "2010s", emoji: "📱", vibe: "Indie & Social Media", bg: "from-teal-800 to-emerald-700" },
+  { label: "1920s", emoji: "🎷", vibe: "Jazz Age & Glamour" },
+  { label: "1930s", emoji: "🎬", vibe: "Hollywood Golden Era" },
+  { label: "1940s", emoji: "✈️", vibe: "Wartime & Swing Era" },
+  { label: "1950s", emoji: "🎸", vibe: "Rock & Roll & Diners" },
+  { label: "1960s", emoji: "☮️", vibe: "Hippie & Mod Culture" },
+  { label: "1970s", emoji: "🪩", vibe: "Disco & Funk" },
+  { label: "1980s", emoji: "🕹️", vibe: "Neon & Synth Pop" },
+  { label: "1990s", emoji: "📼", vibe: "Grunge & Hip-Hop" },
+  { label: "2000s", emoji: "💿", vibe: "Y2K & Pop Culture" },
+  { label: "2010s", emoji: "📱", vibe: "Indie & Social Media" },
 ];
 
 const STYLES = {
@@ -29,7 +30,7 @@ const STYLES = {
   "2010s": ["Tumblr Aesthetic", "Hypebeast", "Instagram Influencer", "EDM Festival Kid", "Normcore"],
 };
 
-const GENDERS = ["Male", "Female", "Non-Binary"];
+const GENDERS = ["Female", "Male", "Non-Binary"];
 const EXTRAS = ["Sunglasses", "Hat", "Bold Jewelry", "Tattoos", "Dramatic Makeup", "Retro Background"];
 
 export default function AvatarGenerator() {
@@ -60,25 +61,15 @@ export default function AvatarGenerator() {
     setAvatarUrl(null);
 
     try {
-      const response = await fetch("/functions/generateDecadeAvatar", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          prompt: buildPrompt(),
-          decade: selectedDecade.label,
-          style: selectedStyle,
-          gender: selectedGender,
-        }),
-      });
-      const data = await response.json();
-      if (data.url) {
-        setAvatarUrl(data.url);
+      const result = await base44.integrations.generateImage({ prompt: buildPrompt() });
+      if (result?.url) {
+        setAvatarUrl(result.url);
         setGenerated(true);
       } else {
         setError("Could not generate avatar. Please try again.");
       }
     } catch (e) {
-      setError("Something went wrong. Please try again.");
+      setError("Something went wrong generating your avatar. Please try again.");
     } finally {
       setGenerating(false);
     }
@@ -126,7 +117,7 @@ export default function AvatarGenerator() {
               <button
                 key={d.label}
                 onClick={() => { setSelectedDecade(d); setSelectedStyle(null); setAvatarUrl(null); setGenerated(false); }}
-                className={`relative rounded-2xl p-3 text-center border-2 transition-all group ${
+                className={`relative rounded-2xl p-3 text-center border-2 transition-all ${
                   selectedDecade?.label === d.label
                     ? "border-fuchsia-400 bg-fuchsia-900/50 scale-105 shadow-lg shadow-fuchsia-900"
                     : "border-gray-700 bg-gray-800 hover:border-fuchsia-600"
@@ -223,7 +214,7 @@ export default function AvatarGenerator() {
         {canGenerate && !generated && (
           <div className="text-center">
             <div className="bg-gray-800 border border-gray-700 rounded-2xl p-5 mb-6 text-left max-w-lg mx-auto">
-              <p className="text-xs text-gray-400 uppercase tracking-wider font-bold mb-2">Your Avatar Preview</p>
+              <p className="text-xs text-gray-400 uppercase tracking-wider font-bold mb-2">Your Avatar Summary</p>
               <div className="flex flex-wrap gap-2">
                 <Badge className="bg-fuchsia-900 text-fuchsia-200 border-fuchsia-700">{selectedDecade.emoji} {selectedDecade.label}</Badge>
                 <Badge className="bg-indigo-900 text-indigo-200 border-indigo-700">🎭 {selectedStyle}</Badge>
@@ -249,7 +240,7 @@ export default function AvatarGenerator() {
               )}
             </Button>
             {generating && (
-              <p className="text-gray-400 text-sm mt-3 animate-pulse">This takes about 10 seconds — magic in progress... 🎨</p>
+              <p className="text-gray-400 text-sm mt-3 animate-pulse">Magic in progress — takes about 10 seconds 🎨</p>
             )}
           </div>
         )}
