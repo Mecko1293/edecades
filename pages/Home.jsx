@@ -108,7 +108,7 @@ const DECADES = [
   {
     id: "2000s", emoji: "📱", label: "2000s", tagline: "Y2K & the Digital Age",
     bg: "#181e24", accent: "#7aaac4",
-    image: "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/673551870_generated_image.png",
+    image: "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/fca9d848e_generated_image.png",
     filter: "saturate(1.1) contrast(1.05) brightness(1.1) hue-rotate(-10deg)",
     colors: ["#00BFFF","#FF69B4","#C0C0C0","#7B68EE","#d4956e","#000000"],
     colorNames: ["Deep Sky Blue","Pink","Silver","Medium Slate","Gold","Black"],
@@ -121,7 +121,7 @@ const DECADES = [
   {
     id: "2010s", emoji: "🤳", label: "2010s", tagline: "Social Media & Streaming",
     bg: "#201820", accent: "#c47aa4",
-    image: "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/975fc0212_generated_image.png",
+    image: "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/4566400bf_generated_image.png",
     filter: "saturate(1.2) contrast(1.0) brightness(1.05)",
     colors: ["#E1306C","#833AB4","#405DE6","#FCAF45","#FD1D1D","#C13584"],
     colorNames: ["Instagram Pink","Purple","Electric Blue","Amber","Red","Magenta"],
@@ -130,6 +130,19 @@ const DECADES = [
     inventions: ["iPhone revolutionizes everything","Netflix streaming (2010)","Self-driving car prototypes"],
     inventionIcons: ["📱","🎬","🚗"],
     culture: ["Black Lives Matter","#MeToo movement","Streaming kills cable","TikTok emerges","COVID-19 pandemic begins"],
+  },
+  {
+    id: "2020s", emoji: "😷", label: "2020s", tagline: "Pandemic, Protest & Rebirth",
+    bg: "#181c1e", accent: "#8ab4c4",
+    image: "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/71f625ad5_generated_image.png",
+    filter: "saturate(1.1) contrast(1.05) brightness(1.0)",
+    colors: ["#8ab4c4","#c4a87a","#7aaa8a","#c47aa4","#aaaaaa","#1e2530"],
+    colorNames: ["Pandemic Blue","Warm Sand","Sage","Mauve","Silver","Charcoal"],
+    fashion: ["Cottagecore & comfort dressing","Oversized everything","Gorpcore outdoor aesthetics","Y2K revival"],
+    fashionIcons: ["🌿","🧥","🏕️","👖"],
+    inventions: ["mRNA Vaccines (2020)","ChatGPT / AI revolution (2022)","James Webb Space Telescope (2021)"],
+    inventionIcons: ["💉","🤖","🔭"],
+    culture: ["COVID-19 pandemic","Black Lives Matter resurgence","Work from home era","TikTok dominates culture","AI goes mainstream"],
   },
 ];
 
