@@ -68,6 +68,23 @@ const products = [
     description: "Interactive math puzzles for students and classrooms.",
   },
   {
+    name: "GameForge",
+    logo: "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/614b28868_image.png",
+    icon: "🎮",
+    status: "live",
+    color: "#6366F1",
+    gradient: "linear-gradient(135deg, #6366F1, #4338CA)",
+    url: "https://antonio-app-264b69b7.base44.app/GameForge",
+    appUrl: "https://gameforge-69cefe45fb6ca50b89904e8e.base44.app",
+    category: "Game Dev Tools",
+    pricing: [
+      { name: "Starter", price: "Free", type: "Free Tier", badge: "🎮 Free", color: "#22C55E" },
+      { name: "Indie Pro", price: "$12.99/mo", type: "Subscription", badge: "⭐ Most Popular", color: "#6366F1" },
+      { name: "Studio Plan", price: "$39.99/mo", type: "Subscription", badge: "🔜 Coming Soon", color: "#F59E0B" },
+    ],
+    description: "AI game design studio. From concept to full GDD in minutes.",
+  },
+  {
     name: "CheapMedz",
     logo: "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/a1db150cd_generated_image.png",
     icon: "💊",
@@ -99,6 +116,7 @@ const quickLinks = [
   { label: "CourseGek App", url: "https://course-gek-23543b27.base44.app", icon: "🎓", note: "Live app" },
   { label: "ResumeCrafted App", url: "https://resume-dashing-craft-pro.base44.app", icon: "📄", note: "Live app" },
   { label: "eDecades App", url: "https://benevolent-decade-dive-now.base44.app", icon: "⏰", note: "Live app" },
+  { label: "GameForge Landing", url: "https://antonio-app-264b69b7.base44.app/GameForge", icon: "🎮", note: "Live app" },
   { label: "CheapMedz Landing", url: "https://antonio-app-264b69b7.base44.app/CheapMedz", icon: "💊", note: "Concept page" },
   { label: "Stripe Dashboard", url: "https://dashboard.stripe.com", icon: "💳", note: "Check payout status" },
 ];

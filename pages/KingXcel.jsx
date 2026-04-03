@@ -58,6 +58,20 @@ const companies = [
     status: "live",
   },
   {
+    name: "GameForge",
+    logo: "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/614b28868_image.png",
+    domain: "GameForge.app",
+    emoji: "🎮",
+    color: "#6366F1",
+    bg: "#0d0b24",
+    tagline: "AI-Powered Game Design Studio",
+    description: "Turn any game idea into a full Game Design Document in minutes. Game Forge guides creators through concept generation, competitive research, mechanics engineering, and testing plans.",
+    features: ["AI Design Pipeline", "Full GDD Export", "Any Genre & Platform", "Solo or Team"],
+    url: "https://antonio-app-264b69b7.base44.app/GameForge",
+    category: "Game Dev Tools",
+    status: "live",
+  },
+  {
     name: "CheapMedz",
     logo: "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/a1db150cd_generated_image.png",
     domain: "CheapMedz.com",
@@ -74,7 +88,7 @@ const companies = [
 ];
 
 const stats = [
-  { value: "5", label: "Digital Platforms" },
+  { value: "6", label: "Digital Platforms" },
   { value: "500K+", label: "Users Served" },
   { value: "2025", label: "Founded" },
   { value: "100%", label: "USA Based" },
