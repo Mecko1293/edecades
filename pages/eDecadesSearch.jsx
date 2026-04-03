@@ -4,16 +4,16 @@ import { Decade, Post, UserProfile, Group, NotableFigure, ForumTopic, Historical
 const CATEGORIES = ["All", "Decades", "Posts", "Members", "Groups", "Notable Figures", "Historical Events", "Artifacts", "Media", "Forums", "Wikipedia"];
 
 const typeColors = {
-  "Decade":           { bg: "#d4956e", color: "#000" },
-  "Post":             { bg: "#6366f1", color: "#fff" },
-  "Member":           { bg: "#10B981", color: "#fff" },
-  "Group":            { bg: "#F59E0B", color: "#000" },
+  "Decade":           { bg: "#d4956e", color: "#fff" },
+  "Post":             { bg: "#7a7abf", color: "#fff" },
+  "Member":           { bg: "#7aaa8a", color: "#fff" },
+  "Group":            { bg: "#c4956e", color: "#fff" },
   "Notable Figure":   { bg: "#EC4899", color: "#fff" },
   "Historical Event": { bg: "#EF4444", color: "#fff" },
-  "Artifact":         { bg: "#8B5CF6", color: "#fff" },
-  "Media":            { bg: "#06B6D4", color: "#fff" },
-  "Forum":            { bg: "#84CC16", color: "#000" },
-  "Wikipedia":        { bg: "#E8E8E8", color: "#000" },
+  "Artifact":         { bg: "#b87ac4", color: "#fff" },
+  "Media":            { bg: "#7aaac4", color: "#fff" },
+  "Forum":            { bg: "#8aaa7a", color: "#fff" },
+  "Wikipedia":        { bg: "#8a9aaa", color: "#fff" },
 };
 
 const typeIcons = {
