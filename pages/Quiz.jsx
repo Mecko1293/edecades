@@ -258,7 +258,7 @@ export default function Quiz() {
   return (
     <div style={{
       minHeight: "100vh",
-      background: result ? result.bg : "linear-gradient(135deg, #0a0a0f 0%, #1a0a2e 50%, #0a0a0f 100%)",
+      background: result ? result.bg : "linear-gradient(135deg, #1e2530 0%, #2a1f18 50%, #1e2530 100%)",
       fontFamily: "'Georgia', serif",
       color: "#fff",
       transition: "background 0.8s ease",
@@ -277,17 +277,17 @@ export default function Quiz() {
       {/* NAV */}
       <nav style={{
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-        background: "rgba(10,10,15,0.9)", backdropFilter: "blur(20px)",
-        borderBottom: "1px solid rgba(255,215,0,0.15)",
+        background: "rgba(30,37,48,0.95)", backdropFilter: "blur(20px)",
+        borderBottom: "1px solid rgba(212,149,110,0.15)",
         padding: "14px 32px", display: "flex", alignItems: "center", justifyContent: "space-between"
       }}>
         <a href="/Home" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
           <span style={{ fontSize: 22 }}>⏰</span>
-          <span style={{ fontSize: 18, fontWeight: "bold", color: "#FFD700" }}>eDecades</span>
+          <span style={{ fontSize: 18, fontWeight: "bold", color: "#d4956e" }}>eDecades</span>
         </a>
         <a href="https://benevolent-decade-dive-now.base44.app" target="_blank" style={{
-          background: "linear-gradient(135deg, #FFD700, #FF8C00)",
-          color: "#000", padding: "8px 20px", borderRadius: 30,
+          background: "linear-gradient(135deg, #d4956e, #c4784f)",
+          color: "#fff", padding: "8px 20px", borderRadius: 30,
           fontWeight: "bold", textDecoration: "none", fontSize: 13
         }}>Join Free →</a>
       </nav>
@@ -320,7 +320,7 @@ export default function Quiz() {
 
             <p style={{
               fontSize: 18, color: "rgba(255,255,255,0.85)", lineHeight: 1.8,
-              marginBottom: 24, background: "rgba(0,0,0,0.3)",
+              marginBottom: 24, background: "rgba(30,37,48,0.5)",
               borderRadius: 20, padding: "24px 32px",
               border: `1px solid ${result.color}22`
             }}>
@@ -333,7 +333,7 @@ export default function Quiz() {
 
             {/* Share box */}
             <div style={{
-              background: "rgba(0,0,0,0.4)", border: `1px solid ${result.color}44`,
+              background: "rgba(30,37,48,0.6)", border: `1px solid ${result.color}44`,
               borderRadius: 20, padding: "28px", marginBottom: 32
             }}>
               <div style={{ fontWeight: "bold", fontSize: 16, marginBottom: 16 }}>📤 Share Your Result</div>
@@ -351,7 +351,7 @@ export default function Quiz() {
               <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
                 <button onClick={() => { navigator.clipboard.writeText(shareText); setShowShare(true); }} style={{
                   background: `linear-gradient(135deg, ${result.color}, ${result.color}99)`,
-                  color: "#000", border: "none", padding: "12px 28px",
+                  color: "#fff", border: "none", padding: "12px 28px",
                   borderRadius: 30, fontWeight: "bold", cursor: "pointer", fontSize: 14
                 }}>
                   {showShare ? "✓ Copied!" : "📋 Copy to Share"}
@@ -377,10 +377,10 @@ export default function Quiz() {
               </p>
               <a href="https://benevolent-decade-dive-now.base44.app" target="_blank" style={{
                 display: "inline-block",
-                background: "linear-gradient(135deg, #FFD700, #FF8C00)",
-                color: "#000", padding: "16px 48px", borderRadius: 40,
+                background: "linear-gradient(135deg, #d4956e, #c4784f)",
+                color: "#fff", padding: "16px 48px", borderRadius: 40,
                 fontWeight: "bold", textDecoration: "none", fontSize: 17,
-                boxShadow: "0 8px 30px rgba(255,215,0,0.4)"
+                boxShadow: "0 8px 30px rgba(212,149,110,0.4)"
               }}>🚀 Explore the {result.name} on eDecades</a>
             </div>
 
@@ -403,7 +403,7 @@ export default function Quiz() {
               <div style={{ fontSize: 48, marginBottom: 12 }}>🕰️</div>
               <h1 style={{
                 fontSize: "clamp(28px, 5vw, 44px)", fontWeight: 900, marginBottom: 8,
-                background: "linear-gradient(135deg, #fff 0%, #FFD700 100%)",
+                background: "linear-gradient(135deg, #fff 0%, #d4956e 100%)",
                 WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent"
               }}>What's Your Soul Decade?</h1>
               <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 16 }}>6 questions. No wrong answers. Just pure nostalgia.</p>
@@ -418,7 +418,7 @@ export default function Quiz() {
               <div style={{ height: 6, background: "rgba(255,255,255,0.1)", borderRadius: 10, overflow: "hidden" }}>
                 <div style={{
                   height: "100%", borderRadius: 10,
-                  background: "linear-gradient(90deg, #FFD700, #FF8C00)",
+                  background: "linear-gradient(90deg, #d4956e, #c4784f)",
                   width: `${progress}%`, transition: "width 0.4s ease"
                 }} />
               </div>
@@ -443,10 +443,10 @@ export default function Quiz() {
                     onClick={() => handleSelect(option)}
                     style={{
                       background: selected === option
-                        ? "linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,140,0,0.1))"
+                        ? "linear-gradient(135deg, rgba(212,149,110,0.2), rgba(196,120,79,0.1))"
                         : "rgba(255,255,255,0.04)",
                       border: selected === option
-                        ? "2px solid #FFD700"
+                        ? "2px solid #d4956e"
                         : "2px solid rgba(255,255,255,0.1)",
                       borderRadius: 16, padding: "18px 24px",
                       color: "#fff", fontSize: 16, cursor: "pointer",
@@ -456,7 +456,7 @@ export default function Quiz() {
                     onMouseOver={e => {
                       if (selected !== option) {
                         e.currentTarget.style.background = "rgba(255,255,255,0.08)";
-                        e.currentTarget.style.borderColor = "rgba(255,215,0,0.4)";
+                        e.currentTarget.style.borderColor = "rgba(212,149,110,0.4)";
                         e.currentTarget.style.transform = "translateX(4px)";
                       }
                     }}
@@ -471,14 +471,14 @@ export default function Quiz() {
                     <div style={{
                       width: 28, height: 28, borderRadius: "50%",
                       border: selected === option ? "none" : "2px solid rgba(255,255,255,0.2)",
-                      background: selected === option ? "linear-gradient(135deg, #FFD700, #FF8C00)" : "transparent",
+                      background: selected === option ? "linear-gradient(135deg, #d4956e, #c4784f)" : "transparent",
                       display: "flex", alignItems: "center", justifyContent: "center",
-                      flexShrink: 0, fontSize: 13, fontWeight: "bold", color: "#000",
+                      flexShrink: 0, fontSize: 13, fontWeight: "bold", color: "#fff",
                       transition: "all 0.2s"
                     }}>
                       {selected === option ? "✓" : String.fromCharCode(65 + i)}
                     </div>
-                    <span style={{ color: selected === option ? "#FFD700" : "rgba(255,255,255,0.85)" }}>
+                    <span style={{ color: selected === option ? "#d4956e" : "rgba(255,255,255,0.85)" }}>
                       {option.text}
                     </span>
                   </button>
@@ -491,13 +491,13 @@ export default function Quiz() {
                   disabled={!selected}
                   style={{
                     background: selected
-                      ? "linear-gradient(135deg, #FFD700, #FF8C00)"
+                      ? "linear-gradient(135deg, #d4956e, #c4784f)"
                       : "rgba(255,255,255,0.1)",
                     color: selected ? "#000" : "rgba(255,255,255,0.3)",
                     border: "none", padding: "16px 56px", borderRadius: 40,
                     fontWeight: "bold", fontSize: 17, cursor: selected ? "pointer" : "not-allowed",
                     transition: "all 0.3s ease",
-                    boxShadow: selected ? "0 8px 30px rgba(255,215,0,0.3)" : "none"
+                    boxShadow: selected ? "0 8px 30px rgba(212,149,110,0.3)" : "none"
                   }}
                   onMouseOver={e => { if (selected) e.target.style.transform = "scale(1.05)"; }}
                   onMouseOut={e => { e.target.style.transform = "scale(1)"; }}

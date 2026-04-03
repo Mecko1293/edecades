@@ -4,7 +4,7 @@ import { Decade, Post, UserProfile, Group, NotableFigure, ForumTopic, Historical
 const CATEGORIES = ["All", "Decades", "Posts", "Members", "Groups", "Notable Figures", "Historical Events", "Artifacts", "Media", "Forums", "Wikipedia"];
 
 const typeColors = {
-  "Decade":           { bg: "#FFD700", color: "#000" },
+  "Decade":           { bg: "#d4956e", color: "#000" },
   "Post":             { bg: "#6366f1", color: "#fff" },
   "Member":           { bg: "#10B981", color: "#fff" },
   "Group":            { bg: "#F59E0B", color: "#000" },
@@ -209,19 +209,19 @@ export default function eDecadesSearch() {
       {/* HEADER */}
       <div style={{
         background: "rgba(10,10,20,0.95)", backdropFilter: "blur(20px)",
-        borderBottom: "1px solid rgba(255,215,0,0.1)",
+        borderBottom: "1px solid rgba(212,149,110,0.1)",
         padding: "16px 24px", display: "flex", alignItems: "center", gap: 16,
         position: "sticky", top: 0, zIndex: 100
       }}>
         <a href="https://benevolent-decade-dive-now.base44.app" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
           <div style={{
             width: 40, height: 40, borderRadius: 12,
-            background: "linear-gradient(135deg, #FFD700, #FF8C00)",
+            background: "linear-gradient(135deg, #d4956e, #c4784f)",
             display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 20, boxShadow: "0 0 20px rgba(255,215,0,0.3)"
+            fontSize: 20, boxShadow: "0 0 20px rgba(212,149,110,0.3)"
           }}>⏰</div>
           <div>
-            <div style={{ fontSize: 16, fontWeight: 800, color: "#FFD700", letterSpacing: -0.5 }}>eDecades</div>
+            <div style={{ fontSize: 16, fontWeight: 800, color: "#d4956e", letterSpacing: -0.5 }}>eDecades</div>
             <div style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", letterSpacing: 1 }}>SEARCH</div>
           </div>
         </a>
@@ -236,13 +236,13 @@ export default function eDecadesSearch() {
             style={{
               width: "100%", padding: "14px 48px 14px 48px",
               background: "rgba(255,255,255,0.07)",
-              border: "1.5px solid rgba(255,215,0,0.25)",
+              border: "1.5px solid rgba(212,149,110,0.25)",
               borderRadius: 50, color: "#fff", fontSize: 15,
               outline: "none", boxSizing: "border-box",
               transition: "all 0.2s",
             }}
-            onFocus={e => e.target.style.borderColor = "rgba(255,215,0,0.6)"}
-            onBlur={e => e.target.style.borderColor = "rgba(255,215,0,0.25)"}
+            onFocus={e => e.target.style.borderColor = "rgba(212,149,110,0.6)"}
+            onBlur={e => e.target.style.borderColor = "rgba(212,149,110,0.25)"}
           />
           {query && (
             <button onClick={() => { setQuery(""); setResults([]); setWikiResults([]); setSearched(false); inputRef.current?.focus(); }}
@@ -251,8 +251,8 @@ export default function eDecadesSearch() {
         </div>
 
         <a href="https://benevolent-decade-dive-now.base44.app" style={{
-          flexShrink: 0, background: "rgba(255,215,0,0.12)",
-          border: "1px solid rgba(255,215,0,0.3)", color: "#FFD700",
+          flexShrink: 0, background: "rgba(212,149,110,0.12)",
+          border: "1px solid rgba(212,149,110,0.3)", color: "#d4956e",
           padding: "9px 18px", borderRadius: 30, fontSize: 13, fontWeight: 600,
           textDecoration: "none", whiteSpace: "nowrap"
         }}>← Back to eDecades</a>
@@ -271,7 +271,7 @@ export default function eDecadesSearch() {
             <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center", maxWidth: 600, margin: "0 auto" }}>
               {["Michael Jackson", "1980s fashion", "Moon Landing", "Disco era", "Hip-Hop history", "The Beatles", "Cold War", "Elvis Presley"].map(s => (
                 <button key={s} onClick={() => { setQuery(s); doSearch(s); }}
-                  style={{ background: "rgba(255,215,0,0.08)", border: "1px solid rgba(255,215,0,0.2)", color: "#FFD700", padding: "8px 18px", borderRadius: 30, cursor: "pointer", fontSize: 13, fontWeight: 600 }}>
+                  style={{ background: "rgba(212,149,110,0.08)", border: "1px solid rgba(212,149,110,0.2)", color: "#d4956e", padding: "8px 18px", borderRadius: 30, cursor: "pointer", fontSize: 13, fontWeight: 600 }}>
                   {s}
                 </button>
               ))}
@@ -301,7 +301,7 @@ export default function eDecadesSearch() {
                     padding: "8px 16px", borderRadius: 30, fontSize: 13, fontWeight: 700, cursor: "pointer",
                     border: activeCategory === cat ? "none" : "1px solid rgba(255,255,255,0.12)",
                     background: activeCategory === cat
-                      ? isWiki ? "linear-gradient(135deg, #E8E8E8, #bbb)" : "linear-gradient(135deg, #FFD700, #FF8C00)"
+                      ? isWiki ? "linear-gradient(135deg, #E8E8E8, #bbb)" : "linear-gradient(135deg, #d4956e, #c4784f)"
                       : "rgba(255,255,255,0.05)",
                     color: activeCategory === cat ? (isWiki ? "#000" : "#000") : "rgba(255,255,255,0.6)",
                     transition: "all 0.2s",
@@ -351,7 +351,7 @@ export default function eDecadesSearch() {
                       cursor: isWiki ? "pointer" : "default",
                       transition: "all 0.2s",
                     }}
-                    onMouseOver={e => { e.currentTarget.style.background = isWiki ? "rgba(232,232,232,0.1)" : "rgba(255,255,255,0.08)"; e.currentTarget.style.borderColor = isWiki ? "rgba(232,232,232,0.3)" : "rgba(255,215,0,0.2)"; }}
+                    onMouseOver={e => { e.currentTarget.style.background = isWiki ? "rgba(232,232,232,0.1)" : "rgba(255,255,255,0.08)"; e.currentTarget.style.borderColor = isWiki ? "rgba(232,232,232,0.3)" : "rgba(212,149,110,0.2)"; }}
                     onMouseOut={e => { e.currentTarget.style.background = isWiki ? "rgba(232,232,232,0.05)" : "rgba(255,255,255,0.04)"; e.currentTarget.style.borderColor = isWiki ? "rgba(232,232,232,0.15)" : "rgba(255,255,255,0.08)"; }}
                   >
                     {/* Thumbnail */}
@@ -360,7 +360,7 @@ export default function eDecadesSearch() {
                     ) : (
                       <div style={{
                         width: 52, height: 52, borderRadius: 10, flexShrink: 0,
-                        background: isWiki ? "rgba(232,232,232,0.1)" : "rgba(255,215,0,0.08)",
+                        background: isWiki ? "rgba(232,232,232,0.1)" : "rgba(212,149,110,0.08)",
                         display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22
                       }}>{icon}</div>
                     )}
