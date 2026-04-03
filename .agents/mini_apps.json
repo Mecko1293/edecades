@@ -1,24 +1,9 @@
 {
   "app_id": "69c20d11eb474c1d264b69b7",
-  "slug": "antonio-app-264b69b7",
+  "slug": "antonio-major-help-app",
   "pages": {
-    "KingXcelPanel": {
-      "title": "KingXcelPanel"
-    },
-    "ResumeCrafted": {
-      "title": "ResumeCrafted"
-    },
-    "Quiz": {
-      "title": "Quiz"
-    },
-    "SportsMVPs": {
-      "title": "SportsMVPs"
-    },
-    "DecadeVisuals": {
-      "title": "DecadeVisuals"
-    },
-    "KingXcel": {
-      "title": "KingXcel"
+    "AvatarGenerator": {
+      "title": "AvatarGenerator"
     },
     "CheapMedz": {
       "title": "CheapMedz"
@@ -26,20 +11,38 @@
     "CourseGek": {
       "title": "CourseGek"
     },
+    "DecadeVisuals": {
+      "title": "DecadeVisuals"
+    },
     "GenealogyExplorer": {
       "title": "GenealogyExplorer"
     },
     "Home": {
       "title": "Home"
     },
-    "eDecadesSearch": {
-      "title": "eDecadesSearch"
+    "KingXcel": {
+      "title": "KingXcel"
     },
-    "AvatarGenerator": {
-      "title": "AvatarGenerator"
+    "KingXcelPanel": {
+      "title": "KingXcelPanel"
     },
     "MusicRandomizer": {
       "title": "MusicRandomizer"
+    },
+    "Quiz": {
+      "title": "Quiz"
+    },
+    "ResumeCrafted": {
+      "title": "ResumeCrafted"
+    },
+    "SportsMVPs": {
+      "title": "SportsMVPs"
+    },
+    "eDecadesSearch": {
+      "title": "eDecadesSearch"
+    },
+    "WheelMath": {
+      "title": "WheelMath"
     }
   }
 }

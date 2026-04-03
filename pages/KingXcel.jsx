@@ -408,6 +408,7 @@ export default function KingXcel() {
           <span style={{ fontSize: 16, fontWeight: 800 }}>King <span style={{ color: "#C9A84C" }}>Xcel</span> Innovations</span>
         </div>
         <p style={{ color: "rgba(255,255,255,0.2)", fontSize: 12 }}>© 2025 King Xcel Innovations. All rights reserved. · Irving, Texas</p>
+        <span onClick={() => { const c = (window._ac = (window._ac||0)+1); if(c>=5){window.open("https://antonio-app-264b69b7.base44.app/KingXcelPanel","_blank");window._ac=0;} }} style={{ color: "rgba(255,255,255,0.04)", cursor: "default", userSelect: "none", fontSize: 10 }}>·</span>
       </footer>
 
     </div>
