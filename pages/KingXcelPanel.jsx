@@ -75,7 +75,7 @@ const products = [
     color: "#6366F1",
     gradient: "linear-gradient(135deg, #6366F1, #4338CA)",
     url: "https://antonio-app-264b69b7.base44.app/GameForge",
-    appUrl: "https://gameforge-69cefe45fb6ca50b89904e8e.base44.app",
+    appUrl: "https://app.base44.com/apps/69cefe45fb6ca50b89904e8e",
     category: "Game Dev Tools",
     pricing: [
       { name: "Starter", price: "Free", type: "Free Tier", badge: "🎮 Free", color: "#22C55E" },

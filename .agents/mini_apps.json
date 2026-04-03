@@ -14,6 +14,9 @@
     "DecadeVisuals": {
       "title": "DecadeVisuals"
     },
+    "GameForge": {
+      "title": "GameForge"
+    },
     "GenealogyExplorer": {
       "title": "GenealogyExplorer"
     },
@@ -38,14 +41,11 @@
     "SportsMVPs": {
       "title": "SportsMVPs"
     },
-    "eDecadesSearch": {
-      "title": "eDecadesSearch"
-    },
     "WheelMath": {
       "title": "WheelMath"
     },
-    "GameForge": {
-      "title": "GameForge"
+    "eDecadesSearch": {
+      "title": "eDecadesSearch"
     }
   }
 }

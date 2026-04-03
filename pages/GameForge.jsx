@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 const ADMIN_URL = "https://antonio-app-264b69b7.base44.app/KingXcelPanel";
-const APP_URL = "https://gameforge-69cefe45fb6ca50b89904e8e.base44.app";
+const APP_URL = "https://app.base44.com/apps/69cefe45fb6ca50b89904e8e";
 
 const phases = [
   { icon: "💡", title: "Concept Generation", desc: "Describe your game idea in plain language. Game Forge's AI builds out a full concept doc — genre, target audience, core loop, and unique selling points." },
