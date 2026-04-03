@@ -46,6 +46,9 @@
     },
     "eDecadesSearch": {
       "title": "eDecadesSearch"
+    },
+    "eDecadesDailyTracker": {
+      "title": "eDecadesDailyTracker"
     }
   }
 }
