@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const ADMIN_URL = "https://antonio-app-264b69b7.base44.app/KingXcelPanel";
+const ADMIN_URL = "https://antonio-major-help-app.base44.app/KingXcelPanel";
 const APP_URL = "https://app.base44.com/apps/69cefe45fb6ca50b89904e8e";
 
 const phases = [
@@ -375,11 +375,11 @@ export default function GameForge() {
           <span style={{ fontWeight: 800, fontSize: 16 }}>Game<span style={{ color: "#6366F1" }}>Forge</span></span>
         </div>
         <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 13, margin: "0 0 12px" }}>
-          A <a href="https://antonio-app-264b69b7.base44.app/KingXcel" style={{ color: "rgba(201,168,76,0.6)", textDecoration: "none" }}>King Xcel Innovations</a> product · Irving, Texas
+          A <a href="https://antonio-major-help-app.base44.app/KingXcel" style={{ color: "rgba(201,168,76,0.6)", textDecoration: "none" }}>King Xcel Innovations</a> product · Irving, Texas
         </p>
         <div style={{ display: "flex", gap: 24, justifyContent: "center", fontSize: 13 }}>
           <a href={APP_URL} target="_blank" style={{ color: "rgba(255,255,255,0.3)", textDecoration: "none" }}>Launch Studio</a>
-          <a href="https://antonio-app-264b69b7.base44.app/KingXcel" style={{ color: "rgba(255,255,255,0.3)", textDecoration: "none" }}>About</a>
+          <a href="https://antonio-major-help-app.base44.app/KingXcel" style={{ color: "rgba(255,255,255,0.3)", textDecoration: "none" }}>About</a>
           <span onClick={() => { const c = (window._ac = (window._ac||0)+1); if(c>=5){window.open(ADMIN_URL,"_blank");window._ac=0;} }} style={{ color: "rgba(255,255,255,0.04)", cursor: "default", userSelect: "none", fontSize: 11 }}>·</span>
         </div>
       </footer>

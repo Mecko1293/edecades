@@ -395,7 +395,7 @@ export default function ResumeCrafted() {
           A King Xcel Innovations product · <a href="/KingXcel" style={{ color: "#4A90D9", textDecoration: "none" }}>About Us</a>
         </p>
         <p style={{ color: "rgba(255,255,255,0.2)", fontSize: 12 }}>© 2025 ResumeCrafted. All rights reserved.</p>
-        <span onClick={() => { const c = (window._ac = (window._ac||0)+1); if(c>=5){window.open("https://antonio-app-264b69b7.base44.app/KingXcelPanel","_blank");window._ac=0;} }} style={{ color: "rgba(255,255,255,0.04)", cursor: "default", userSelect: "none", fontSize: 10 }}>·</span>
+        <span onClick={() => { const c = (window._ac = (window._ac||0)+1); if(c>=5){window.open("https://antonio-major-help-app.base44.app/KingXcelPanel","_blank");window._ac=0;} }} style={{ color: "rgba(255,255,255,0.04)", cursor: "default", userSelect: "none", fontSize: 10 }}>·</span>
       </footer>
     </div>
   );

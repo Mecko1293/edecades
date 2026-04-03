@@ -67,7 +67,7 @@ const companies = [
     tagline: "AI-Powered Game Design Studio",
     description: "Turn any game idea into a full Game Design Document in minutes. Game Forge guides creators through concept generation, competitive research, mechanics engineering, and testing plans.",
     features: ["AI Design Pipeline", "Full GDD Export", "Any Genre & Platform", "Solo or Team"],
-    url: "https://antonio-app-264b69b7.base44.app/GameForge",
+    url: "https://antonio-major-help-app.base44.app/GameForge",
     category: "Game Dev Tools",
     status: "live",
   },
@@ -81,7 +81,7 @@ const companies = [
     tagline: "Find the Best Prices on Your Medications",
     description: "A medication price comparison platform helping Americans find the lowest cost prescriptions at pharmacies near them. Domain registered — platform in concept development.",
     features: ["Price Comparison", "Pharmacy Locator", "Prescription Savings", "No Membership Required"],
-    url: "https://antonio-app-264b69b7.base44.app/CheapMedz",
+    url: "https://antonio-major-help-app.base44.app/CheapMedz",
     category: "Healthcare",
     status: "concept",
   },
@@ -422,7 +422,7 @@ export default function KingXcel() {
           <span style={{ fontSize: 16, fontWeight: 800 }}>King <span style={{ color: "#C9A84C" }}>Xcel</span> Innovations</span>
         </div>
         <p style={{ color: "rgba(255,255,255,0.2)", fontSize: 12 }}>© 2025 King Xcel Innovations. All rights reserved. · Irving, Texas</p>
-        <span onClick={() => { const c = (window._ac = (window._ac||0)+1); if(c>=5){window.open("https://antonio-app-264b69b7.base44.app/KingXcelPanel","_blank");window._ac=0;} }} style={{ color: "rgba(255,255,255,0.04)", cursor: "default", userSelect: "none", fontSize: 10 }}>·</span>
+        <span onClick={() => { const c = (window._ac = (window._ac||0)+1); if(c>=5){window.open("https://antonio-major-help-app.base44.app/KingXcelPanel","_blank");window._ac=0;} }} style={{ color: "rgba(255,255,255,0.04)", cursor: "default", userSelect: "none", fontSize: 10 }}>·</span>
       </footer>
 
     </div>

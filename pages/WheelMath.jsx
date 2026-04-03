@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 const LOGO = "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/106ee42e9_image.png";
-const ADMIN_URL = "https://antonio-app-264b69b7.base44.app/KingXcelPanel";
+const ADMIN_URL = "https://antonio-major-help-app.base44.app/KingXcelPanel";
 
 const features = [
   { icon: "🎡", title: "Circular Puzzle Logic", desc: "Unique wheel-based math puzzles that challenge students to balance numbers around a circle. Unlike anything else in EdTech." },
@@ -330,11 +330,11 @@ export default function WheelMath() {
           <span style={{ fontWeight: 800, fontSize: 16 }}>Wheel<span style={{ color: "#F59E0B" }}>Math</span></span>
         </div>
         <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 13, margin: "0 0 12px" }}>
-          A <a href="https://antonio-app-264b69b7.base44.app/KingXcel" style={{ color: "rgba(201,168,76,0.6)", textDecoration: "none" }}>King Xcel Innovations</a> product · Irving, Texas
+          A <a href="https://antonio-major-help-app.base44.app/KingXcel" style={{ color: "rgba(201,168,76,0.6)", textDecoration: "none" }}>King Xcel Innovations</a> product · Irving, Texas
         </p>
         <div style={{ display: "flex", gap: 24, justifyContent: "center", fontSize: 13 }}>
           <a href="https://pie-math-quest.base44.app" target="_blank" style={{ color: "rgba(255,255,255,0.3)", textDecoration: "none" }}>Play Now</a>
-          <a href="https://antonio-app-264b69b7.base44.app/KingXcel" style={{ color: "rgba(255,255,255,0.3)", textDecoration: "none" }}>About</a>
+          <a href="https://antonio-major-help-app.base44.app/KingXcel" style={{ color: "rgba(255,255,255,0.3)", textDecoration: "none" }}>About</a>
           <span onClick={handleAdminClick} style={{ color: "rgba(255,255,255,0.08)", cursor: "default", userSelect: "none", fontSize: 11 }}>·</span>
         </div>
       </footer>

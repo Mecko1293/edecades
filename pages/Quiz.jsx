@@ -252,7 +252,7 @@ export default function Quiz() {
   }
 
   const shareText = result
-    ? `🕰️ I just took the eDecades Soul Decade Quiz and I'm a ${result.name} soul! My vibe: "${result.vibe}" ${result.icons.join("")}\n\nWhat's YOUR decade? Take the quiz 👇\nhttps://antonio-app-264b69b7.base44.app/Quiz`
+    ? `🕰️ I just took the eDecades Soul Decade Quiz and I'm a ${result.name} soul! My vibe: "${result.vibe}" ${result.icons.join("")}\n\nWhat's YOUR decade? Take the quiz 👇\nhttps://antonio-major-help-app.base44.app/Quiz`
     : "";
 
   return (

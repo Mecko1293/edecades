@@ -544,7 +544,7 @@ export default function CheapMedz() {
           A <a href="/KingXcel" style={{ color: "#EF4444", textDecoration: "none" }}>King Xcel Innovations</a> product · CheapMedz.com
         </p>
         <p style={{ color: "rgba(255,255,255,0.15)", fontSize: 12 }}>© 2025 CheapMedz. All rights reserved. · Currently in concept development.</p>
-        <span onClick={() => { const c = (window._ac = (window._ac||0)+1); if(c>=5){window.open("https://antonio-app-264b69b7.base44.app/KingXcelPanel","_blank");window._ac=0;} }} style={{ color: "rgba(255,255,255,0.04)", cursor: "default", userSelect: "none", fontSize: 10 }}>·</span>
+        <span onClick={() => { const c = (window._ac = (window._ac||0)+1); if(c>=5){window.open("https://antonio-major-help-app.base44.app/KingXcelPanel","_blank");window._ac=0;} }} style={{ color: "rgba(255,255,255,0.04)", cursor: "default", userSelect: "none", fontSize: 10 }}>·</span>
       </footer>
 
     </div>

@@ -8,7 +8,7 @@ const products = [
     status: "live",
     color: "#7C3AED",
     gradient: "linear-gradient(135deg, #7C3AED, #4F46E5)",
-    url: "https://antonio-app-264b69b7.base44.app/CourseGek",
+    url: "https://antonio-major-help-app.base44.app/CourseGek",
     appUrl: "https://course-gek-23543b27.base44.app",
     category: "EdTech Marketplace",
     pricing: [
@@ -25,7 +25,7 @@ const products = [
     status: "live",
     color: "#4A90D9",
     gradient: "linear-gradient(135deg, #4A90D9, #1E6BB0)",
-    url: "https://antonio-app-264b69b7.base44.app/ResumeCrafted",
+    url: "https://antonio-major-help-app.base44.app/ResumeCrafted",
     appUrl: "https://resume-dashing-craft-pro.base44.app",
     category: "Career Tools",
     pricing: [
@@ -42,7 +42,7 @@ const products = [
     status: "live",
     color: "#FFD700",
     gradient: "linear-gradient(135deg, #FFD700, #FF8C00)",
-    url: "https://antonio-app-264b69b7.base44.app/Home",
+    url: "https://antonio-major-help-app.base44.app/Home",
     appUrl: "https://benevolent-decade-dive-now.base44.app",
     category: "Social Network",
     pricing: [
@@ -74,7 +74,7 @@ const products = [
     status: "live",
     color: "#6366F1",
     gradient: "linear-gradient(135deg, #6366F1, #4338CA)",
-    url: "https://antonio-app-264b69b7.base44.app/GameForge",
+    url: "https://antonio-major-help-app.base44.app/GameForge",
     appUrl: "https://app.base44.com/apps/69cefe45fb6ca50b89904e8e",
     category: "Game Dev Tools",
     pricing: [
@@ -111,13 +111,13 @@ const stripeStatus = {
 };
 
 const quickLinks = [
-  { label: "KingXcel Landing Page", url: "https://antonio-app-264b69b7.base44.app/KingXcel", icon: "👑", note: "Submitted to Stripe" },
-  { label: "Portfolio Hub", url: "https://antonio-app-264b69b7.base44.app/Home", icon: "🏠", note: "Main entry point" },
+  { label: "KingXcel Landing Page", url: "https://antonio-major-help-app.base44.app/KingXcel", icon: "👑", note: "Submitted to Stripe" },
+  { label: "Portfolio Hub", url: "https://antonio-major-help-app.base44.app/Home", icon: "🏠", note: "Main entry point" },
   { label: "CourseGek App", url: "https://course-gek-23543b27.base44.app", icon: "🎓", note: "Live app" },
   { label: "ResumeCrafted App", url: "https://resume-dashing-craft-pro.base44.app", icon: "📄", note: "Live app" },
   { label: "eDecades App", url: "https://benevolent-decade-dive-now.base44.app", icon: "⏰", note: "Live app" },
-  { label: "GameForge Landing", url: "https://antonio-app-264b69b7.base44.app/GameForge", icon: "🎮", note: "Live app" },
-  { label: "CheapMedz Landing", url: "https://antonio-app-264b69b7.base44.app/CheapMedz", icon: "💊", note: "Concept page" },
+  { label: "GameForge Landing", url: "https://antonio-major-help-app.base44.app/GameForge", icon: "🎮", note: "Live app" },
+  { label: "CheapMedz Landing", url: "https://antonio-major-help-app.base44.app/CheapMedz", icon: "💊", note: "Concept page" },
   { label: "Stripe Dashboard", url: "https://dashboard.stripe.com", icon: "💳", note: "Check payout status" },
 ];
 
@@ -149,7 +149,7 @@ export default function KingXcelPanel() {
           </div>
         </div>
         <div style={{ display: "flex", gap: 10 }}>
-          <a href="https://antonio-app-264b69b7.base44.app/KingXcel" target="_blank" style={{
+          <a href="https://antonio-major-help-app.base44.app/KingXcel" target="_blank" style={{
             background: "linear-gradient(135deg, #C9A84C, #8B6914)",
             color: "#000", padding: "9px 20px", borderRadius: 20,
             fontWeight: 700, textDecoration: "none", fontSize: 13
