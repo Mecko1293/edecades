@@ -247,6 +247,38 @@ export default function KingXcel() {
               allowFullScreen
               style={{ width: "100%", height: "100%", position: "absolute", inset: 0, display: "block" }}
             />
+
+            {/* Descript watermark cover — irregular shape using clip-path */}
+            <div style={{
+              position: "absolute",
+              bottom: 0,
+              right: 0,
+              width: 140,
+              height: 44,
+              background: "#000",
+              zIndex: 5,
+              pointerEvents: "none",
+              clipPath: "polygon(18% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 40%)",
+              opacity: 0.97,
+            }} />
+            {/* Decorative eDecades brand badge over the cover */}
+            <div style={{
+              position: "absolute",
+              bottom: 6,
+              right: 8,
+              zIndex: 6,
+              pointerEvents: "none",
+              display: "flex",
+              alignItems: "center",
+              gap: 5,
+              background: "rgba(201,168,76,0.15)",
+              border: "1px solid rgba(201,168,76,0.4)",
+              borderRadius: "8px 8px 20px 8px",
+              padding: "4px 10px 4px 7px",
+            }}>
+              <span style={{ fontSize: 11 }}>🕰️</span>
+              <span style={{ fontSize: 10, fontWeight: 800, color: "#C9A84C", letterSpacing: 0.5, fontFamily: "sans-serif" }}>eDecades</span>
+            </div>
           </div>
 
           {/* CTA below video */}
