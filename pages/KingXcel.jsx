@@ -205,6 +205,64 @@ export default function KingXcel() {
         </div>
       </section>
 
+
+      {/* ═══════════════════════════════════════════ */}
+      {/* EDECADES VIDEO SPOTLIGHT */}
+      {/* ═══════════════════════════════════════════ */}
+      <section style={{ padding: "100px 24px 60px", background: "linear-gradient(180deg, #080810 0%, #0d0b00 50%, #080810 100%)", position: "relative", overflow: "hidden" }}>
+        {/* Gold glow orb */}
+        <div style={{ position: "absolute", width: 600, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%)", top: "30%", left: "50%", transform: "translateX(-50%)", pointerEvents: "none" }} />
+
+        <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
+
+          {/* Label */}
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(201,168,76,0.1)", border: "1px solid rgba(201,168,76,0.3)", borderRadius: 30, padding: "7px 20px", marginBottom: 24, fontSize: 12, color: "#C9A84C", letterSpacing: 1, textTransform: "uppercase" }}>
+            🕰️ Featured Platform
+          </div>
+
+          <h2 style={{ fontSize: "clamp(26px, 4vw, 48px)", fontWeight: 900, margin: "0 0 16px", lineHeight: 1.1 }}>
+            See <span style={{ background: "linear-gradient(135deg, #E8C870, #C9A84C)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>eDecades</span> in Action
+          </h2>
+          <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 17, maxWidth: 560, margin: "0 auto 48px", lineHeight: 1.7 }}>
+            The world's first decade-themed social network — explore 100 years of culture, music, fashion, and history. Connect with people who love the same eras you do.
+          </p>
+
+          {/* Video frame */}
+          <div style={{
+            position: "relative", borderRadius: 24, overflow: "hidden",
+            boxShadow: "0 0 0 1px rgba(201,168,76,0.25), 0 40px 80px rgba(0,0,0,0.7), 0 0 60px rgba(201,168,76,0.1)",
+            background: "#000", aspectRatio: "16/9",
+          }}>
+            {/* Corner accents */}
+            <div style={{ position: "absolute", top: 0, left: 0, width: 40, height: 40, borderTop: "3px solid #C9A84C", borderLeft: "3px solid #C9A84C", borderRadius: "24px 0 0 0", zIndex: 2, pointerEvents: "none" }} />
+            <div style={{ position: "absolute", top: 0, right: 0, width: 40, height: 40, borderTop: "3px solid #C9A84C", borderRight: "3px solid #C9A84C", borderRadius: "0 24px 0 0", zIndex: 2, pointerEvents: "none" }} />
+            <div style={{ position: "absolute", bottom: 0, left: 0, width: 40, height: 40, borderBottom: "3px solid #C9A84C", borderLeft: "3px solid #C9A84C", borderRadius: "0 0 0 24px", zIndex: 2, pointerEvents: "none" }} />
+            <div style={{ position: "absolute", bottom: 0, right: 0, width: 40, height: 40, borderBottom: "3px solid #C9A84C", borderRight: "3px solid #C9A84C", borderRadius: "0 0 24px 0", zIndex: 2, pointerEvents: "none" }} />
+
+            <iframe
+              src="https://www.youtube.com/embed/p_NzLrUrs3M?rel=0&modestbranding=1&color=white&autohide=1"
+              title="eDecades Time Traveling Nostalgia Portal"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              style={{ width: "100%", height: "100%", position: "absolute", inset: 0, display: "block" }}
+            />
+          </div>
+
+          {/* CTA below video */}
+          <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap", marginTop: 36 }}>
+            <a href="https://benevolent-decade-dive-now.base44.app" target="_blank" rel="noopener noreferrer"
+              style={{ background: "linear-gradient(135deg, #E8C870, #C9A84C)", color: "#080810", padding: "14px 32px", borderRadius: 50, fontWeight: 800, fontSize: 15, textDecoration: "none", boxShadow: "0 6px 24px rgba(201,168,76,0.35)" }}>
+              🕰️ Visit eDecades
+            </a>
+            <a href="https://www.youtube.com/@AnthonyKittles" target="_blank" rel="noopener noreferrer"
+              style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)", color: "#fff", padding: "14px 32px", borderRadius: 50, fontWeight: 700, fontSize: 15, textDecoration: "none" }}>
+              ▶️ YouTube Channel
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* COMPANIES */}
       <section id="companies" style={{ padding: "100px 24px", background: "#080810" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
