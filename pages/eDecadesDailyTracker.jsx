@@ -158,7 +158,7 @@ const ownerConfig = {
 
 const tabs = ["daily", "weekly", "monthly"];
 
-export default function eDecadesDailyTracker() {
+export default function EDecadesDailyTracker() {
   const [activeTab, setActiveTab] = useState("daily");
   const [checked, setChecked] = useState({});
   const [filter, setFilter] = useState("all");

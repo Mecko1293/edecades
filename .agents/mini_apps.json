@@ -44,11 +44,11 @@
     "WheelMath": {
       "title": "WheelMath"
     },
-    "eDecadesSearch": {
-      "title": "eDecadesSearch"
-    },
     "eDecadesDailyTracker": {
       "title": "eDecadesDailyTracker"
+    },
+    "eDecadesSearch": {
+      "title": "eDecadesSearch"
     }
   }
 }
