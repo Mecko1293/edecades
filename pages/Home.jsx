@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const DECADES = [
   {
@@ -137,6 +137,15 @@ export default function Home() {
   const [active, setActive] = useState("1980s");
   const dec = DECADES.find(d => d.id === active);
 
+// Preload all decade images on mount so switching never shows wrong/old image
+  useEffect(() => {
+    DECADES.forEach(d => {
+      const img = new window.Image();
+      img.src = d.image;
+    });
+  }, []);
+
+
   return (
     <div style={{ minHeight: "100vh", background: "#1e2530", fontFamily: "'Segoe UI', sans-serif", color: "#fff" }}>
 
@@ -167,12 +176,15 @@ export default function Home() {
         {/* HERO IMAGE BANNER */}
         <div style={{ position: "relative", borderRadius: 24, overflow: "hidden", marginBottom: 24, height: 340 }}>
           <img
+            key={dec.id}
             src={dec.image}
             alt={`${dec.label} era`}
+            onLoad={e => { e.target.style.opacity = "1"; }}
             style={{
               width: "100%", height: "100%", objectFit: "cover",
               filter: dec.filter,
-              transition: "filter 0.5s ease",
+              opacity: 0,
+              transition: "opacity 0.5s ease, filter 0.5s ease",
             }}
           />
           {/* Grain overlay */}
