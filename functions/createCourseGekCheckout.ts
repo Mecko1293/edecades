@@ -1,7 +1,7 @@
 import Stripe from "npm:stripe@14.0.0";
 
 const PRICES = {
-  single: { amount: 999, name: "CourseGek - Single Question Answer", description: "Get a full expert answer to one homework question. 100% satisfaction guaranteed." },
+  single: { amount: 499, name: "CourseGek - Single Question Answer", description: "Get a full expert answer to one homework question. 100% satisfaction guaranteed." },
   pro_monthly: { amount: 1499, name: "CourseGek Student Pro", description: "Unlimited question posts, priority matching, faster responses.", interval: "month" },
   tutor_monthly: { amount: 1999, name: "CourseGek Tutor/Expert Plan", description: "List unlimited subjects, receive unlimited student bids, featured placement.", interval: "month" },
 };
@@ -12,8 +12,8 @@ Deno.serve(async (req) => {
 
     const body = await req.json().catch(() => ({}));
     const plan = body.plan || "single"; // "single", "pro_monthly", "tutor_monthly"
-    const successUrl = body.success_url || "https://antonio-app-264b69b7.base44.app/CourseGek?payment=success";
-    const cancelUrl = body.cancel_url || "https://antonio-app-264b69b7.base44.app/CourseGek?payment=cancelled";
+    const successUrl = body.success_url || "https://antonio-major-help-app.base44.app/CourseGek?payment=success";
+    const cancelUrl = body.cancel_url || "https://antonio-major-help-app.base44.app/CourseGek?payment=cancelled";
 
     const priceInfo = PRICES[plan];
     if (!priceInfo) {

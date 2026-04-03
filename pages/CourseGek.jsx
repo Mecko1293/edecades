@@ -27,7 +27,7 @@ const testimonials = [
 const plans = [
   {
     name: "Single Question",
-    price: "$9.99",
+    price: "$4.99",
     period: "",
     color: "#4CAF50",
     planKey: "single",
@@ -38,7 +38,7 @@ const plans = [
       "Avg 2hr response time",
       "100% satisfaction guarantee",
     ],
-    cta: "Get Answer — $9.99",
+    cta: "Get Answer — $4.99",
     popular: false,
   },
   {
@@ -206,7 +206,7 @@ export default function CourseGek() {
             fontWeight: 700, border: "none", cursor: "pointer", fontSize: 18,
             boxShadow: "0 8px 30px rgba(124,58,237,0.5)", opacity: loadingPlan === "single" ? 0.7 : 1
           }}>
-            {loadingPlan === "single" ? "⏳ Loading..." : "🎓 Get an Answer — $9.99"}
+            {loadingPlan === "single" ? "⏳ Loading..." : "🎓 Get an Answer — $4.99"}
           </button>
           <button onClick={() => handleCheckout("tutor_monthly")} style={{
             background: "transparent", color: "#a78bfa",
@@ -218,7 +218,7 @@ export default function CourseGek() {
         </div>
 
         <div style={{ display: "flex", gap: 56, flexWrap: "wrap", justifyContent: "center" }}>
-          {[["$9.99", "Per Question"], ["50K+", "Questions Answered"], ["10K+", "Expert Tutors"], ["4.9★", "Average Rating"]].map(([num, label]) => (
+          {[["$4.99", "Per Question"], ["50K+", "Questions Answered"], ["10K+", "Expert Tutors"], ["4.9★", "Average Rating"]].map(([num, label]) => (
             <div key={label} style={{ textAlign: "center" }}>
               <div style={{ fontSize: 32, fontWeight: 900, color: "#a78bfa" }}>{num}</div>
               <div style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", letterSpacing: 1, marginTop: 4 }}>{label}</div>
