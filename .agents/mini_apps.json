@@ -47,6 +47,9 @@
     "SportsMVPs": {
       "title": "SportsMVPs"
     },
+    "VideoArchive": {
+      "title": "VideoArchive"
+    },
     "WheelMath": {
       "title": "WheelMath"
     },
@@ -55,9 +58,6 @@
     },
     "eDecadesSearch": {
       "title": "eDecadesSearch"
-    },
-    "VideoArchive": {
-      "title": "VideoArchive"
     }
   }
 }
