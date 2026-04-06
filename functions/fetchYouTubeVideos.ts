@@ -1,6 +1,5 @@
 Deno.serve(async (req) => {
-  const YOUTUBE_API_KEY = Deno.env.get('YOUTUBE_API_KEY');
-  const CHANNEL_ID = 'UCAnthonyKittles'; // will be resolved dynamically
+  const YOUTUBE_API_KEY = Deno.env.get('YOUTUBE_API_KEY') || 'AIzaSyCP18vlyXOmSW3zxinLP5dTulfEhobyMjI';
 
   const DECADE_QUERIES = [
     { decade: '1920s', query: '1920s history culture jazz flappers' },
@@ -17,24 +16,29 @@ Deno.serve(async (req) => {
 
   try {
     const url = new URL(req.url);
-    const mode = url.searchParams.get('mode') || 'decades'; // 'channel' or 'decades'
+    const mode = url.searchParams.get('mode') || 'decades';
     const decade = url.searchParams.get('decade') || null;
-    const maxResults = parseInt(url.searchParams.get('maxResults') || '8');
+    const maxResults = parseInt(url.searchParams.get('maxResults') || '6');
 
     let results: any[] = [];
 
     if (mode === 'channel') {
-      // Fetch from Anthony's channel - first get channel ID from username
+      // Fetch Anthony's channel latest videos
       const channelRes = await fetch(
         `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCMSSwEeAkDoTKuH6PcCaFSg&order=date&type=video&maxResults=${maxResults}&key=${YOUTUBE_API_KEY}`
       );
       const channelData = await channelRes.json();
-
+      if (channelData.error) {
+        return new Response(JSON.stringify({ success: false, error: channelData.error.message }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
       if (channelData.items) {
         results = channelData.items.map((item: any) => ({
           id: item.id.videoId,
           title: item.snippet.title,
-          description: item.snippet.description,
+          description: item.snippet.description?.substring(0, 200),
           thumbnail: item.snippet.thumbnails?.high?.url || item.snippet.thumbnails?.medium?.url,
           channel: item.snippet.channelTitle,
           published: item.snippet.publishedAt,
@@ -45,11 +49,8 @@ Deno.serve(async (req) => {
         }));
       }
     } else {
-      // Fetch decade-tagged content
-      const queries = decade
-        ? DECADE_QUERIES.filter(d => d.decade === decade)
-        : DECADE_QUERIES;
-
+      // Fetch decade-tagged content from YouTube
+      const queries = decade ? DECADE_QUERIES.filter(d => d.decade === decade) : DECADE_QUERIES;
       const fetches = queries.map(async ({ decade: d, query }) => {
         const res = await fetch(
           `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query)}&type=video&order=relevance&maxResults=${maxResults}&videoDuration=medium&key=${YOUTUBE_API_KEY}`
@@ -69,7 +70,6 @@ Deno.serve(async (req) => {
           source: 'search',
         }));
       });
-
       const allResults = await Promise.all(fetches);
       results = allResults.flat();
     }
@@ -87,15 +87,15 @@ Deno.serve(async (req) => {
 
 function detectDecade(text: string): string {
   const t = text.toLowerCase();
-  if (t.includes('1920') || t.includes('twenties') || t.includes('roaring 20')) return '1920s';
-  if (t.includes('1930') || t.includes('thirties') || t.includes('depression')) return '1930s';
-  if (t.includes('1940') || t.includes('forties') || t.includes('wwii') || t.includes('world war')) return '1940s';
+  if (t.includes('1920') || t.includes('twenties')) return '1920s';
+  if (t.includes('1930') || t.includes('thirties')) return '1930s';
+  if (t.includes('1940') || t.includes('forties') || t.includes('wwii')) return '1940s';
   if (t.includes('1950') || t.includes('fifties')) return '1950s';
   if (t.includes('1960') || t.includes('sixties')) return '1960s';
   if (t.includes('1970') || t.includes('seventies') || t.includes('70s')) return '1970s';
   if (t.includes('1980') || t.includes('eighties') || t.includes('80s')) return '1980s';
   if (t.includes('1990') || t.includes('nineties') || t.includes('90s')) return '1990s';
-  if (t.includes('2000') || t.includes('y2k') || t.includes('2000s')) return '2000s';
-  if (t.includes('2010') || t.includes('2010s')) return '2010s';
+  if (t.includes('2000') || t.includes('y2k')) return '2000s';
+  if (t.includes('2010')) return '2010s';
   return 'Various';
 }
