@@ -32,11 +32,17 @@
     "MusicRandomizer": {
       "title": "MusicRandomizer"
     },
+    "OpsTracker": {
+      "title": "OpsTracker"
+    },
     "Quiz": {
       "title": "Quiz"
     },
     "ResumeCrafted": {
       "title": "ResumeCrafted"
+    },
+    "SocialMediaHub": {
+      "title": "SocialMediaHub"
     },
     "SportsMVPs": {
       "title": "SportsMVPs"
@@ -50,8 +56,8 @@
     "eDecadesSearch": {
       "title": "eDecadesSearch"
     },
-    "OpsTracker": {
-      "title": "OpsTracker"
+    "YouTubeDecades": {
+      "title": "YouTubeDecades"
     }
   }
 }
