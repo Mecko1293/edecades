@@ -1,0 +1,61 @@
+{
+  "type": "object",
+  "properties": {
+    "decade": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "Music",
+        "Sports",
+        "Politics",
+        "Pop Culture",
+        "Food & Cuisine",
+        "Technology",
+        "Fashion",
+        "Film & TV"
+      ]
+    },
+    "question": {
+      "type": "string"
+    },
+    "option_a": {
+      "type": "string"
+    },
+    "option_b": {
+      "type": "string"
+    },
+    "option_c": {
+      "type": "string"
+    },
+    "option_d": {
+      "type": "string"
+    },
+    "correct_answer": {
+      "type": "string",
+      "enum": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": [
+        "Easy",
+        "Medium",
+        "Hard"
+      ]
+    },
+    "points": {
+      "type": "number"
+    },
+    "explanation": {
+      "type": "string"
+    }
+  },
+  "required": [],
+  "name": "TriviaQuestion"
+}

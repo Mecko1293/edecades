@@ -2,32 +2,14 @@
   "app_id": "69c20d11eb474c1d264b69b7",
   "slug": "antonio-major-help-app",
   "pages": {
-    "AvatarGenerator": {
-      "title": "AvatarGenerator"
+    "DecadeTrivia": {
+      "title": "DecadeTrivia"
     },
-    "CheapMedz": {
-      "title": "CheapMedz"
+    "SocialMediaHub": {
+      "title": "SocialMediaHub"
     },
-    "CourseGek": {
-      "title": "CourseGek"
-    },
-    "DecadeVisuals": {
-      "title": "DecadeVisuals"
-    },
-    "GameForge": {
-      "title": "GameForge"
-    },
-    "GenealogyExplorer": {
-      "title": "GenealogyExplorer"
-    },
-    "Home": {
-      "title": "Home"
-    },
-    "KingXcel": {
-      "title": "KingXcel"
-    },
-    "KingXcelPanel": {
-      "title": "KingXcelPanel"
+    "ResumeCrafted": {
+      "title": "ResumeCrafted"
     },
     "MusicRandomizer": {
       "title": "MusicRandomizer"
@@ -35,14 +17,23 @@
     "OpsTracker": {
       "title": "OpsTracker"
     },
+    "GenealogyExplorer": {
+      "title": "GenealogyExplorer"
+    },
+    "eDecadesDailyTracker": {
+      "title": "eDecadesDailyTracker"
+    },
+    "CheapMedz": {
+      "title": "CheapMedz"
+    },
     "Quiz": {
       "title": "Quiz"
     },
-    "ResumeCrafted": {
-      "title": "ResumeCrafted"
+    "WheelMath": {
+      "title": "WheelMath"
     },
-    "SocialMediaHub": {
-      "title": "SocialMediaHub"
+    "GameForge": {
+      "title": "GameForge"
     },
     "SportsMVPs": {
       "title": "SportsMVPs"
@@ -50,14 +41,26 @@
     "VideoArchive": {
       "title": "VideoArchive"
     },
-    "WheelMath": {
-      "title": "WheelMath"
-    },
-    "eDecadesDailyTracker": {
-      "title": "eDecadesDailyTracker"
-    },
     "eDecadesSearch": {
       "title": "eDecadesSearch"
+    },
+    "KingXcelPanel": {
+      "title": "KingXcelPanel"
+    },
+    "DecadeVisuals": {
+      "title": "DecadeVisuals"
+    },
+    "AvatarGenerator": {
+      "title": "AvatarGenerator"
+    },
+    "Home": {
+      "title": "Home"
+    },
+    "CourseGek": {
+      "title": "CourseGek"
+    },
+    "KingXcel": {
+      "title": "KingXcel"
     }
   }
 }

@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "properties": {
+    "player_name": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "total_points": {
+      "type": "number"
+    },
+    "quizzes_completed": {
+      "type": "number"
+    },
+    "correct_answers": {
+      "type": "number"
+    },
+    "total_answers": {
+      "type": "number"
+    },
+    "favorite_decade": {
+      "type": "string"
+    },
+    "badges": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "last_played": {
+      "type": "string"
+    }
+  },
+  "required": [],
+  "name": "TriviaScore"
+}
