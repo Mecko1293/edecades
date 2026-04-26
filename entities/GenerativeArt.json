@@ -1,0 +1,39 @@
+{
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "prompt": {
+      "type": "string"
+    },
+    "decade": {
+      "type": "string"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "author_name": {
+      "type": "string"
+    },
+    "author_email": {
+      "type": "string"
+    },
+    "pinned_to": {
+      "type": "string",
+      "enum": [
+        "Heatmap",
+        "Timeline",
+        "Gallery"
+      ]
+    },
+    "likes": {
+      "type": "number"
+    },
+    "is_featured": {
+      "type": "boolean"
+    }
+  },
+  "required": [],
+  "name": "GenerativeArt"
+}

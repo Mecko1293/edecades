@@ -1,0 +1,44 @@
+{
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "date_label": {
+      "type": "string"
+    },
+    "decade": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "photo_url": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "History",
+        "Music",
+        "Sports",
+        "Politics",
+        "Science",
+        "Film & TV",
+        "Pop Culture",
+        "Food & Cuisine"
+      ]
+    },
+    "year": {
+      "type": "number"
+    },
+    "is_featured": {
+      "type": "boolean"
+    },
+    "source": {
+      "type": "string"
+    }
+  },
+  "required": [],
+  "name": "OnThisDay"
+}

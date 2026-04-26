@@ -5,6 +5,24 @@
     "DecadeTrivia": {
       "title": "DecadeTrivia"
     },
+    "Quiz": {
+      "title": "Quiz"
+    },
+    "OnThisDay": {
+      "title": "OnThisDay"
+    },
+    "FamilyJourney": {
+      "title": "FamilyJourney"
+    },
+    "GenerativeArtSpace": {
+      "title": "GenerativeArtSpace"
+    },
+    "TimeCapsuleJournal": {
+      "title": "TimeCapsuleJournal"
+    },
+    "AdminPanel": {
+      "title": "AdminPanel"
+    },
     "SocialMediaHub": {
       "title": "SocialMediaHub"
     },
@@ -25,9 +43,6 @@
     },
     "CheapMedz": {
       "title": "CheapMedz"
-    },
-    "Quiz": {
-      "title": "Quiz"
     },
     "WheelMath": {
       "title": "WheelMath"

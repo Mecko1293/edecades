@@ -1,0 +1,46 @@
+{
+  "type": "object",
+  "properties": {
+    "family_name": {
+      "type": "string"
+    },
+    "origin_country": {
+      "type": "string"
+    },
+    "origin_region": {
+      "type": "string"
+    },
+    "ethnicity": {
+      "type": "string"
+    },
+    "migration_story": {
+      "type": "string"
+    },
+    "decades_active": {
+      "type": "string"
+    },
+    "notable_members": {
+      "type": "string"
+    },
+    "historical_context": {
+      "type": "string"
+    },
+    "traditions": {
+      "type": "string"
+    },
+    "photo_url": {
+      "type": "string"
+    },
+    "coat_of_arms_url": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [],
+  "name": "FamilyAncestry"
+}
