@@ -2,11 +2,62 @@
   "app_id": "69c20d11eb474c1d264b69b7",
   "slug": "antonio-major-help-app",
   "pages": {
-    "DecadeTrivia": {
-      "title": "DecadeTrivia"
+    "AnalyticsDashboard": {
+      "title": "AnalyticsDashboard"
+    },
+    "VideoArchive": {
+      "title": "VideoArchive"
+    },
+    "GenealogyExplorer": {
+      "title": "GenealogyExplorer"
+    },
+    "WheelMath": {
+      "title": "WheelMath"
+    },
+    "OpsTracker": {
+      "title": "OpsTracker"
+    },
+    "DecadeVisuals": {
+      "title": "DecadeVisuals"
+    },
+    "TimeCapsuleJournal": {
+      "title": "TimeCapsuleJournal"
     },
     "Quiz": {
       "title": "Quiz"
+    },
+    "CourseGek": {
+      "title": "CourseGek"
+    },
+    "AvatarGenerator": {
+      "title": "AvatarGenerator"
+    },
+    "CheapMedz": {
+      "title": "CheapMedz"
+    },
+    "DecadeTrivia": {
+      "title": "DecadeTrivia"
+    },
+    "AdminPanel": {
+      "title": "AdminPanel"
+    },
+    "Home": {
+      "title": "Home"
+    },
+    "eDecadesSearch": {
+      "title": "eDecadesSearch"
+    },
+    "GenerativeArtSpace": {
+      "title": "GenerativeArtSpace"
+    },
+    "KingXcel": {
+      "title": "KingXcel"
+    },
+    "SocialMediaHub": {
+      "title": "SocialMediaHub"
+    },
+    "KingXcelPanel": {
+      "title": "KingXcelPanel"
     },
     "OnThisDay": {
       "title": "OnThisDay"
@@ -14,68 +65,20 @@
     "FamilyJourney": {
       "title": "FamilyJourney"
     },
-    "GenerativeArtSpace": {
-      "title": "GenerativeArtSpace"
-    },
-    "TimeCapsuleJournal": {
-      "title": "TimeCapsuleJournal"
-    },
-    "AdminPanel": {
-      "title": "AdminPanel"
-    },
-    "SocialMediaHub": {
-      "title": "SocialMediaHub"
-    },
-    "ResumeCrafted": {
-      "title": "ResumeCrafted"
+    "GameForge": {
+      "title": "GameForge"
     },
     "MusicRandomizer": {
       "title": "MusicRandomizer"
     },
-    "OpsTracker": {
-      "title": "OpsTracker"
-    },
-    "GenealogyExplorer": {
-      "title": "GenealogyExplorer"
+    "ResumeCrafted": {
+      "title": "ResumeCrafted"
     },
     "eDecadesDailyTracker": {
       "title": "eDecadesDailyTracker"
     },
-    "CheapMedz": {
-      "title": "CheapMedz"
-    },
-    "WheelMath": {
-      "title": "WheelMath"
-    },
-    "GameForge": {
-      "title": "GameForge"
-    },
     "SportsMVPs": {
       "title": "SportsMVPs"
-    },
-    "VideoArchive": {
-      "title": "VideoArchive"
-    },
-    "eDecadesSearch": {
-      "title": "eDecadesSearch"
-    },
-    "KingXcelPanel": {
-      "title": "KingXcelPanel"
-    },
-    "DecadeVisuals": {
-      "title": "DecadeVisuals"
-    },
-    "AvatarGenerator": {
-      "title": "AvatarGenerator"
-    },
-    "Home": {
-      "title": "Home"
-    },
-    "CourseGek": {
-      "title": "CourseGek"
-    },
-    "KingXcel": {
-      "title": "KingXcel"
     }
   }
 }
