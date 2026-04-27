@@ -1,323 +1,351 @@
 import { useState } from "react";
 
-const DECADES_DATA = {
+const DECADE_DATA = {
   "1920s": {
-    emoji: "🎷",
-    tagline: "The Roaring Twenties",
-    colors: ["#FFD700", "#000000", "#C0A060", "#8B0000", "#F5DEB3", "#2F2F2F"],
-    colorNames: ["Gatsby Gold", "Jet Black", "Champagne", "Art Deco Red", "Cream", "Charcoal"],
-    fashion: [
-      { label: "Flapper Dress", desc: "Drop-waist dresses with fringe, meant for dancing the Charleston" },
-      { label: "Cloche Hat", desc: "Bell-shaped hats pulled low over bobbed hair — the ultimate 20s look" },
-      { label: "Men's Pinstripe Suits", desc: "Wide-lapel pinstripe suits worn by gangsters and gentlemen alike" },
-      { label: "Art Deco Jewelry", desc: "Geometric, bold jewelry inspired by Egyptian and Greek motifs" },
+    emoji:"🎷", tagline:"The Roaring Twenties", color:"#d4956e",
+    wage:"$0.45/hr", inflation:"2.4%", unemployment:"5.2%", lifeExpectancy:"57 yrs",
+    topSong:"Ain't Misbehavin' — Fats Waller", topMovie:"The Jazz Singer (1927)",
+    music:{ genres:["Jazz","Blues","Ragtime","Gospel"], popularity:[85,65,55,40] },
+    fashion:["Flapper dresses","Cloche hats","Bobbed hair","Pinstripe suits","Art Deco jewelry"],
+    fashionIcons:["Coco Chanel","Josephine Baker"],
+    events:["Prohibition (1920-1933)","Women's Suffrage (1920)","Harlem Renaissance","Stock Market Crash (1929)"],
+    tech:["Talking pictures","Commercial radio","Home refrigerators","Penicillin discovered (1928)"],
+    culture:["Charleston dance","Speakeasies","Jazz clubs","Rise of cinema","Art Deco"],
+    photos:[
+      {url:"https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/New_york_times_square_1920.jpg/640px-New_york_times_square_1920.jpg",caption:"Times Square 1920s"},
+      {url:"https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/ODJB.jpg/480px-ODJB.jpg",caption:"Original Dixieland Jazz Band"},
     ],
-    inventions: [
-      { name: "Television", year: 1927, desc: "John Logie Baird demonstrated the first working TV in 1926" },
-      { name: "Penicillin", year: 1928, desc: "Alexander Fleming's discovery of penicillin changed medicine forever" },
-      { name: "Talking Pictures", year: 1927, desc: "The Jazz Singer became the first synchronized-sound feature film" },
-    ],
-    culture: ["Charleston dance craze", "Speakeasies & bootleg gin", "Jazz music everywhere", "Women's suffrage", "Rise of cinema"],
   },
   "1930s": {
-    emoji: "🎬",
-    tagline: "The Golden Age of Hollywood",
-    colors: ["#708090", "#2F4F4F", "#8B7355", "#C0A060", "#F5F5DC", "#4A4A4A"],
-    colorNames: ["Steel Gray", "Depression Green", "Khaki", "Champagne", "Ivory", "Shadow"],
-    fashion: [
-      { label: "Bias-Cut Gowns", desc: "Sleek, body-skimming silk gowns inspired by Hollywood starlets" },
-      { label: "Wide-Leg Trousers", desc: "High-waisted, wide-leg trousers on men — relaxed elegance" },
-      { label: "Fedora Hats", desc: "The fedora was THE hat of the 1930s — worn by everyone from gangsters to movie stars" },
+    emoji:"🎬", tagline:"The Golden Age of Hollywood", color:"#b8a88a",
+    wage:"$0.30/hr", inflation:"-2.1%", unemployment:"24.9%", lifeExpectancy:"60 yrs",
+    topSong:"Over the Rainbow — Judy Garland", topMovie:"Gone with the Wind (1939)",
+    music:{ genres:["Swing","Big Band","Blues","Country"], popularity:[85,80,65,50] },
+    fashion:["Bias-cut silk gowns","Wide-leg trousers","Fedora hats","Platform shoes","Utility wear"],
+    fashionIcons:["Marlene Dietrich","Katharine Hepburn"],
+    events:["Great Depression","The New Deal","Rise of Fascism","Spanish Civil War","Social Security Act"],
+    tech:["Nylon invented","Radar developed","Jet engine prototype","Color film"],
+    culture:["Hollywood musicals","Radio dramas","Superman comic (1938)","Shirley Temple"],
+    photos:[
+      {url:"https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Lange-MigrantMother02.jpg/480px-Lange-MigrantMother02.jpg",caption:"Migrant Mother — Dorothea Lange (1936)"},
     ],
-    inventions: [
-      { name: "Nylon", year: 1935, desc: "DuPont invented nylon — the first fully synthetic fiber — revolutionizing stockings" },
-      { name: "Radar", year: 1935, desc: "Robert Watson-Watt developed the first practical radar system in 1935" },
-      { name: "Jet Engine", year: 1937, desc: "Frank Whittle's jet engine prototype changed aviation forever" },
-    ],
-    culture: ["Great Depression", "The New Deal", "Big Band & Swing", "Hollywood golden era", "Radio becomes king"],
   },
   "1940s": {
-    emoji: "✈️",
-    tagline: "The War Years & Victory",
-    colors: ["#8B0000", "#4169E1", "#F5DEB3", "#228B22", "#C0A060", "#2F2F2F"],
-    colorNames: ["Victory Red", "Navy Blue", "Wheat", "Army Green", "Brass", "Blackout"],
-    fashion: [
-      { label: "Military Uniforms", desc: "Military influence shaped all fashion — even civilian clothes had structured shoulders" },
-      { label: "Rosie the Riveter Style", desc: "Women entered the workforce wearing practical overalls and headscarves" },
-      { label: "Victory Rolls Hairstyle", desc: "Rolled curls framing the face — the signature hairstyle of 1940s women" },
+    emoji:"✈️", tagline:"War Years & Victory", color:"#7a9abf",
+    wage:"$0.65/hr", inflation:"5.8%", unemployment:"4.7%", lifeExpectancy:"65 yrs",
+    topSong:"White Christmas — Bing Crosby", topMovie:"Casablanca (1942)",
+    music:{ genres:["Big Band","Bebop","Country","Gospel"], popularity:[80,60,55,50] },
+    fashion:["Military-shoulder silhouettes","Rosie the Riveter look","Victory Rolls","Utility dresses"],
+    fashionIcons:["Rita Hayworth","Veronica Lake"],
+    events:["World War II (1939-1945)","Pearl Harbor (1941)","D-Day (1944)","Atomic bomb (1945)","UN founded"],
+    tech:["Atomic bomb","Microwave oven","ENIAC computer","Penicillin mass production","Jet aircraft"],
+    culture:["War films","Pin-up culture","USO shows","Rosie the Riveter","Baby Boom begins"],
+    photos:[
+      {url:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Into_the_Jaws_of_Death_23-0455M_edit.jpg/640px-Into_the_Jaws_of_Death_23-0455M_edit.jpg",caption:"D-Day — Normandy Beach (1944)"},
+      {url:"https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/We_Can_Do_It%21.jpg/480px-We_Can_Do_It%21.jpg",caption:"Rosie the Riveter"},
     ],
-    inventions: [
-      { name: "Atomic Bomb", year: 1945, desc: "The Manhattan Project produced the atomic bomb, ending WWII and changing history" },
-      { name: "Microwave Oven", year: 1945, desc: "Percy Spencer accidentally discovered microwave cooking while working on radar" },
-      { name: "Computer (ENIAC)", year: 1945, desc: "ENIAC — the first general-purpose electronic computer — filled an entire room" },
-    ],
-    culture: ["World War II", "Rationing & Victory Gardens", "Swing dancing", "Rise of suburbia", "Birth of the teenager"],
   },
   "1950s": {
-    emoji: "🎸",
-    tagline: "Rock & Roll Is Born",
-    colors: ["#FF69B4", "#00CED1", "#FF4500", "#FFFF00", "#98FB98", "#000000"],
-    colorNames: ["Poodle Pink", "Turquoise", "Flame Red", "Sunny Yellow", "Mint", "Black"],
-    fashion: [
-      { label: "Poodle Skirt", desc: "Full circle skirts with a poodle appliqué — the ultimate teen fashion statement" },
-      { label: "Greaser Style", desc: "Leather jackets, slicked-back hair, and tight jeans — the rebel look" },
-      { label: "New Look Silhouette", desc: "Christian Dior's hourglass 'New Look' — nipped waist and full skirt" },
-      { label: "Cat Eye Sunglasses", desc: "Upswept cat-eye frames were the must-have accessory of every 50s woman" },
+    emoji:"🎸", tagline:"Rock & Roll Is Born", color:"#d4788a",
+    wage:"$1.00/hr", inflation:"1.3%", unemployment:"4.5%", lifeExpectancy:"68 yrs",
+    topSong:"Hound Dog — Elvis Presley", topMovie:"Singin' in the Rain (1952)",
+    music:{ genres:["Rock & Roll","R&B","Country","Doo-Wop"], popularity:[90,75,60,55] },
+    fashion:["Poodle skirts","Greaser leather jackets","New Look hourglass","Cat-eye sunglasses","Saddle shoes"],
+    fashionIcons:["Marilyn Monroe","James Dean"],
+    events:["Korean War (1950-53)","Brown v. Board (1954)","Rosa Parks (1955)","Sputnik (1957)"],
+    tech:["Color TV","Credit cards","DNA double helix","Polio vaccine","Transistor radio"],
+    culture:["Drive-in movies","Diners","Rock & roll","I Love Lucy","Teenage culture emerges"],
+    photos:[
+      {url:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Elvis_Presley_promoting_Jailhouse_Rock.jpg/480px-Elvis_Presley_promoting_Jailhouse_Rock.jpg",caption:"Elvis Presley"},
+      {url:"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Rosa_Parks_Bus.jpg/480px-Rosa_Parks_Bus.jpg",caption:"Rosa Parks Bus — 1955"},
     ],
-    inventions: [
-      { name: "Color TV", year: 1953, desc: "RCA launched commercial color television in 1953, changing entertainment forever" },
-      { name: "Credit Card", year: 1950, desc: "The Diners Club card — the world's first credit card — launched in 1950" },
-      { name: "DNA Double Helix", year: 1953, desc: "Watson and Crick discovered the double helix structure of DNA in 1953" },
-    ],
-    culture: ["Birth of rock & roll", "Drive-in movies & diners", "Cold War anxiety", "TV becomes king", "Baby Boom"],
   },
   "1960s": {
-    emoji: "☮️",
-    tagline: "Peace, Love & Revolution",
-    colors: ["#FF6347", "#4169E1", "#FFFF00", "#FF69B4", "#90EE90", "#FF8C00"],
-    colorNames: ["Tomato Red", "Royal Blue", "Psychedelic Yellow", "Hot Pink", "Lime", "Tangerine"],
-    fashion: [
-      { label: "Mini Skirt", desc: "Mary Quant's mini skirt became the ultimate symbol of 1960s liberation" },
-      { label: "Mod Fashion", desc: "Bold geometric prints and space-age silhouettes — London's Mod scene" },
-      { label: "Hippie Style", desc: "Tie-dye, bell-bottoms, flower crowns — the counterculture look of the late 60s" },
-      { label: "Go-Go Boots", desc: "White knee-high boots worn with mini skirts — a defining 60s accessory" },
+    emoji:"☮️", tagline:"Peace, Love & Revolution", color:"#c4956e",
+    wage:"$1.25/hr", inflation:"2.3%", unemployment:"5.5%", lifeExpectancy:"70 yrs",
+    topSong:"I Want to Hold Your Hand — The Beatles", topMovie:"The Graduate (1967)",
+    music:{ genres:["Rock","Soul","Folk","Psychedelic","Motown"], popularity:[90,80,65,60,75] },
+    fashion:["Mini skirts","Mod geometric prints","Tie-dye","Bell-bottoms","Go-go boots"],
+    fashionIcons:["Twiggy","Jackie Kennedy"],
+    events:["JFK assassination (1963)","Civil Rights Act (1964)","Moon Landing (1969)","Woodstock (1969)","Vietnam War"],
+    tech:["ARPANET/Internet (1969)","Apollo 11","Laser","Cassette tape","Heart transplant"],
+    culture:["British Invasion","Hippie movement","Psychedelia","Civil rights marches","Space Race"],
+    photos:[
+      {url:"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/The_Beatles_in_America.JPG/640px-The_Beatles_in_America.JPG",caption:"The Beatles arrive in America — 1964"},
+      {url:"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Buzz_salutes_the_U.S._Flag.jpg/480px-Buzz_salutes_the_U.S._Flag.jpg",caption:"Moon Landing — 1969"},
     ],
-    inventions: [
-      { name: "Internet (ARPANET)", year: 1969, desc: "The first message was sent over ARPANET on October 29, 1969" },
-      { name: "Moon Landing", year: 1969, desc: "Apollo 11 landed on the moon on July 20, 1969 — one giant leap for mankind" },
-      { name: "Cassette Tape", year: 1962, desc: "Philips introduced the compact cassette in 1962, changing portable music" },
-    ],
-    culture: ["Civil Rights Movement", "Woodstock & hippies", "Space Race", "British Invasion", "Vietnam War protests"],
   },
   "1970s": {
-    emoji: "🕺",
-    tagline: "Disco Fever & Cultural Revolution",
-    colors: ["#FF8C00", "#8B4513", "#DAA520", "#CD853F", "#F4A460", "#556B2F"],
-    colorNames: ["Burnt Orange", "Earth Brown", "Harvest Gold", "Peru", "Sandy Brown", "Olive"],
-    fashion: [
-      { label: "Bell-Bottom Jeans", desc: "Flared jeans so wide they swept the floor — the ultimate 70s staple" },
-      { label: "Leisure Suits", desc: "Matching polyester jacket and pants in bold colors — peak 70s style" },
-      { label: "Platform Shoes", desc: "Thick-soled platform shoes in wild colors — worn by men and women alike" },
-      { label: "Afro Hairstyle", desc: "The Afro became a powerful symbol of Black pride and cultural identity" },
+    emoji:"🕺", tagline:"Funk, Disco & Soul", color:"#c4784f",
+    wage:"$2.30/hr", inflation:"7.4%", unemployment:"8.5%", lifeExpectancy:"72 yrs",
+    topSong:"Stayin' Alive — Bee Gees", topMovie:"Star Wars (1977)",
+    music:{ genres:["Disco","Funk","Rock","Hip-Hop","Punk"], popularity:[85,75,80,55,55] },
+    fashion:["Bell-bottoms","Platform shoes","Leisure suits","Mood rings","Halter tops"],
+    fashionIcons:["Farrah Fawcett","David Bowie"],
+    events:["Watergate scandal","Vietnam ends (1975)","Oil crisis","Roe v. Wade (1973)","Iran Revolution (1979)"],
+    tech:["Personal computer (1975)","VCR","MRI scanner","Atari 2600","Space Shuttle designed"],
+    culture:["Disco clubs","Saturday Night Fever","Star Wars","Charlie's Angels","Roller skating rinks"],
+    photos:[
+      {url:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Woodstock_redmond_stage.JPG/640px-Woodstock_redmond_stage.JPG",caption:"Festival Culture — 1970s"},
     ],
-    inventions: [
-      { name: "Personal Computer", year: 1975, desc: "The Altair 8800 launched the personal computer revolution in 1975" },
-      { name: "VHS Tape", year: 1976, desc: "JVC's VHS format won the format war and brought movies home" },
-      { name: "Post-it Note", year: 1974, desc: "Spencer Silver's 'failed' adhesive became the beloved Post-it Note" },
-    ],
-    culture: ["Disco & Studio 54", "Watergate scandal", "Star Wars premiere", "Punk rock emerges", "Women's liberation"],
   },
   "1980s": {
-    emoji: "🕹️",
-    tagline: "Neon, Arcade & MTV",
-    colors: ["#FF1493", "#00FFFF", "#FFFF00", "#FF4500", "#7B68EE", "#00FF7F"],
-    colorNames: ["Hot Pink", "Neon Cyan", "Electric Yellow", "Neon Orange", "Medium Slate", "Spring Green"],
-    fashion: [
-      { label: "Power Suits", desc: "Shoulder-padded blazers for women entering the corporate world in force" },
-      { label: "Acid Wash Denim", desc: "Chemical-treated jeans with a bleached, faded pattern — everywhere in the 80s" },
-      { label: "Leg Warmers", desc: "Inspired by Flashdance — colorful leg warmers worn over leggings or jeans" },
-      { label: "Jheri Curl", desc: "Glossy, loosely curled hairstyle popularized by Michael Jackson and others" },
+    emoji:"🕹️", tagline:"Neon, Power & Pop", color:"#b87ac4",
+    wage:"$3.35/hr", inflation:"5.1%", unemployment:"10.8%", lifeExpectancy:"74 yrs",
+    topSong:"Thriller — Michael Jackson", topMovie:"E.T. the Extra-Terrestrial (1982)",
+    music:{ genres:["Pop","New Wave","Hip-Hop","Heavy Metal","R&B"], popularity:[90,75,70,65,70] },
+    fashion:["Power shoulders","Leg warmers","Acid-wash jeans","Big hair","Scrunchies"],
+    fashionIcons:["Madonna","Princess Diana"],
+    events:["Reagan Revolution","HIV/AIDS crisis","Berlin Wall falls (1989)","Chernobyl (1986)","Tiananmen Square (1989)"],
+    tech:["IBM PC (1981)","CD player","DNA fingerprinting","Pac-Man","Nintendo NES"],
+    culture:["MTV launches","Video game boom","Back to the Future","Ghostbusters","The Breakfast Club"],
+    photos:[
+      {url:"https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/West_and_East_Germans_at_the_Berlin_Wall.jpg/640px-West_and_East_Germans_at_the_Berlin_Wall.jpg",caption:"Berlin Wall Falls — November 1989"},
+      {url:"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Macintosh_128k_transparency.png/480px-Macintosh_128k_transparency.png",caption:"Apple Macintosh — 1984"},
     ],
-    inventions: [
-      { name: "World Wide Web", year: 1989, desc: "Tim Berners-Lee proposed the World Wide Web in 1989 at CERN" },
-      { name: "DNA Fingerprinting", year: 1984, desc: "Alec Jeffreys developed DNA fingerprinting, revolutionizing forensics" },
-      { name: "Nintendo Game Boy", year: 1989, desc: "The Game Boy launched portable gaming as a mainstream phenomenon" },
-    ],
-    culture: ["MTV launches", "Reagan era", "Cold War ends", "Crack epidemic", "Hip hop born in the Bronx"],
   },
   "1990s": {
-    emoji: "📼",
-    tagline: "Grunge, Hip Hop & the Internet Age",
-    colors: ["#228B22", "#8B0000", "#4169E1", "#FF8C00", "#9400D3", "#2F4F4F"],
-    colorNames: ["Grunge Green", "Doc Marten Red", "Denim Blue", "Nickelodeon Orange", "Purple", "Flannel"],
-    fashion: [
-      { label: "Flannel Shirts", desc: "Oversized flannel shirts tied around the waist — the Seattle grunge look" },
-      { label: "JNCO Jeans", desc: "Impossibly wide-leg jeans with a 50-inch hem — peak 90s teen fashion" },
-      { label: "Slip Dresses", desc: "Satin slip dresses worn over t-shirts — the minimalist 90s aesthetic" },
-      { label: "Bucket Hats", desc: "Hip hop's signature accessory — LL Cool J and TLC made them iconic" },
+    emoji:"📼", tagline:"Grunge, Hip-Hop & the Web", color:"#7aaa8a",
+    wage:"$4.25/hr", inflation:"3.0%", unemployment:"7.4%", lifeExpectancy:"75 yrs",
+    topSong:"Smells Like Teen Spirit — Nirvana", topMovie:"Titanic (1997)",
+    music:{ genres:["Grunge","Hip-Hop","R&B","Pop","Alternative"], popularity:[80,90,85,88,75] },
+    fashion:["Grunge flannel","Baggy jeans","Slip dresses","Frosted tips","JNCO jeans"],
+    fashionIcons:["Kate Moss","Kurt Cobain"],
+    events:["Gulf War (1991)","Oklahoma City bombing (1995)","OJ Simpson trial","Columbine (1999)","Clinton impeachment"],
+    tech:["World Wide Web","DVD","Dolly the sheep cloned","Game Boy Color","MP3 player"],
+    culture:["Friends TV show","Titanic","Tamagotchi","AOL Instant Messenger","Beanie Babies"],
+    photos:[
+      {url:"https://upload.wikimedia.org/wikipedia/en/thumb/b/b7/NirvanaNevermindalbumcover.jpg/400px-NirvanaNevermindalbumcover.jpg",caption:"Nirvana — Nevermind (1991)"},
     ],
-    inventions: [
-      { name: "Google", year: 1998, desc: "Larry Page and Sergey Brin founded Google in a Stanford garage in 1998" },
-      { name: "DVD", year: 1995, desc: "The DVD replaced VHS and transformed how we watched movies at home" },
-      { name: "WiFi", year: 1997, desc: "The IEEE 802.11 standard established wireless internet connectivity" },
-    ],
-    culture: ["Grunge & Nirvana", "Hip hop goes mainstream", "Dot-com boom", "The Fresh Prince", "Y2K panic"],
   },
   "2000s": {
-    emoji: "💿",
-    tagline: "Y2K, iPods & Social Media Dawn",
-    colors: ["#87CEEB", "#FFB6C1", "#98FB98", "#DDA0DD", "#F0E68C", "#B0C4DE"],
-    colorNames: ["Sky Blue", "Pastel Pink", "Mint Green", "Plum", "Khaki", "Light Steel Blue"],
-    fashion: [
-      { label: "Von Dutch Trucker Hats", desc: "The must-have Y2K accessory — worn tilted to the side by every celeb" },
-      { label: "Velour Tracksuits", desc: "Juicy Couture's velour tracksuits were worn by Paris Hilton and copied by everyone" },
-      { label: "Low-Rise Jeans", desc: "Hip-hugging low-rise jeans paired with visible underwear — the 2000s look" },
-      { label: "Emo Style", desc: "Side-swept bangs, band tees, skinny jeans — Hot Topic was a religion" },
+    emoji:"💿", tagline:"Y2K & the Digital Age", color:"#7aaac4",
+    wage:"$5.15/hr", inflation:"2.8%", unemployment:"6.0%", lifeExpectancy:"77 yrs",
+    topSong:"Crazy in Love — Beyoncé", topMovie:"The Dark Knight (2008)",
+    music:{ genres:["Pop","Hip-Hop","Emo","Pop Punk","Electronic"], popularity:[90,95,65,60,60] },
+    fashion:["Low-rise jeans","Von Dutch hats","Juicy Couture tracksuits","UGG boots","Bling jewelry"],
+    fashionIcons:["Paris Hilton","Britney Spears"],
+    events:["9/11 attacks (2001)","Iraq War (2003)","Hurricane Katrina (2005)","iPhone launch (2007)","Financial crisis (2008)"],
+    tech:["iPod","Facebook","YouTube","Twitter","HD DVD vs Blu-ray"],
+    culture:["American Idol","MySpace","Harry Potter","The Sopranos","Jackass"],
+    photos:[
+      {url:"https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/South_face_tower_two.jpg/480px-South_face_tower_two.jpg",caption:"9/11 — September 11, 2001"},
+      {url:"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/President_Barack_Obama.jpg/480px-President_Barack_Obama.jpg",caption:"Barack Obama elected — 2008"},
     ],
-    inventions: [
-      { name: "iPod", year: 2001, desc: "Apple's iPod put 1,000 songs in your pocket and killed the CD Walkman" },
-      { name: "Facebook", year: 2004, desc: "Mark Zuckerberg launched Facebook from his Harvard dorm room in 2004" },
-      { name: "YouTube", year: 2005, desc: "YouTube launched in 2005 and forever changed how we share video" },
-    ],
-    culture: ["9/11 changed everything", "Reality TV explosion", "MySpace era", "Iraq War", "iPhone launched in 2007"],
   },
   "2010s": {
-    emoji: "📱",
-    tagline: "Social Media, Streaming & Selfie Culture",
-    colors: ["#1DA1F2", "#E1306C", "#405DE6", "#FF0000", "#25D366", "#FF6600"],
-    colorNames: ["Twitter Blue", "Instagram Pink", "Facebook Purple", "YouTube Red", "WhatsApp Green", "Reddit Orange"],
-    fashion: [
-      { label: "Normcore", desc: "Deliberately plain, unremarkable clothing — the anti-fashion fashion statement" },
-      { label: "Athleisure", desc: "Yoga pants and hoodies worn everywhere — Lululemon became a lifestyle brand" },
-      { label: "Man Bun", desc: "Long hair tied in a bun on top of men's heads — polarizing and everywhere" },
-      { label: "Hypebeast Streetwear", desc: "Supreme drops, Yeezys, and Off-White — limited-edition hype culture" },
+    emoji:"📱", tagline:"Social Media & Streaming", color:"#c47aa4",
+    wage:"$7.25/hr", inflation:"1.7%", unemployment:"9.6%", lifeExpectancy:"78 yrs",
+    topSong:"Shape of You — Ed Sheeran", topMovie:"Avengers: Endgame (2019)",
+    music:{ genres:["Pop","Hip-Hop","EDM","Indie","K-Pop"], popularity:[90,95,80,70,70] },
+    fashion:["Athleisure","Normcore","Hypebeast sneakers","Gender-fluid fashion","Instagram aesthetic"],
+    fashionIcons:["Rihanna","Kanye West"],
+    events:["Arab Spring (2011)","Obamacare (2010)","Marriage equality (2015)","Trump elected (2016)","Brexit (2016)"],
+    tech:["Instagram","Snapchat","Tesla Model S","Apple Watch","4K streaming"],
+    culture:["Game of Thrones","Avengers","TikTok launch","K-Pop global","Netflix streaming"],
+    photos:[
+      {url:"https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Barack_Obama_signature_health_care_20100323.jpg/640px-Barack_Obama_signature_health_care_20100323.jpg",caption:"Obamacare Signed — 2010"},
     ],
-    inventions: [
-      { name: "iPad", year: 2010, desc: "Apple's iPad created the tablet category and changed personal computing" },
-      { name: "Instagram", year: 2010, desc: "Instagram launched in 2010 and turned everyone into a photographer" },
-      { name: "Snapchat", year: 2011, desc: "Disappearing photos created a new language for teen communication" },
-    ],
-    culture: ["Black Lives Matter", "Brexit & Trump", "Streaming kills cable", "Meme economy", "Climate strikes"],
-  },
-  "2020s": {
-    emoji: "🌐",
-    tagline: "Pandemic, AI & the New Normal",
-    colors: ["#00D2FF", "#7B2FBE", "#FF6B35", "#2ECC71", "#E74C3C", "#3498DB"],
-    colorNames: ["Digital Cyan", "Crypto Purple", "Metaverse Orange", "Green Recovery", "Alert Red", "Zoom Blue"],
-    fashion: [
-      { label: "Cottagecore", desc: "Floral dresses and prairie skirts — cozy pandemic escapism fashion" },
-      { label: "Oversized Everything", desc: "Baggy silhouettes dominated — comfort became the new luxury" },
-      { label: "Y2K Revival", desc: "Everything from the early 2000s came back — low-rise jeans, baby tees, chunky shoes" },
-      { label: "Gorpcore", desc: "Outdoor/hiking gear worn as everyday fashion — Patagonia and Arc'teryx as status symbols" },
-    ],
-    inventions: [
-      { name: "ChatGPT / AI", year: 2022, desc: "OpenAI launched ChatGPT in 2022, triggering a global AI revolution" },
-      { name: "mRNA Vaccines", year: 2020, desc: "Pfizer and Moderna's COVID vaccines validated decades of mRNA research" },
-      { name: "James Webb Telescope", year: 2021, desc: "The James Webb Space Telescope revealed the deepest images of the universe ever captured" },
-    ],
-    culture: ["COVID-19 pandemic", "Work from home becomes normal", "NFT craze", "Ukraine war", "AI takes over everything"],
   },
 };
 
-const DECADE_KEYS = Object.keys(DECADES_DATA);
+const DECADES = Object.keys(DECADE_DATA);
+const DECADE_EMOJIS = Object.fromEntries(DECADES.map(d => [d, DECADE_DATA[d].emoji]));
 
-export default function DecadeVisuals() {
-  const [selected, setSelected] = useState("1980s");
-  const [activeTab, setActiveTab] = useState("fashion");
+function MiniBarChart({ genres, values, color }) {
+  const max = Math.max(...values, 1);
+  return (
+    <div style={{ display:"flex", alignItems:"flex-end", gap:6, height:80, marginTop:8 }}>
+      {genres.map((g,i) => (
+        <div key={i} style={{ flex:1, display:"flex", flexDirection:"column", alignItems:"center", gap:3 }}>
+          <div style={{ fontSize:9, color:"#6b7280", fontWeight:700 }}>{values[i]}</div>
+          <div style={{ width:"100%", background: color+"88", borderRadius:"3px 3px 0 0", height:`${Math.max((values[i]/max)*56,4)}px`, border:`1px solid ${color}44`, transition:"height 0.6s" }} />
+          <div style={{ fontSize:8, color:"#9ca3af", textAlign:"center", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap", maxWidth:28 }}>{g}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
-  const decade = DECADES_DATA[selected];
+function DecadeColumn({ decade, data, side }) {
+  const [activeTab, setActiveTab] = useState("stats");
+  const tabs = ["stats","music","fashion","events","tech","culture"];
+  const tabLabels = { stats:"📊 Stats", music:"🎵 Music", fashion:"👗 Fashion", events:"📰 Events", tech:"💡 Tech", culture:"🎬 Culture" };
+  const [lightbox, setLightbox] = useState(null);
 
   return (
-    <div style={{ background: "#111827", minHeight: "100vh", color: "#f3f4f6", fontFamily: "Georgia, serif" }}>
-
-      {/* Header */}
-      <div style={{ background: "linear-gradient(135deg, #1f2937, #111827)", borderBottom: "2px solid #d4956e44", padding: "32px 24px", textAlign: "center" }}>
-        <div style={{ fontSize: 40, marginBottom: 8 }}>🎞️</div>
-        <h1 style={{ color: "#d4956e", fontSize: 28, fontWeight: 800, margin: "0 0 8px" }}>Decade Visual Archive</h1>
-        <p style={{ color: "#9ca3af", fontSize: 14, margin: 0 }}>Fashion, Colors, Inventions & Culture — by decade</p>
+    <div style={{ flex:1, minWidth:0, background:"#111827", borderRadius:16, overflow:"hidden", border:`2px solid ${data.color}33` }}>
+      {lightbox && (
+        <div onClick={()=>setLightbox(null)} style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.92)", zIndex:999, display:"flex", alignItems:"center", justifyContent:"center", cursor:"zoom-out", padding:24 }}>
+          <div onClick={e=>e.stopPropagation()} style={{ maxWidth:700, width:"100%", textAlign:"center" }}>
+            <img src={lightbox.url} alt={lightbox.caption} style={{ maxWidth:"100%", maxHeight:"70vh", borderRadius:12, objectFit:"contain" }} onError={e=>e.target.style.display="none"} />
+            <p style={{ color:"#C9A84C", fontWeight:700, marginTop:12 }}>{lightbox.caption}</p>
+            <button onClick={()=>setLightbox(null)} style={{ background:"#1f2937", border:"1px solid #374151", borderRadius:99, padding:"7px 20px", color:"#fff", cursor:"pointer", marginTop:8 }}>✕ Close</button>
+          </div>
+        </div>
+      )}
+      <div style={{ background:`linear-gradient(135deg, ${data.color}33, #1f2937)`, padding:"18px 16px", textAlign:"center", borderBottom:`2px solid ${data.color}44` }}>
+        <div style={{ fontSize:36, marginBottom:4 }}>{data.emoji}</div>
+        <h2 style={{ color:data.color, fontWeight:900, fontSize:22, margin:"0 0 3px" }}>{decade}</h2>
+        <div style={{ color:"#9ca3af", fontSize:12 }}>{data.tagline}</div>
       </div>
-
-      {/* Decade Selector */}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center", padding: "24px 16px 0" }}>
-        {DECADE_KEYS.map((d) => (
-          <button
-            key={d}
-            onClick={() => setSelected(d)}
-            style={{
-              padding: "8px 18px", borderRadius: 99, fontWeight: 700, fontSize: 13,
-              border: selected === d ? "2px solid #d4956e" : "2px solid #374151",
-              background: selected === d ? "#d4956e22" : "#1f2937",
-              color: selected === d ? "#d4956e" : "#9ca3af",
-              cursor: "pointer", transition: "all 0.2s",
-            }}
-          >
-            {DECADES_DATA[d].emoji} {d}
-          </button>
+      <div style={{ display:"flex", gap:4, padding:"8px 8px 0", flexWrap:"wrap" }}>
+        {tabs.map(t => (
+          <button key={t} onClick={()=>setActiveTab(t)} style={{ padding:"4px 10px", borderRadius:99, fontSize:10, fontWeight:700, cursor:"pointer", border:"none", background:activeTab===t ? data.color : "#1f2937", color:activeTab===t ? "#000" : "#9ca3af" }}>{tabLabels[t]}</button>
         ))}
       </div>
-
-      {/* Decade Hero */}
-      <div style={{ maxWidth: 800, margin: "24px auto 0", padding: "0 16px" }}>
-        <div style={{ background: "#1f2937", borderRadius: 16, padding: "28px 24px", border: "1px solid #374151", marginBottom: 20 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 16 }}>
-            <span style={{ fontSize: 52 }}>{decade.emoji}</span>
-            <div>
-              <h2 style={{ color: "#d4956e", fontSize: 28, fontWeight: 900, margin: "0 0 4px" }}>{selected}</h2>
-              <p style={{ color: "#9ca3af", margin: 0, fontStyle: "italic" }}>{decade.tagline}</p>
-            </div>
+      <div style={{ padding:"14px 14px 20px" }}>
+        {activeTab==="stats" && (
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8 }}>
+            {[["💵 Avg Wage",data.wage,"#22c55e"],["📈 Inflation",data.inflation,"#f97316"],["👥 Unemployment",data.unemployment,"#ef4444"],["❤️ Life Expectancy",data.lifeExpectancy,"#a78bfa"],["🎵 Top Song",data.topSong,"#eab308"],["🎬 Top Movie",data.topMovie,"#60a5fa"]].map(([label,val,col],i)=>(
+              <div key={i} style={{ background:"#1f2937", borderRadius:10, padding:"10px 12px", gridColumn:i>=4?"span 2":undefined }}>
+                <div style={{ color:"#6b7280", fontSize:10, fontWeight:700 }}>{label}</div>
+                <div style={{ color:col, fontWeight:800, fontSize:i>=4?12:18, marginTop:2 }}>{val}</div>
+              </div>
+            ))}
+            {data.photos?.length>0 && (
+              <div style={{ gridColumn:"span 2", marginTop:8 }}>
+                <div style={{ color:"#6b7280", fontSize:10, fontWeight:700, marginBottom:6 }}>📸 PHOTOS</div>
+                <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
+                  {data.photos.map((p,i)=>(
+                    <img key={i} src={p.url} alt={p.caption} onClick={()=>setLightbox(p)} style={{ height:80, borderRadius:8, cursor:"zoom-in", objectFit:"cover", flex:1, minWidth:80 }} onError={e=>e.target.style.display="none"} />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
-
-          {/* Color Palette */}
-          <div>
-            <p style={{ color: "#6b7280", fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, marginBottom: 10 }}>Decade Color Palette</p>
-            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-              {decade.colors.map((color, i) => (
-                <div key={i} style={{ textAlign: "center" }}>
-                  <div style={{ width: 44, height: 44, borderRadius: 10, background: color, border: "2px solid #374151", marginBottom: 4 }} />
-                  <div style={{ fontSize: 9, color: "#6b7280", maxWidth: 44, lineHeight: 1.2 }}>{decade.colorNames[i]}</div>
+        )}
+        {activeTab==="music" && (
+          <>
+            <div style={{ marginBottom:10 }}>
+              {data.music.genres.map((g,i)=>(
+                <div key={i} style={{ marginBottom:7 }}>
+                  <div style={{ display:"flex", justifyContent:"space-between", marginBottom:3 }}>
+                    <span style={{ color:"#d1d5db", fontSize:12 }}>{g}</span>
+                    <span style={{ color:data.color, fontSize:12, fontWeight:700 }}>{data.music.popularity[i]}%</span>
+                  </div>
+                  <div style={{ background:"#1f2937", borderRadius:99, height:6 }}>
+                    <div style={{ background:data.color, width:`${data.music.popularity[i]}%`, height:6, borderRadius:99, transition:"width 0.6s" }} />
+                  </div>
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-
-        {/* Tabs */}
-        <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
-          {["fashion", "inventions", "culture"].map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              style={{
-                padding: "8px 20px", borderRadius: 99, fontWeight: 700, fontSize: 13,
-                border: "none", cursor: "pointer",
-                background: activeTab === tab ? "#d4956e" : "#1f2937",
-                color: activeTab === tab ? "#fff" : "#9ca3af",
-              }}
-            >
-              {tab === "fashion" ? "👗 Fashion" : tab === "inventions" ? "💡 Inventions" : "🎭 Culture"}
-            </button>
-          ))}
-        </div>
-
-        {/* Tab Content */}
-        {activeTab === "fashion" && (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 14 }}>
-            {decade.fashion.map((item, i) => (
-              <div key={i} style={{ background: "#1f2937", borderRadius: 12, padding: "18px 16px", border: "1px solid #374151" }}>
-                <div style={{ fontSize: 28, marginBottom: 8 }}>👗</div>
-                <div style={{ color: "#f3f4f6", fontWeight: 700, fontSize: 15, marginBottom: 6 }}>{item.label}</div>
-                <div style={{ color: "#9ca3af", fontSize: 12, lineHeight: 1.5 }}>{item.desc}</div>
-              </div>
-            ))}
-          </div>
+            <MiniBarChart genres={data.music.genres} values={data.music.popularity} color={data.color} />
+          </>
         )}
-
-        {activeTab === "inventions" && (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 14 }}>
-            {decade.inventions.map((item, i) => (
-              <div key={i} style={{ background: "#1f2937", borderRadius: 12, padding: "18px 16px", border: "1px solid #374151" }}>
-                <div style={{ fontSize: 28, marginBottom: 8 }}>💡</div>
-                <div style={{ color: "#d4956e", fontWeight: 800, fontSize: 16, marginBottom: 2 }}>{item.name}</div>
-                <div style={{ color: "#6b7280", fontSize: 11, marginBottom: 8 }}>Invented {item.year}</div>
-                <div style={{ color: "#9ca3af", fontSize: 12, lineHeight: 1.5 }}>{item.desc}</div>
-              </div>
-            ))}
-          </div>
+        {activeTab==="fashion" && (
+          <>
+            {data.fashion.map((f,i)=><div key={i} style={{ color:"#e5e7eb", fontSize:13, padding:"5px 0", borderBottom:"1px solid #1f2937" }}>👗 {f}</div>)}
+            <div style={{ marginTop:12, color:"#6b7280", fontSize:11, fontWeight:700, textTransform:"uppercase" }}>Icons</div>
+            {data.fashionIcons.map((ic,i)=><div key={i} style={{ color:data.color, fontSize:13, fontWeight:600, padding:"4px 0" }}>⭐ {ic}</div>)}
+          </>
         )}
-
-        {activeTab === "culture" && (
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            {decade.culture.map((item, i) => (
-              <div key={i} style={{ background: "#1f2937", borderRadius: 10, padding: "14px 18px", border: "1px solid #374151", display: "flex", alignItems: "center", gap: 12 }}>
-                <span style={{ fontSize: 20 }}>🎭</span>
-                <span style={{ color: "#f3f4f6", fontSize: 14, fontWeight: 600 }}>{item}</span>
-              </div>
-            ))}
-          </div>
-        )}
-
-        <div style={{ height: 40 }} />
+        {activeTab==="events" && data.events.map((e,i)=><div key={i} style={{ color:"#e5e7eb", fontSize:13, padding:"6px 0", borderBottom:"1px solid #1f2937" }}>📌 {e}</div>)}
+        {activeTab==="tech" && data.tech.map((t,i)=><div key={i} style={{ color:"#e5e7eb", fontSize:13, padding:"6px 0", borderBottom:"1px solid #1f2937" }}>💡 {t}</div>)}
+        {activeTab==="culture" && data.culture.map((c,i)=><div key={i} style={{ color:"#e5e7eb", fontSize:13, padding:"6px 0", borderBottom:"1px solid #1f2937" }}>🎬 {c}</div>)}
       </div>
+    </div>
+  );
+}
+
+export default function DecadeVisuals() {
+  const [decadeA, setDecadeA] = useState("1960s");
+  const [decadeB, setDecadeB] = useState("1980s");
+  const [mode, setMode] = useState("compare"); // compare | single
+  const [singleDecade, setSingleDecade] = useState("1960s");
+
+  const dataA = DECADE_DATA[decadeA];
+  const dataB = DECADE_DATA[decadeB];
+
+  // Economic comparison bars
+  const parseNum = (s) => parseFloat(String(s).replace(/[^0-9.-]/g,"")) || 0;
+  const ecoStats = [
+    { label:"Avg Hourly Wage", a:parseNum(dataA.wage), b:parseNum(dataB.wage), unit:"$", color:"#22c55e" },
+    { label:"Inflation Rate", a:Math.abs(parseNum(dataA.inflation)), b:Math.abs(parseNum(dataB.inflation)), unit:"%", color:"#f97316" },
+    { label:"Unemployment", a:parseNum(dataA.unemployment), b:parseNum(dataB.unemployment), unit:"%", color:"#ef4444" },
+    { label:"Life Expectancy", a:parseNum(dataA.lifeExpectancy), b:parseNum(dataB.lifeExpectancy), unit:" yrs", color:"#a78bfa" },
+  ];
+
+  return (
+    <div style={{ background:"#07070e", minHeight:"100vh", color:"#f3f4f6", fontFamily:"Inter, sans-serif" }}>
+      <div style={{ background:"linear-gradient(135deg, #1f2937, #111827)", borderBottom:"2px solid #C9A84C33", padding:"36px 24px", textAlign:"center" }}>
+        <div style={{ fontSize:44, marginBottom:8 }}>⚖️</div>
+        <h1 style={{ color:"#C9A84C", fontSize:28, fontWeight:900, margin:"0 0 8px" }}>Compare Decades</h1>
+        <p style={{ color:"#9ca3af", fontSize:14, margin:"0 0 20px" }}>Side-by-side stats, music, fashion, events & culture</p>
+        <div style={{ display:"flex", gap:8, justifyContent:"center" }}>
+          <button onClick={()=>setMode("compare")} style={{ padding:"8px 20px", borderRadius:99, fontWeight:700, fontSize:13, cursor:"pointer", border:"none", background:mode==="compare"?"#C9A84C":"#1f2937", color:mode==="compare"?"#000":"#9ca3af" }}>⚖️ Compare Two</button>
+          <button onClick={()=>setMode("single")} style={{ padding:"8px 20px", borderRadius:99, fontWeight:700, fontSize:13, cursor:"pointer", border:"none", background:mode==="single"?"#C9A84C":"#1f2937", color:mode==="single"?"#000":"#9ca3af" }}>🔍 Deep Dive</button>
+        </div>
+      </div>
+
+      {mode==="compare" && (
+        <div style={{ maxWidth:1100, margin:"0 auto", padding:"28px 16px 60px" }}>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr auto 1fr", gap:16, alignItems:"center", marginBottom:28 }}>
+            <div>
+              <div style={{ color:"#9ca3af", fontSize:11, fontWeight:700, textTransform:"uppercase", marginBottom:6 }}>Decade A</div>
+              <select value={decadeA} onChange={e=>setDecadeA(e.target.value)} style={{ width:"100%", background:"#1f2937", border:"2px solid #374151", borderRadius:10, padding:"10px 12px", color:"#f3f4f6", fontSize:15, fontWeight:700 }}>
+                {DECADES.map(d=><option key={d} value={d}>{DECADE_EMOJIS[d]} {d}</option>)}
+              </select>
+            </div>
+            <div style={{ fontSize:24, color:"#C9A84C", fontWeight:900, textAlign:"center" }}>VS</div>
+            <div>
+              <div style={{ color:"#9ca3af", fontSize:11, fontWeight:700, textTransform:"uppercase", marginBottom:6 }}>Decade B</div>
+              <select value={decadeB} onChange={e=>setDecadeB(e.target.value)} style={{ width:"100%", background:"#1f2937", border:"2px solid #374151", borderRadius:10, padding:"10px 12px", color:"#f3f4f6", fontSize:15, fontWeight:700 }}>
+                {DECADES.filter(d=>d!==decadeA).map(d=><option key={d} value={d}>{DECADE_EMOJIS[d]} {d}</option>)}
+              </select>
+            </div>
+          </div>
+
+          {/* Economic comparison */}
+          <div style={{ background:"#111827", border:"1px solid #1f2937", borderRadius:16, padding:"22px", marginBottom:20 }}>
+            <h3 style={{ color:"#C9A84C", fontWeight:800, fontSize:15, margin:"0 0 18px" }}>📊 Key Statistics Comparison</h3>
+            {ecoStats.map((stat,i)=>{
+              const maxVal = Math.max(stat.a, stat.b, 0.01);
+              return (
+                <div key={i} style={{ marginBottom:16 }}>
+                  <div style={{ color:"#9ca3af", fontSize:12, fontWeight:700, marginBottom:6 }}>{stat.label}</div>
+                  <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+                    <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                      <div style={{ width:60, color:dataA.color, fontSize:12, fontWeight:800, textAlign:"right", flexShrink:0 }}>{decadeA}</div>
+                      <div style={{ flex:1, background:"#1f2937", borderRadius:99, height:18, overflow:"hidden" }}>
+                        <div style={{ background:dataA.color, width:`${(stat.a/maxVal)*100}%`, height:"100%", borderRadius:99, display:"flex", alignItems:"center", paddingLeft:8, transition:"width 0.6s" }}>
+                          <span style={{ color:"#000", fontSize:10, fontWeight:800, whiteSpace:"nowrap" }}>{stat.unit==="$"?`$${stat.a}`:stat.a+stat.unit}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                      <div style={{ width:60, color:dataB.color, fontSize:12, fontWeight:800, textAlign:"right", flexShrink:0 }}>{decadeB}</div>
+                      <div style={{ flex:1, background:"#1f2937", borderRadius:99, height:18, overflow:"hidden" }}>
+                        <div style={{ background:dataB.color, width:`${(stat.b/maxVal)*100}%`, height:"100%", borderRadius:99, display:"flex", alignItems:"center", paddingLeft:8, transition:"width 0.6s" }}>
+                          <span style={{ color:"#000", fontSize:10, fontWeight:800, whiteSpace:"nowrap" }}>{stat.unit==="$"?`$${stat.b}`:stat.b+stat.unit}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Side by side columns */}
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:16 }}>
+            <DecadeColumn decade={decadeA} data={dataA} />
+            <DecadeColumn decade={decadeB} data={dataB} />
+          </div>
+        </div>
+      )}
+
+      {mode==="single" && (
+        <div style={{ maxWidth:700, margin:"0 auto", padding:"28px 16px 60px" }}>
+          <div style={{ marginBottom:20 }}>
+            <div style={{ color:"#9ca3af", fontSize:11, fontWeight:700, textTransform:"uppercase", marginBottom:6 }}>Select a Decade</div>
+            <select value={singleDecade} onChange={e=>setSingleDecade(e.target.value)} style={{ width:"100%", background:"#1f2937", border:"2px solid #374151", borderRadius:10, padding:"10px 12px", color:"#f3f4f6", fontSize:15, fontWeight:700 }}>
+              {DECADES.map(d=><option key={d} value={d}>{DECADE_EMOJIS[d]} {d}</option>)}
+            </select>
+          </div>
+          <DecadeColumn decade={singleDecade} data={DECADE_DATA[singleDecade]} />
+        </div>
+      )}
     </div>
   );
 }

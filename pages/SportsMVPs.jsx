@@ -1,346 +1,218 @@
 import { useState, useEffect } from "react";
-import { SportsMVP } from "@/api/entities";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Trophy, Star, Search, Filter, ThumbsUp, Medal, Zap } from "lucide-react";
+import { OnThisDay, TimeCapsule, GenerativeArt } from "@/api/entities";
 
-const SPORTS = ["All", "NBA", "NFL", "MLB", "NHL", "Soccer", "Boxing", "Tennis", "Golf", "Olympics", "Other"];
-const DECADES = ["All", "1910s", "1920s", "1930s", "1940s", "1950s", "1960s", "1970s", "1980s", "1990s", "2000s", "2010s", "2020s"];
+const DECADES = ["1920s","1930s","1940s","1950s","1960s","1970s","1980s","1990s","2000s","2010s"];
+const DECADE_EMOJIS = {"1920s":"🎷","1930s":"🎬","1940s":"✈️","1950s":"🎸","1960s":"☮️","1970s":"🕺","1980s":"🕹️","1990s":"📼","2000s":"💿","2010s":"📱"};
+const DECADE_COLORS = {"1920s":"#d4956e","1930s":"#b8a88a","1940s":"#7a9abf","1950s":"#d4788a","1960s":"#c4956e","1970s":"#c4784f","1980s":"#b87ac4","1990s":"#7aaa8a","2000s":"#7aaac4","2010s":"#c47aa4"};
 
-const SPORT_COLORS = {
-  NBA: "bg-orange-100 text-orange-700 border-orange-300",
-  NFL: "bg-blue-100 text-blue-700 border-blue-300",
-  MLB: "bg-red-100 text-red-700 border-red-300",
-  NHL: "bg-cyan-100 text-cyan-700 border-cyan-300",
-  Soccer: "bg-green-100 text-green-700 border-green-300",
-  Boxing: "bg-yellow-100 text-yellow-700 border-yellow-300",
-  Tennis: "bg-lime-100 text-lime-700 border-lime-300",
-  Golf: "bg-emerald-100 text-emerald-700 border-emerald-300",
-  Olympics: "bg-purple-100 text-purple-700 border-purple-300",
-  Other: "bg-gray-100 text-gray-700 border-gray-300",
+const ON_THIS_DAY_MONTHLY = {
+  "01": [{day:"1",title:"New Year Celebrations Throughout History",year:"Multiple"},  {day:"15",title:"Martin Luther King Jr. Birthday",year:"1929"}, {day:"17",title:"Benjamin Franklin Born",year:"1706"}],
+  "02": [{day:"1",title:"Langston Hughes Born",year:"1902"},{day:"9",title:"Beatles Appear on Ed Sullivan",year:"1964"},{day:"14",title:"Valentine's Day Origins",year:"496"}],
+  "03": [{day:"4",title:"FDR's First Inaugural Address",year:"1933"},{day:"17",title:"St. Patrick's Day Origins",year:"461"},{day:"25",title:"Triangle Shirtwaist Fire",year:"1911"}],
+  "04": [{day:"4",title:"Martin Luther King Jr. Assassinated",year:"1968"},{day:"9",title:"Civil War Ends",year:"1865"},{day:"15",title:"Abraham Lincoln Shot",year:"1865"}],
+  "05": [{day:"8",title:"V-E Day — WWII Ends in Europe",year:"1945"},{day:"17",title:"Brown v. Board of Education",year:"1954"},{day:"25",title:"Star Wars Released",year:"1977"}],
+  "06": [{day:"6",title:"D-Day Normandy Invasion",year:"1944"},{day:"17",title:"Watergate Break-in",year:"1972"},{day:"28",title:"Stonewall Riots Begin",year:"1969"}],
+  "07": [{day:"4",title:"Declaration of Independence Signed",year:"1776"},{day:"20",title:"Moon Landing — Neil Armstrong Walks",year:"1969"},{day:"26",title:"Americans with Disabilities Act",year:"1990"}],
+  "08": [{day:"6",title:"Atomic Bomb Dropped on Hiroshima",year:"1945"},{day:"15",title:"Woodstock Festival Begins",year:"1969"},{day:"28",title:"I Have a Dream — MLK Speech",year:"1963"}],
+  "09": [{day:"1",title:"Germany Invades Poland — WWII Begins",year:"1939"},{day:"11",title:"September 11 Attacks",year:"2001"},{day:"24",title:"Nirvana Releases Nevermind",year:"1991"}],
+  "10": [{day:"4",title:"Sputnik Launched",year:"1957"},{day:"14",title:"Chuck Yeager Breaks Sound Barrier",year:"1947"},{day:"29",title:"Stock Market Crashes — Black Tuesday",year:"1929"}],
+  "11": [{day:"4",title:"Barack Obama Elected President",year:"2008"},{day:"9",title:"Berlin Wall Falls",year:"1989"},{day:"22",title:"JFK Assassinated",year:"1963"}],
+  "12": [{day:"1",title:"Rosa Parks Refuses to Give Up Seat",year:"1955"},{day:"7",title:"Pearl Harbor Attack",year:"1941"},{day:"17",title:"Wright Brothers First Flight",year:"1903"}],
 };
 
-const SPORT_EMOJIS = {
-  NBA: "🏀", NFL: "🏈", MLB: "⚾", NHL: "🏒", Soccer: "⚽",
-  Boxing: "🥊", Tennis: "🎾", Golf: "⛳", Olympics: "🏅", Other: "🏆",
-};
-
-export default function SportsMVPs() {
-  const [mvps, setMvps] = useState([]);
-  const [filtered, setFiltered] = useState([]);
+export default function MyHistoryDashboard() {
+  const [followedDecades, setFollowedDecades] = useState(["1960s","1980s","1990s"]);
+  const [onThisDayEvents, setOnThisDayEvents] = useState([]);
+  const [capsules, setCapsules] = useState([]);
+  const [art, setArt] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
-  const [sportFilter, setSportFilter] = useState("All");
-  const [decadeFilter, setDecadeFilter] = useState("All");
-  const [selected, setSelected] = useState(null);
-  const [votedIds, setVotedIds] = useState([]);
+  const [activeMonth, setActiveMonth] = useState(String(new Date().getMonth()+1).padStart(2,"0"));
+  const [lightbox, setLightbox] = useState(null);
+  const [activeTab, setActiveTab] = useState("timeline");
+
+  const today = new Date();
+  const todayDay = String(today.getDate()).padStart(2,"0");
+  const todayMonth = String(today.getMonth()+1).padStart(2,"0");
 
   useEffect(() => {
-    SportsMVP.list("-fan_votes").then((data) => {
-      setMvps(data);
-      setFiltered(data);
+    Promise.all([
+      OnThisDay.list({ limit: 100 }),
+      TimeCapsule.list({ limit: 50 }),
+      GenerativeArt.list({ limit: 50 }),
+    ]).then(([otd, tc, ga]) => {
+      setOnThisDayEvents(otd);
+      setCapsules(tc.filter(c => c.is_public));
+      setArt(ga);
       setLoading(false);
-    });
-    const saved = JSON.parse(localStorage.getItem("mvp_votes") || "[]");
-    setVotedIds(saved);
+    }).catch(() => setLoading(false));
   }, []);
 
-  useEffect(() => {
-    let result = [...mvps];
-    if (sportFilter !== "All") result = result.filter((m) => m.sport === sportFilter);
-    if (decadeFilter !== "All") result = result.filter((m) => m.decade === decadeFilter);
-    if (search) result = result.filter((m) =>
-      m.name.toLowerCase().includes(search.toLowerCase()) ||
-      m.team?.toLowerCase().includes(search.toLowerCase())
-    );
-    setFiltered(result);
-  }, [search, sportFilter, decadeFilter, mvps]);
+  const toggleDecade = (d) => setFollowedDecades(prev => prev.includes(d) ? prev.filter(x=>x!==d) : [...prev, d]);
 
-  const handleVote = async (e, mvp) => {
-    e.stopPropagation();
-    if (votedIds.includes(mvp.id)) return;
-    const newVotes = (mvp.fan_votes || 0) + 1;
-    await SportsMVP.update(mvp.id, { fan_votes: newVotes });
-    const updated = mvps.map((m) => m.id === mvp.id ? { ...m, fan_votes: newVotes } : m);
-    setMvps(updated);
-    const newVotedIds = [...votedIds, mvp.id];
-    setVotedIds(newVotedIds);
-    localStorage.setItem("mvp_votes", JSON.stringify(newVotedIds));
-  };
+  const filteredEvents = onThisDayEvents.filter(e => followedDecades.includes(e.decade));
+  const filteredCapsules = capsules.filter(c => followedDecades.includes(c.decade));
+  const filteredArt = art.filter(a => followedDecades.includes(a.decade));
+  const todayEvents = ON_THIS_DAY_MONTHLY[todayMonth] || [];
+  const monthEvents = ON_THIS_DAY_MONTHLY[activeMonth] || [];
+
+  const MONTHS = ["01","02","03","04","05","06","07","08","09","10","11","12"];
+  const MONTH_NAMES = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
-      {/* Hero Banner */}
-      <div className="relative bg-gradient-to-br from-yellow-500 via-orange-600 to-red-700 py-16 px-4 text-center overflow-hidden">
-        <div className="absolute inset-0 opacity-10 bg-[repeating-linear-gradient(45deg,#fff,#fff_1px,transparent_1px,transparent_10px)]" />
-        <Trophy className="w-16 h-16 mx-auto mb-4 text-yellow-200 drop-shadow-lg" />
-        <h1 className="text-4xl md:text-6xl font-black mb-3 tracking-tight drop-shadow-lg">
-          🏆 Sports MVP Hall of Fame
-        </h1>
-        <p className="text-lg md:text-xl text-yellow-100 max-w-2xl mx-auto font-medium">
-          The greatest athletes of every era — their legendary moments, iconic stats, and the decades they dominated.
-        </p>
-        <div className="flex justify-center gap-6 mt-6 text-yellow-200 text-sm font-semibold">
-          <span>⚽ Soccer</span>
-          <span>🏀 Basketball</span>
-          <span>🏈 Football</span>
-          <span>⚾ Baseball</span>
-          <span>🥊 Boxing</span>
-          <span>🏅 Olympics</span>
-        </div>
-      </div>
-
-      {/* Filters */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="flex flex-col md:flex-row gap-4 mb-8">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
-            <Input
-              placeholder="Search athletes or teams..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="pl-9 bg-gray-800 border-gray-700 text-white placeholder-gray-400"
-            />
+    <div style={{ background:"#07070e", minHeight:"100vh", color:"#f3f4f6", fontFamily:"Inter, sans-serif" }}>
+      {lightbox && (
+        <div onClick={()=>setLightbox(null)} style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.92)", zIndex:999, display:"flex", alignItems:"center", justifyContent:"center", cursor:"zoom-out", padding:24 }}>
+          <div onClick={e=>e.stopPropagation()} style={{ maxWidth:700, width:"100%", textAlign:"center" }}>
+            <img src={lightbox.url} alt={lightbox.title} style={{ maxWidth:"100%", maxHeight:"70vh", borderRadius:12 }} onError={e=>e.target.style.display="none"} />
+            <p style={{ color:"#C9A84C", fontWeight:700, marginTop:12 }}>{lightbox.title}</p>
+            <button onClick={()=>setLightbox(null)} style={{ background:"#1f2937", border:"1px solid #374151", borderRadius:99, padding:"7px 20px", color:"#fff", cursor:"pointer", marginTop:8 }}>✕ Close</button>
           </div>
         </div>
-
-        {/* Sport Filter */}
-        <div className="mb-4">
-          <p className="text-xs text-gray-400 uppercase tracking-wider mb-2 font-semibold">Filter by Sport</p>
-          <div className="flex flex-wrap gap-2">
-            {SPORTS.map((s) => (
-              <button
-                key={s}
-                onClick={() => setSportFilter(s)}
-                className={`px-3 py-1.5 rounded-full text-sm font-semibold border transition-all ${
-                  sportFilter === s
-                    ? "bg-yellow-500 text-gray-900 border-yellow-400"
-                    : "bg-gray-800 text-gray-300 border-gray-700 hover:border-yellow-500"
-                }`}
-              >
-                {SPORT_EMOJIS[s] || "🏆"} {s}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Decade Filter */}
-        <div className="mb-8">
-          <p className="text-xs text-gray-400 uppercase tracking-wider mb-2 font-semibold">Filter by Decade</p>
-          <div className="flex flex-wrap gap-2">
-            {DECADES.map((d) => (
-              <button
-                key={d}
-                onClick={() => setDecadeFilter(d)}
-                className={`px-3 py-1.5 rounded-full text-sm font-semibold border transition-all ${
-                  decadeFilter === d
-                    ? "bg-purple-500 text-white border-purple-400"
-                    : "bg-gray-800 text-gray-300 border-gray-700 hover:border-purple-500"
-                }`}
-              >
-                {d}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Results Count */}
-        <div className="flex items-center gap-2 mb-6">
-          <Medal className="w-5 h-5 text-yellow-400" />
-          <span className="text-gray-300 font-medium">{filtered.length} legends found</span>
-        </div>
-
-        {/* MVP Grid */}
-        {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="h-64 bg-gray-800 rounded-2xl animate-pulse" />
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filtered.map((mvp) => (
-              <Card
-                key={mvp.id}
-                onClick={() => setSelected(mvp)}
-                className="bg-gray-800 border-gray-700 hover:border-yellow-500 hover:shadow-yellow-500/20 hover:shadow-lg cursor-pointer transition-all group rounded-2xl overflow-hidden"
-              >
-                <CardContent className="p-0">
-                  {/* Card Header */}
-                  <div className={`p-5 bg-gradient-to-br ${
-                    mvp.sport === "NBA" ? "from-orange-900 to-gray-800" :
-                    mvp.sport === "NFL" ? "from-blue-900 to-gray-800" :
-                    mvp.sport === "MLB" ? "from-red-900 to-gray-800" :
-                    mvp.sport === "NHL" ? "from-cyan-900 to-gray-800" :
-                    mvp.sport === "Soccer" ? "from-green-900 to-gray-800" :
-                    mvp.sport === "Boxing" ? "from-yellow-900 to-gray-800" :
-                    mvp.sport === "Olympics" ? "from-purple-900 to-gray-800" :
-                    "from-gray-700 to-gray-800"
-                  }`}>
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <div className="text-4xl mb-2">{SPORT_EMOJIS[mvp.sport]}</div>
-                        <h3 className="text-xl font-black text-white group-hover:text-yellow-400 transition-colors">
-                          {mvp.name}
-                        </h3>
-                        <p className="text-gray-300 text-sm">{mvp.position} · {mvp.team}</p>
-                        <p className="text-gray-400 text-xs mt-1">{mvp.years_active}</p>
-                      </div>
-                      <div className="text-right">
-                        <span className={`text-xs font-bold px-2 py-1 rounded-full border ${SPORT_COLORS[mvp.sport]}`}>
-                          {mvp.sport}
-                        </span>
-                        {mvp.hall_of_fame && (
-                          <div className="mt-2 text-xs text-yellow-400 font-semibold flex items-center justify-end gap-1">
-                            <Star className="w-3 h-3 fill-yellow-400" /> HOF
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Card Body */}
-                  <div className="p-4">
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className="text-purple-400 font-bold text-xs uppercase tracking-wider">Decade</span>
-                      <span className="text-white font-semibold text-sm">{mvp.decade}</span>
-                      <span className="ml-auto text-yellow-400 font-bold text-sm">🏆 {mvp.championships}x Champ</span>
-                    </div>
-
-                    <p className="text-gray-400 text-xs line-clamp-2 mb-3 italic">
-                      "{mvp.iconic_moment?.substring(0, 100)}..."
-                    </p>
-
-                    <div className="flex items-center justify-between">
-                      <button
-                        onClick={(e) => handleVote(e, mvp)}
-                        className={`flex items-center gap-1.5 text-sm font-semibold px-3 py-1.5 rounded-full transition-all ${
-                          votedIds.includes(mvp.id)
-                            ? "bg-purple-700 text-purple-200 cursor-default"
-                            : "bg-gray-700 text-gray-300 hover:bg-purple-600 hover:text-white"
-                        }`}
-                      >
-                        <ThumbsUp className="w-3.5 h-3.5" />
-                        {mvp.fan_votes || 0} votes
-                      </button>
-                      <span className="text-xs text-gray-500 font-medium">Tap for highlights →</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
-
-        {filtered.length === 0 && !loading && (
-          <div className="text-center py-20 text-gray-500">
-            <Trophy className="w-12 h-12 mx-auto mb-3 opacity-30" />
-            <p className="text-lg font-medium">No MVPs found for those filters</p>
-            <p className="text-sm mt-1">Try adjusting your search or filters</p>
-          </div>
-        )}
-      </div>
-
-      {/* Detail Modal */}
-      {selected && (
-        <Dialog open={!!selected} onOpenChange={() => setSelected(null)}>
-          <DialogContent className="bg-gray-900 border-gray-700 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle className="text-2xl font-black flex items-center gap-3">
-                <span className="text-4xl">{SPORT_EMOJIS[selected.sport]}</span>
-                {selected.name}
-              </DialogTitle>
-            </DialogHeader>
-            <div className="space-y-5 mt-2">
-              {/* Meta */}
-              <div className="flex flex-wrap gap-2">
-                <span className={`text-xs font-bold px-3 py-1 rounded-full border ${SPORT_COLORS[selected.sport]}`}>
-                  {selected.sport}
-                </span>
-                <span className="text-xs font-bold px-3 py-1 rounded-full bg-gray-700 text-gray-300 border border-gray-600">
-                  {selected.decade}
-                </span>
-                {selected.hall_of_fame && (
-                  <span className="text-xs font-bold px-3 py-1 rounded-full bg-yellow-900 text-yellow-400 border border-yellow-700 flex items-center gap-1">
-                    <Star className="w-3 h-3 fill-yellow-400" /> Hall of Fame
-                  </span>
-                )}
-                <span className="text-xs font-bold px-3 py-1 rounded-full bg-orange-900 text-orange-400 border border-orange-700">
-                  🏆 {selected.championships}x Champion
-                </span>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3 text-sm">
-                <div className="bg-gray-800 rounded-xl p-3">
-                  <p className="text-gray-400 text-xs mb-1">Position</p>
-                  <p className="font-semibold">{selected.position}</p>
-                </div>
-                <div className="bg-gray-800 rounded-xl p-3">
-                  <p className="text-gray-400 text-xs mb-1">Team(s)</p>
-                  <p className="font-semibold">{selected.team}</p>
-                </div>
-                <div className="bg-gray-800 rounded-xl p-3">
-                  <p className="text-gray-400 text-xs mb-1">Years Active</p>
-                  <p className="font-semibold">{selected.years_active}</p>
-                </div>
-                <div className="bg-gray-800 rounded-xl p-3">
-                  <p className="text-gray-400 text-xs mb-1">Nationality</p>
-                  <p className="font-semibold">{selected.nationality}</p>
-                </div>
-              </div>
-
-              {/* MVP Awards */}
-              <div className="bg-yellow-900/30 border border-yellow-700 rounded-xl p-4">
-                <p className="text-yellow-400 font-bold text-sm mb-1 flex items-center gap-2">
-                  <Trophy className="w-4 h-4" /> MVP Awards
-                </p>
-                <p className="text-white text-sm">{selected.mvp_awards}</p>
-              </div>
-
-              {/* Career Highlights */}
-              <div className="bg-gray-800 rounded-xl p-4">
-                <p className="text-purple-400 font-bold text-sm mb-2 flex items-center gap-2">
-                  <Zap className="w-4 h-4" /> Career Highlights
-                </p>
-                <p className="text-gray-300 text-sm leading-relaxed">{selected.career_highlights}</p>
-              </div>
-
-              {/* Stats */}
-              <div className="bg-gray-800 rounded-xl p-4">
-                <p className="text-cyan-400 font-bold text-sm mb-2 flex items-center gap-2">
-                  <Medal className="w-4 h-4" /> Career Stats
-                </p>
-                <p className="text-gray-300 text-sm leading-relaxed">{selected.stats_summary}</p>
-              </div>
-
-              {/* Iconic Moment */}
-              <div className="bg-gradient-to-br from-orange-900/50 to-red-900/50 border border-orange-700 rounded-xl p-4">
-                <p className="text-orange-400 font-bold text-sm mb-2 flex items-center gap-2">
-                  ⚡ Iconic Moment
-                </p>
-                <p className="text-white text-sm leading-relaxed italic">"{selected.iconic_moment}"</p>
-              </div>
-
-              {/* Vote */}
-              <button
-                onClick={(e) => { handleVote(e, selected); setSelected({ ...selected, fan_votes: (selected.fan_votes || 0) + (votedIds.includes(selected.id) ? 0 : 1) }); }}
-                className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-sm transition-all ${
-                  votedIds.includes(selected.id)
-                    ? "bg-purple-800 text-purple-300 cursor-default"
-                    : "bg-purple-600 hover:bg-purple-500 text-white"
-                }`}
-              >
-                <ThumbsUp className="w-4 h-4" />
-                {votedIds.includes(selected.id) ? "You voted for this legend!" : "Vote for this Legend"}
-                <span className="ml-1 text-xs opacity-75">({selected.fan_votes || 0} votes)</span>
-              </button>
-            </div>
-          </DialogContent>
-        </Dialog>
       )}
+
+      {/* Header */}
+      <div style={{ background:"linear-gradient(135deg, #1f2937, #111827)", borderBottom:"2px solid #C9A84C33", padding:"32px 24px" }}>
+        <div style={{ maxWidth:1000, margin:"0 auto" }}>
+          <div style={{ fontSize:40, marginBottom:8 }}>🗂️</div>
+          <h1 style={{ color:"#C9A84C", fontSize:26, fontWeight:900, margin:"0 0 6px" }}>My History Dashboard</h1>
+          <p style={{ color:"#9ca3af", fontSize:14, margin:"0 0 20px" }}>Your personalized timeline based on the decades you follow</p>
+
+          {/* Followed decades */}
+          <div>
+            <div style={{ color:"#6b7280", fontSize:11, fontWeight:700, textTransform:"uppercase", marginBottom:8 }}>Follow Decades</div>
+            <div style={{ display:"flex", flexWrap:"wrap", gap:8 }}>
+              {DECADES.map(d => (
+                <button key={d} onClick={()=>toggleDecade(d)} style={{
+                  padding:"6px 16px", borderRadius:99, fontWeight:700, fontSize:12, cursor:"pointer",
+                  border:`2px solid ${followedDecades.includes(d) ? DECADE_COLORS[d] : "#374151"}`,
+                  background: followedDecades.includes(d) ? DECADE_COLORS[d]+"22" : "#1f2937",
+                  color: followedDecades.includes(d) ? DECADE_COLORS[d] : "#6b7280",
+                }}>
+                  {DECADE_EMOJIS[d]} {d} {followedDecades.includes(d) ? "✓" : "+"}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style={{ maxWidth:1000, margin:"0 auto", padding:"24px 16px 60px" }}>
+        {/* Tabs */}
+        <div style={{ display:"flex", gap:8, marginBottom:24, flexWrap:"wrap" }}>
+          {[["timeline","📅 Timeline"],["calendar","🗓️ Calendar"],["capsules","📦 Capsules"],["art","🎨 Art"]].map(([id,label])=>(
+            <button key={id} onClick={()=>setActiveTab(id)} style={{ padding:"8px 18px", borderRadius:99, fontWeight:700, fontSize:13, cursor:"pointer", border:"none", background:activeTab===id?"#C9A84C":"#1f2937", color:activeTab===id?"#000":"#9ca3af" }}>{label}</button>
+          ))}
+        </div>
+
+        {/* Today banner */}
+        {todayEvents.length > 0 && activeTab==="timeline" && (
+          <div style={{ background:"linear-gradient(135deg, #C9A84C22, #1f2937)", border:"2px solid #C9A84C44", borderRadius:16, padding:"18px 20px", marginBottom:24 }}>
+            <div style={{ color:"#C9A84C", fontWeight:800, fontSize:14, marginBottom:10 }}>📅 On This Day — {today.toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"})}</div>
+            <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
+              {todayEvents.map((e,i)=>(
+                <div key={i} style={{ display:"flex", alignItems:"flex-start", gap:10 }}>
+                  <span style={{ color:"#C9A84C", fontWeight:900, fontSize:13, minWidth:20 }}>{e.day}</span>
+                  <div><span style={{ color:"#f3f4f6", fontSize:13, fontWeight:700 }}>{e.title}</span><span style={{ color:"#6b7280", fontSize:12 }}> · {e.year}</span></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Timeline tab */}
+        {activeTab==="timeline" && (
+          <div>
+            <div style={{ color:"#9ca3af", fontSize:12, fontWeight:700, textTransform:"uppercase", marginBottom:16 }}>Events from Your Followed Decades ({filteredEvents.length})</div>
+            {loading ? <p style={{ color:"#6b7280" }}>Loading...</p> :
+            filteredEvents.length===0 ? <p style={{ color:"#6b7280" }}>No events yet for your followed decades. Follow more decades above!</p> :
+            <div style={{ position:"relative", paddingLeft:24 }}>
+              <div style={{ position:"absolute", left:8, top:0, bottom:0, width:2, background:"#1f2937" }} />
+              {filteredEvents.map((e,i)=>(
+                <div key={e.id} style={{ position:"relative", marginBottom:20, paddingLeft:20 }}>
+                  <div style={{ position:"absolute", left:-8, top:4, width:12, height:12, borderRadius:"50%", background:DECADE_COLORS[e.decade]||"#C9A84C", border:"2px solid #111827" }} />
+                  <div style={{ background:"#111827", border:"1px solid #1f2937", borderRadius:12, overflow:"hidden", display:"flex", gap:0 }}
+                    onMouseEnter={e=>e.currentTarget.style.borderColor="#C9A84C44"}
+                    onMouseLeave={e=>e.currentTarget.style.borderColor="#1f2937"}>
+                    {e.photo_url && <img src={e.photo_url} alt={e.title} onClick={()=>setLightbox({url:e.photo_url,title:e.title})} style={{ width:90, objectFit:"cover", cursor:"zoom-in", flexShrink:0 }} onError={el=>el.target.style.display="none"} />}
+                    <div style={{ padding:"12px 14px" }}>
+                      <div style={{ display:"flex", gap:8, marginBottom:4, flexWrap:"wrap" }}>
+                        <span style={{ background:DECADE_COLORS[e.decade]+"22", color:DECADE_COLORS[e.decade], borderRadius:99, padding:"2px 8px", fontSize:10, fontWeight:700 }}>{e.decade}</span>
+                        <span style={{ color:"#d97706", fontSize:11 }}>{e.date_label}</span>
+                      </div>
+                      <div style={{ color:"#f3f4f6", fontWeight:700, fontSize:14, marginBottom:4 }}>{e.title}</div>
+                      <div style={{ color:"#6b7280", fontSize:12, lineHeight:1.5, display:"-webkit-box", WebkitLineClamp:2, WebkitBoxOrient:"vertical", overflow:"hidden" }}>{e.description}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>}
+          </div>
+        )}
+
+        {/* Calendar tab */}
+        {activeTab==="calendar" && (
+          <div>
+            <div style={{ display:"flex", gap:6, flexWrap:"wrap", marginBottom:20 }}>
+              {MONTHS.map((m,i)=>(
+                <button key={m} onClick={()=>setActiveMonth(m)} style={{ padding:"6px 14px", borderRadius:99, fontSize:12, fontWeight:700, cursor:"pointer", border:"none", background:activeMonth===m?"#C9A84C":"#1f2937", color:activeMonth===m?"#000":"#9ca3af" }}>{MONTH_NAMES[i]}</button>
+              ))}
+            </div>
+            <div style={{ background:"#111827", border:"1px solid #1f2937", borderRadius:16, padding:"20px" }}>
+              <h3 style={{ color:"#C9A84C", fontWeight:800, fontSize:16, margin:"0 0 16px" }}>📅 {MONTH_NAMES[parseInt(activeMonth)-1]} — Historical Events</h3>
+              {monthEvents.length===0 ? <p style={{ color:"#6b7280" }}>No events for this month.</p> :
+              monthEvents.map((e,i)=>(
+                <div key={i} style={{ display:"flex", gap:16, padding:"12px 0", borderBottom:i<monthEvents.length-1?"1px solid #1f2937":"none" }}>
+                  <div style={{ width:40, height:40, background:"#C9A84C22", border:"2px solid #C9A84C44", borderRadius:10, display:"flex", alignItems:"center", justifyContent:"center", color:"#C9A84C", fontWeight:900, fontSize:14, flexShrink:0 }}>{e.day}</div>
+                  <div>
+                    <div style={{ color:"#f3f4f6", fontWeight:700, fontSize:14 }}>{e.title}</div>
+                    <div style={{ color:"#6b7280", fontSize:12, marginTop:2 }}>{e.year}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Capsules tab */}
+        {activeTab==="capsules" && (
+          <div>
+            <div style={{ color:"#9ca3af", fontSize:12, fontWeight:700, textTransform:"uppercase", marginBottom:16 }}>Time Capsules from Your Decades ({filteredCapsules.length})</div>
+            {filteredCapsules.length===0 ? <p style={{ color:"#6b7280" }}>No public capsules yet for your followed decades.</p> :
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(280px,1fr))", gap:14 }}>
+              {filteredCapsules.map(c=>(
+                <div key={c.id} style={{ background:"#111827", border:"1px solid #1f2937", borderRadius:14, padding:"16px" }}>
+                  <div style={{ display:"flex", justifyContent:"space-between", marginBottom:8 }}>
+                    <span style={{ color:DECADE_COLORS[c.decade]||"#C9A84C", fontWeight:800, fontSize:15 }}>{c.decade}</span>
+                    <span style={{ color:"#a78bfa", fontSize:12 }}>📦 {c.mood}</span>
+                  </div>
+                  <div style={{ color:"#f3f4f6", fontWeight:700, fontSize:14, marginBottom:6 }}>{c.title}</div>
+                  <div style={{ color:"#6b7280", fontSize:12, lineHeight:1.5, display:"-webkit-box", WebkitLineClamp:3, WebkitBoxOrient:"vertical", overflow:"hidden" }}>{c.reflection}</div>
+                  <div style={{ color:"#6b7280", fontSize:11, marginTop:8 }}>by {c.author_name} · ❤️ {c.likes||0}</div>
+                </div>
+              ))}
+            </div>}
+          </div>
+        )}
+
+        {/* Art tab */}
+        {activeTab==="art" && (
+          <div>
+            <div style={{ color:"#9ca3af", fontSize:12, fontWeight:700, textTransform:"uppercase", marginBottom:16 }}>Generative Art from Your Decades ({filteredArt.length})</div>
+            {filteredArt.length===0 ? <p style={{ color:"#6b7280" }}>No art yet for your followed decades. <a href="/GenerativeArtSpace" style={{ color:"#60a5fa" }}>Create some →</a></p> :
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(220px,1fr))", gap:14 }}>
+              {filteredArt.map(a=>(
+                <div key={a.id} style={{ background:"#111827", border:"1px solid #1f2937", borderRadius:12, overflow:"hidden" }}>
+                  <img src={a.image_url} alt={a.title} onClick={()=>setLightbox({url:a.image_url,title:a.title})} style={{ width:"100%", height:160, objectFit:"cover", cursor:"zoom-in" }} onError={e=>e.target.style.display="none"} />
+                  <div style={{ padding:"10px 12px" }}>
+                    <div style={{ color:"#f3f4f6", fontWeight:700, fontSize:13 }}>{a.title}</div>
+                    <div style={{ color:"#6b7280", fontSize:11, marginTop:3 }}>{a.decade} · by {a.author_name}</div>
+                  </div>
+                </div>
+              ))}
+            </div>}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

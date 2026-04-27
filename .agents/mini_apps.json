@@ -2,14 +2,56 @@
   "app_id": "69c20d11eb474c1d264b69b7",
   "slug": "antonio-major-help-app",
   "pages": {
-    "AnalyticsDashboard": {
-      "title": "AnalyticsDashboard"
+    "DecadeVisuals": {
+      "title": "DecadeVisuals"
+    },
+    "SportsMVPs": {
+      "title": "SportsMVPs"
+    },
+    "AvatarGenerator": {
+      "title": "AvatarGenerator"
+    },
+    "KingXcel": {
+      "title": "KingXcel"
+    },
+    "DecadeTrivia": {
+      "title": "DecadeTrivia"
+    },
+    "eDecadesDailyTracker": {
+      "title": "eDecadesDailyTracker"
     },
     "VideoArchive": {
       "title": "VideoArchive"
     },
-    "GenealogyExplorer": {
-      "title": "GenealogyExplorer"
+    "GameForge": {
+      "title": "GameForge"
+    },
+    "AnalyticsDashboard": {
+      "title": "AnalyticsDashboard"
+    },
+    "KingXcelPanel": {
+      "title": "KingXcelPanel"
+    },
+    "Quiz": {
+      "title": "Quiz"
+    },
+    "FamilyJourney": {
+      "title": "FamilyJourney"
+    },
+    "Home": {
+      "title": "Home"
+    },
+    "CourseGek": {
+      "title": "CourseGek"
+    },
+    "GenerativeArtSpace": {
+      "title": "GenerativeArtSpace"
+    },
+    "eDecadesSearch": {
+      "title": "eDecadesSearch"
+    },
+    "OnThisDay": {
+      "title": "OnThisDay"
     },
     "WheelMath": {
       "title": "WheelMath"
@@ -17,68 +59,26 @@
     "OpsTracker": {
       "title": "OpsTracker"
     },
-    "DecadeVisuals": {
-      "title": "DecadeVisuals"
-    },
-    "TimeCapsuleJournal": {
-      "title": "TimeCapsuleJournal"
-    },
-    "Quiz": {
-      "title": "Quiz"
-    },
-    "CourseGek": {
-      "title": "CourseGek"
-    },
-    "AvatarGenerator": {
-      "title": "AvatarGenerator"
-    },
     "CheapMedz": {
       "title": "CheapMedz"
-    },
-    "DecadeTrivia": {
-      "title": "DecadeTrivia"
-    },
-    "AdminPanel": {
-      "title": "AdminPanel"
-    },
-    "Home": {
-      "title": "Home"
-    },
-    "eDecadesSearch": {
-      "title": "eDecadesSearch"
-    },
-    "GenerativeArtSpace": {
-      "title": "GenerativeArtSpace"
-    },
-    "KingXcel": {
-      "title": "KingXcel"
-    },
-    "SocialMediaHub": {
-      "title": "SocialMediaHub"
-    },
-    "KingXcelPanel": {
-      "title": "KingXcelPanel"
-    },
-    "OnThisDay": {
-      "title": "OnThisDay"
-    },
-    "FamilyJourney": {
-      "title": "FamilyJourney"
-    },
-    "GameForge": {
-      "title": "GameForge"
-    },
-    "MusicRandomizer": {
-      "title": "MusicRandomizer"
     },
     "ResumeCrafted": {
       "title": "ResumeCrafted"
     },
-    "eDecadesDailyTracker": {
-      "title": "eDecadesDailyTracker"
+    "SocialMediaHub": {
+      "title": "SocialMediaHub"
     },
-    "SportsMVPs": {
-      "title": "SportsMVPs"
+    "TimeCapsuleJournal": {
+      "title": "TimeCapsuleJournal"
+    },
+    "AdminPanel": {
+      "title": "AdminPanel"
+    },
+    "MusicRandomizer": {
+      "title": "MusicRandomizer"
+    },
+    "GenealogyExplorer": {
+      "title": "GenealogyExplorer"
     }
   }
 }
