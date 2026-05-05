@@ -1,0 +1,55 @@
+{
+  "type": "object",
+  "properties": {
+    "section": {
+      "type": "string"
+    },
+    "error_type": {
+      "type": "string",
+      "enum": [
+        "Broken Image",
+        "Video Unavailable",
+        "Broken Link",
+        "Missing Content",
+        "Layout Issue",
+        "White Background",
+        "Other"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "page": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Open",
+        "In Progress",
+        "Fixed",
+        "Wont Fix"
+      ]
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "Critical",
+        "High",
+        "Medium",
+        "Low"
+      ]
+    },
+    "fix_notes": {
+      "type": "string"
+    },
+    "auto_detected": {
+      "type": "boolean"
+    },
+    "decade": {
+      "type": "string"
+    }
+  },
+  "required": [],
+  "name": "SiteError"
+}
