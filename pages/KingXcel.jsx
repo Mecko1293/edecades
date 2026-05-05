@@ -1,520 +1,396 @@
 import { useState, useEffect } from "react";
+import { DirectorySubmission } from "@/api/entities";
 
-const companies = [
-  {
-    name: "eDecades",
-    logo: "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/c843dbc26_image.png",
-    domain: "eDecades.com",
-    emoji: "🕰️",
-    color: "#C9A84C",
-    bg: "#1a1500",
-    tagline: "The World's First Decade-Themed Social Network",
-    description: "Explore culture, music, fashion, and history from every decade — 1900 to today. Connect with people who share your era, trade vintage collectibles, and relive the moments that shaped the world.",
-    features: ["Decade Communities", "Vintage Marketplace", "Live Trivia & Games", "Historical Archives"],
-    url: "https://benevolent-decade-dive-now.base44.app",
-    category: "Social Network",
-    status: "live",
-  },
-  {
-    name: "CourseGek",
-    logo: "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/ec854eb8d_image.png",
-    domain: "CourseGek.com",
-    emoji: "🎓",
-    color: "#7C3AED",
-    bg: "#0f0a1e",
-    tagline: "The #1 Homework Help Marketplace",
-    description: "Post any homework question and get matched with verified expert tutors. Pay only when you're satisfied. Over 50,000 questions answered across every academic subject.",
-    features: ["Expert Tutors", "All Subjects", "Money-Back Guarantee", "Earn as a Tutor"],
-    url: "https://course-gek-23543b27.base44.app",
-    category: "EdTech Marketplace",
-    status: "live",
-  },
-  {
-    name: "ResumeCrafted",
-    logo: "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/427225fcb_image.png",
-    domain: "ResumeCrafted.com",
-    emoji: "📄",
-    color: "#4A90D9",
-    bg: "#0a0e1a",
-    tagline: "AI-Powered Resume Builder That Gets You Hired",
-    description: "Build a professional, ATS-optimized resume in minutes. 50+ expert-designed templates, AI writing assistant, and one-click PDF export. 92% of users land interviews within 30 days.",
-    features: ["50+ Pro Templates", "AI Writing Assistant", "ATS Score Checker", "One-Click PDF Export"],
-    url: "https://resume-dashing-craft-pro.base44.app",
-    category: "Career Tools",
-    status: "live",
-  },
-  {
-    name: "WheelMath",
-    logo: "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/106ee42e9_image.png",
-    domain: "WheelMath.com",
-    emoji: "📐",
-    color: "#F59E0B",
-    bg: "#1a1000",
-    tagline: "Interactive Math Puzzles That Make Learning Fun",
-    description: "Circular number balance puzzles for students, educators, and math enthusiasts. Three difficulty levels, daily challenges, and classroom licensing for schools and tutors.",
-    features: ["Daily Challenges", "3 Difficulty Levels", "Classroom Licenses", "No Login Required"],
-    url: "https://pie-math-quest.base44.app",
-    category: "EdTech Game",
-    status: "live",
-  },
-  {
-    name: "GameForge",
-    logo: "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/614b28868_image.png",
-    domain: "GameForge.app",
-    emoji: "🎮",
-    color: "#6366F1",
-    bg: "#0d0b24",
-    tagline: "AI-Powered Game Design Studio",
-    description: "Turn any game idea into a full Game Design Document in minutes. Game Forge guides creators through concept generation, competitive research, mechanics engineering, and testing plans.",
-    features: ["AI Design Pipeline", "Full GDD Export", "Any Genre & Platform", "Solo or Team"],
-    url: "https://antonio-major-help-app.base44.app/GameForge",
-    category: "Game Dev Tools",
-    status: "live",
-  },
-  {
-    name: "CheapMedz",
-    logo: "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/a1db150cd_generated_image.png",
-    domain: "CheapMedz.com",
-    emoji: "💊",
-    color: "#EF4444",
-    bg: "#1a0808",
-    tagline: "Find the Best Prices on Your Medications",
-    description: "A medication price comparison platform helping Americans find the lowest cost prescriptions at pharmacies near them. Domain registered — platform in concept development.",
-    features: ["Price Comparison", "Pharmacy Locator", "Prescription Savings", "No Membership Required"],
-    url: "https://antonio-major-help-app.base44.app/CheapMedz",
-    category: "Healthcare",
-    status: "concept",
-  },
-];
+const ADMIN_PASSWORD = "KingXcel2026";
 
-const stats = [
-  { value: "6", label: "Digital Platforms" },
-  { value: "500K+", label: "Users Served" },
-  { value: "2025", label: "Founded" },
-  { value: "100%", label: "USA Based" },
-];
+const BUSINESS_INFO = {
+  name: "eDecades",
+  company: "King Xcel Innovations",
+  url: "https://edecades.com",
+  description: "eDecades is a social platform for exploring history, nostalgia, music, fashion, and culture decade by decade — from the 1920s to the 2020s.",
+  shortDesc: "Explore history decade by decade. Music, fashion, culture & nostalgia from the 1920s–2020s.",
+  address: "205 Seva Ct, Irving, Texas 75061",
+  city: "Irving", state: "TX", zip: "75061",
+  phone: "",
+  email: "anthonykittles@outlook.com",
+  category: "Social Platform / Entertainment / History",
+  keywords: "nostalgia, history, decades, music history, fashion history, retro, vintage, pop culture",
+};
 
-const values = [
-  { icon: "💡", title: "Innovation First", desc: "Every product we build solves a real problem in a fresh, technology-forward way." },
-  { icon: "🎯", title: "User Obsessed", desc: "We design for real people — students, job seekers, history lovers, and lifelong learners." },
-  { icon: "🔒", title: "Trust & Integrity", desc: "We build platforms people can rely on — secure, transparent, and always improving." },
-  { icon: "🚀", title: "Built to Scale", desc: "Our platforms are engineered from day one to grow with our users and communities." },
-];
+const CATEGORY_COLORS = {
+  "Major Search": "#22c55e",
+  "Social Media": "#3b82f6",
+  "Business Directory": "#f97316",
+  "Tech/Startup": "#a78bfa",
+  "Local Texas": "#eab308",
+  "Backlink Source": "#ec4899",
+};
 
-export default function KingXcel() {
-  const [hoveredCompany, setHoveredCompany] = useState(null);
+const STATUS_COLORS = {
+  "Not Submitted": "#6b7280",
+  "Submitted": "#eab308",
+  "Verified": "#22c55e",
+  "Rejected": "#ef4444",
+};
+
+const PRIORITY_COLORS = {
+  "High": "#ef4444",
+  "Medium": "#f97316",
+  "Low": "#6b7280",
+};
+
+function CopyButton({ text, label }) {
+  const [copied, setCopied] = useState(false);
+  const copy = () => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+  return (
+    <button onClick={copy} style={{ background: copied ? "#16a34a22" : "#1f2937", border: `1px solid ${copied ? "#16a34a" : "#374151"}`, color: copied ? "#4ade80" : "#9ca3af", borderRadius: 6, padding: "4px 10px", fontSize: 11, fontWeight: 700, cursor: "pointer" }}>
+      {copied ? "✓ Copied" : `Copy ${label}`}
+    </button>
+  );
+}
+
+export default function KingXcelDirectory() {
+  const [auth, setAuth] = useState(false);
+  const [pw, setPw] = useState("");
+  const [directories, setDirectories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("overview");
+  const [filterCategory, setFilterCategory] = useState("All");
+  const [filterStatus, setFilterStatus] = useState("All");
+  const [filterPriority, setFilterPriority] = useState("All");
+  const [updating, setUpdating] = useState(null);
+  const [bulkOpening, setBulkOpening] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
+  const [search, setSearch] = useState("");
+
+  const login = () => {
+    if (pw === ADMIN_PASSWORD) { setAuth(true); } else { alert("Incorrect password."); }
+  };
 
   useEffect(() => {
-    document.title = "King Xcel Innovations";
-    const link = document.querySelector("link[rel~='icon']") || document.createElement("link");
-    link.rel = "icon"; link.href = "https://media.base44.com/images/public/69c207112c5856fdf7bb496b/614b28868_image.png";
-    document.head.appendChild(link);
-  }, []);
+    if (!auth) return;
+    DirectorySubmission.list({ sort: "priority", limit: 100 }).then(data => {
+      // Sort: High first, then Medium, then Low
+      const order = { High: 0, Medium: 1, Low: 2 };
+      const sorted = [...data].sort((a, b) => (order[a.priority] ?? 3) - (order[b.priority] ?? 3));
+      setDirectories(sorted);
+      setLoading(false);
+    });
+  }, [auth]);
+
+  const updateStatus = async (id, status) => {
+    setUpdating(id);
+    const now = new Date().toISOString().split("T")[0];
+    const updates = { status };
+    if (status === "Submitted") updates.submitted_date = now;
+    if (status === "Verified") updates.verified_date = now;
+    await DirectorySubmission.update(id, updates);
+    setDirectories(prev => prev.map(d => d.id === id ? { ...d, ...updates } : d));
+    setUpdating(null);
+  };
+
+  const openAll = (dirs) => {
+    setBulkOpening(true);
+    dirs.forEach((d, i) => {
+      setTimeout(() => window.open(d.url, "_blank"), i * 800);
+    });
+    setTimeout(() => setBulkOpening(false), dirs.length * 800 + 500);
+  };
+
+  const allCategories = ["All", ...Object.keys(CATEGORY_COLORS)];
+  const allStatuses = ["All", "Not Submitted", "Submitted", "Verified", "Rejected"];
+  const allPriorities = ["All", "High", "Medium", "Low"];
+
+  const filtered = directories.filter(d => {
+    if (filterCategory !== "All" && d.category !== filterCategory) return false;
+    if (filterStatus !== "All" && d.status !== filterStatus) return false;
+    if (filterPriority !== "All" && d.priority !== filterPriority) return false;
+    if (search && !d.directory_name.toLowerCase().includes(search.toLowerCase())) return false;
+    return true;
+  });
+
+  const notSubmitted = directories.filter(d => d.status === "Not Submitted");
+  const submitted = directories.filter(d => d.status === "Submitted");
+  const verified = directories.filter(d => d.status === "Verified");
+  const highPriority = notSubmitted.filter(d => d.priority === "High");
+  const pct = directories.length ? Math.round((submitted.length + verified.length) / directories.length * 100) : 0;
+
+  if (!auth) return (
+    <div style={{ background: "#07070e", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Inter, sans-serif" }}>
+      <div style={{ background: "#1f2937", border: "2px solid #C9A84C44", borderRadius: 20, padding: "48px 40px", width: "100%", maxWidth: 400, textAlign: "center" }}>
+        <div style={{ fontSize: 52, marginBottom: 12 }}>🗂️</div>
+        <h1 style={{ color: "#C9A84C", fontWeight: 900, fontSize: 24, marginBottom: 6 }}>Directory Hub</h1>
+        <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 28 }}>King Xcel Innovations · Admin Access</p>
+        <input type="password" value={pw} onChange={e => setPw(e.target.value)} onKeyDown={e => e.key === "Enter" && login()} placeholder="Admin password" style={{ width: "100%", background: "#111827", border: "1px solid #374151", borderRadius: 10, padding: "13px 14px", color: "#f3f4f6", fontSize: 15, marginBottom: 14, boxSizing: "border-box", textAlign: "center" }} />
+        <button onClick={login} style={{ width: "100%", background: "#C9A84C", border: "none", borderRadius: 10, padding: "13px 0", fontWeight: 900, fontSize: 16, cursor: "pointer", color: "#000" }}>Enter Directory Hub</button>
+      </div>
+    </div>
+  );
+
+  if (loading) return (
+    <div style={{ background: "#07070e", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "#C9A84C", fontFamily: "Inter, sans-serif" }}>
+      <div style={{ textAlign: "center" }}><div style={{ fontSize: 48, marginBottom: 12 }}>🗂️</div><div style={{ fontWeight: 700 }}>Loading directories...</div></div>
+    </div>
+  );
 
   return (
-    <div style={{ fontFamily: "'Inter', 'Segoe UI', sans-serif", background: "#080810", color: "#fff", overflowX: "hidden" }}>
+    <div style={{ background: "#07070e", minHeight: "100vh", color: "#f3f4f6", fontFamily: "Inter, sans-serif" }}>
 
-      {/* NAV */}
-      <nav style={{
-        position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000,
-        background: "rgba(8,8,16,0.97)", backdropFilter: "blur(20px)",
-        borderBottom: "1px solid rgba(201,168,76,0.15)",
-        padding: "16px 40px", display: "flex", alignItems: "center", justifyContent: "space-between"
-      }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <img src="https://media.base44.com/images/public/69c207112c5856fdf7bb496b/614b28868_image.png" alt="King Xcel Innovations" style={{ width: 42, height: 42, borderRadius: 12, objectFit: "cover", boxShadow: "0 0 20px rgba(201,168,76,0.4)" }} />
+      {/* HEADER */}
+      <div style={{ background: "rgba(7,7,14,0.98)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(201,168,76,0.2)", padding: "18px 28px", position: "sticky", top: 0, zIndex: 100 }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
           <div>
-            <div style={{ fontSize: 17, fontWeight: 900, color: "#fff", letterSpacing: -0.3 }}>
-              King <span style={{ color: "#C9A84C" }}>Xcel</span> Innovations
-            </div>
-            <div style={{ fontSize: 10, color: "rgba(201,168,76,0.6)", letterSpacing: 2, textTransform: "uppercase" }}>Digital Portfolio</div>
+            <h1 style={{ color: "#C9A84C", fontWeight: 900, fontSize: 20, margin: 0 }}>🗂️ Directory Hub</h1>
+            <div style={{ color: "#6b7280", fontSize: 12, marginTop: 2 }}>eDecades · King Xcel Innovations · {directories.length} directories tracked</div>
           </div>
-        </div>
-        <div style={{ display: "flex", gap: 32, alignItems: "center" }}>
-          {[["Our Companies", "#companies"], ["About Us", "#about"], ["Contact", "#contact"]].map(([label, href]) => (
-            <a key={label} href={href} style={{ color: "rgba(255,255,255,0.55)", textDecoration: "none", fontSize: 14 }}
-              onMouseOver={e => e.target.style.color = "#C9A84C"}
-              onMouseOut={e => e.target.style.color = "rgba(255,255,255,0.55)"}>{label}</a>
-          ))}
-        </div>
-      </nav>
-
-      {/* HERO */}
-      <section style={{
-        minHeight: "100vh",
-        background: "linear-gradient(135deg, #080810 0%, #12100a 50%, #080810 100%)",
-        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-        textAlign: "center", padding: "140px 24px 100px", position: "relative", overflow: "hidden"
-      }}>
-        <div style={{
-          position: "absolute", fontSize: 400, opacity: 0.025,
-          top: "50%", left: "50%", transform: "translate(-50%, -55%)",
-          pointerEvents: "none", userSelect: "none", lineHeight: 1
-        }}>👑</div>
-        <div style={{ position: "absolute", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%)", top: "10%", left: "0%" }} />
-        <div style={{ position: "absolute", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(139,105,20,0.07) 0%, transparent 70%)", bottom: "10%", right: "0%" }} />
-
-        <div style={{
-          display: "inline-flex", alignItems: "center", gap: 8,
-          background: "rgba(201,168,76,0.1)", border: "1px solid rgba(201,168,76,0.3)",
-          borderRadius: 30, padding: "8px 22px", marginBottom: 32, fontSize: 13, color: "#C9A84C", letterSpacing: 0.5
-        }}>
-          👑 King Xcel Innovations · Digital Technology Company
-        </div>
-
-        <h1 style={{ fontSize: "clamp(38px, 7vw, 80px)", fontWeight: 900, lineHeight: 1.05, marginBottom: 28, letterSpacing: -1.5 }}>
-          Building Digital Platforms<br />
-          <span style={{
-            background: "linear-gradient(135deg, #E8C870 0%, #C9A84C 50%, #8B6914 100%)",
-            WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent"
-          }}>That Matter</span>
-        </h1>
-
-        <p style={{ fontSize: "clamp(16px, 2vw, 20px)", color: "rgba(255,255,255,0.55)", maxWidth: 660, lineHeight: 1.85, marginBottom: 56 }}>
-          King Xcel Innovations is a U.S.-based digital technology company building a portfolio of innovative web platforms in education, career development, social networking, healthcare, and interactive learning.
-        </p>
-
-        <div style={{
-          display: "flex", gap: 0, flexWrap: "wrap", justifyContent: "center",
-          background: "rgba(201,168,76,0.05)", border: "1px solid rgba(201,168,76,0.15)",
-          borderRadius: 20, overflow: "hidden", maxWidth: 780, width: "100%"
-        }}>
-          {stats.map((s, i) => (
-            <div key={i} style={{
-              flex: "1 1 140px", padding: "28px 20px", textAlign: "center",
-              borderRight: i < stats.length - 1 ? "1px solid rgba(201,168,76,0.1)" : "none"
-            }}>
-              <div style={{ fontSize: 28, fontWeight: 900, color: "#C9A84C" }}>{s.value}</div>
-              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", letterSpacing: 1, marginTop: 5, textTransform: "uppercase" }}>{s.label}</div>
-            </div>
-          ))}
-        </div>
-
-        <div style={{ marginTop: 48 }}>
-          <a href="#companies" style={{
-            display: "inline-block",
-            background: "linear-gradient(135deg, #C9A84C, #8B6914)",
-            color: "#000", padding: "16px 48px", borderRadius: 40,
-            fontWeight: 800, textDecoration: "none", fontSize: 16,
-            boxShadow: "0 8px 30px rgba(201,168,76,0.35)"
-          }}
-            onMouseOver={e => { e.target.style.transform = "translateY(-3px)"; e.target.style.boxShadow = "0 14px 40px rgba(201,168,76,0.5)"; }}
-            onMouseOut={e => { e.target.style.transform = "translateY(0)"; e.target.style.boxShadow = "0 8px 30px rgba(201,168,76,0.35)"; }}>
-            Explore Our Portfolio ↓
-          </a>
-        </div>
-      </section>
-
-
-      {/* ═══════════════════════════════════════════ */}
-      {/* EDECADES VIDEO SPOTLIGHT */}
-      {/* ═══════════════════════════════════════════ */}
-      <section style={{ padding: "100px 24px 60px", background: "linear-gradient(180deg, #080810 0%, #0d0b00 50%, #080810 100%)", position: "relative", overflow: "hidden" }}>
-        {/* Gold glow orb */}
-        <div style={{ position: "absolute", width: 600, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%)", top: "30%", left: "50%", transform: "translateX(-50%)", pointerEvents: "none" }} />
-
-        <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
-
-          {/* Label */}
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(201,168,76,0.1)", border: "1px solid rgba(201,168,76,0.3)", borderRadius: 30, padding: "7px 20px", marginBottom: 24, fontSize: 12, color: "#C9A84C", letterSpacing: 1, textTransform: "uppercase" }}>
-            🕰️ Featured Platform
-          </div>
-
-          <h2 style={{ fontSize: "clamp(26px, 4vw, 48px)", fontWeight: 900, margin: "0 0 16px", lineHeight: 1.1 }}>
-            See <span style={{ background: "linear-gradient(135deg, #E8C870, #C9A84C)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>eDecades</span> in Action
-          </h2>
-          <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 17, maxWidth: 560, margin: "0 auto 48px", lineHeight: 1.7 }}>
-            The world's first decade-themed social network — explore 100 years of culture, music, fashion, and history. Connect with people who love the same eras you do.
-          </p>
-
-          {/* Video frame */}
-          <div style={{
-            position: "relative", borderRadius: 24, overflow: "hidden",
-            boxShadow: "0 0 0 1px rgba(201,168,76,0.25), 0 40px 80px rgba(0,0,0,0.7), 0 0 60px rgba(201,168,76,0.1)",
-            background: "#000", aspectRatio: "16/9",
-          }}>
-            {/* Corner accents */}
-            <div style={{ position: "absolute", top: 0, left: 0, width: 40, height: 40, borderTop: "3px solid #C9A84C", borderLeft: "3px solid #C9A84C", borderRadius: "24px 0 0 0", zIndex: 2, pointerEvents: "none" }} />
-            <div style={{ position: "absolute", top: 0, right: 0, width: 40, height: 40, borderTop: "3px solid #C9A84C", borderRight: "3px solid #C9A84C", borderRadius: "0 24px 0 0", zIndex: 2, pointerEvents: "none" }} />
-            <div style={{ position: "absolute", bottom: 0, left: 0, width: 40, height: 40, borderBottom: "3px solid #C9A84C", borderLeft: "3px solid #C9A84C", borderRadius: "0 0 0 24px", zIndex: 2, pointerEvents: "none" }} />
-            <div style={{ position: "absolute", bottom: 0, right: 0, width: 40, height: 40, borderBottom: "3px solid #C9A84C", borderRight: "3px solid #C9A84C", borderRadius: "0 0 24px 0", zIndex: 2, pointerEvents: "none" }} />
-
-            <iframe
-              src="https://www.youtube.com/embed/p_NzLrUrs3M?rel=0&modestbranding=1&color=white&autohide=1"
-              title="eDecades Time Traveling Nostalgia Portal"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              style={{ width: "100%", height: "100%", position: "absolute", inset: 0, display: "block" }}
-            />
-
-            {/* Descript watermark cover — irregular shape using clip-path */}
-            <div style={{
-              position: "absolute",
-              bottom: 0,
-              right: 0,
-              width: 140,
-              height: 44,
-              background: "#000",
-              zIndex: 5,
-              pointerEvents: "none",
-              clipPath: "polygon(18% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 40%)",
-              opacity: 0.97,
-            }} />
-            {/* Decorative eDecades brand badge over the cover */}
-            <div style={{
-              position: "absolute",
-              bottom: 6,
-              right: 8,
-              zIndex: 6,
-              pointerEvents: "none",
-              display: "flex",
-              alignItems: "center",
-              gap: 5,
-              background: "rgba(201,168,76,0.15)",
-              border: "1px solid rgba(201,168,76,0.4)",
-              borderRadius: "8px 8px 20px 8px",
-              padding: "4px 10px 4px 7px",
-            }}>
-              <span style={{ fontSize: 11 }}>🕰️</span>
-              <span style={{ fontSize: 10, fontWeight: 800, color: "#C9A84C", letterSpacing: 0.5, fontFamily: "sans-serif" }}>eDecades</span>
-            </div>
-          </div>
-
-          {/* CTA below video */}
-          <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap", marginTop: 36 }}>
-            <a href="https://benevolent-decade-dive-now.base44.app" target="_blank" rel="noopener noreferrer"
-              style={{ background: "linear-gradient(135deg, #E8C870, #C9A84C)", color: "#080810", padding: "14px 32px", borderRadius: 50, fontWeight: 800, fontSize: 15, textDecoration: "none", boxShadow: "0 6px 24px rgba(201,168,76,0.35)" }}>
-              🕰️ Visit eDecades
-            </a>
-            <a href="https://www.youtube.com/@AnthonyKittles" target="_blank" rel="noopener noreferrer"
-              style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)", color: "#fff", padding: "14px 32px", borderRadius: 50, fontWeight: 700, fontSize: 15, textDecoration: "none" }}>
-              ▶️ YouTube Channel
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* COMPANIES */}
-      <section id="companies" style={{ padding: "100px 24px", background: "#080810" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 72 }}>
-            <div style={{ color: "#C9A84C", fontSize: 12, letterSpacing: 3, textTransform: "uppercase", marginBottom: 14 }}>Our Portfolio</div>
-            <h2 style={{ fontSize: "clamp(28px, 4vw, 52px)", fontWeight: 900, margin: 0 }}>Five Platforms. One Vision.</h2>
-            <p style={{ color: "rgba(255,255,255,0.45)", fontSize: 17, marginTop: 14, maxWidth: 520, margin: "14px auto 0" }}>
-              Each company is independently operated, purpose-built, and designed to lead its market.
-            </p>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(520px, 1fr))", gap: 24 }}>
-            {companies.map((co, i) => (
-              <div key={i}
-                onMouseEnter={() => setHoveredCompany(i)}
-                onMouseLeave={() => setHoveredCompany(null)}
-                style={{
-                  background: hoveredCompany === i ? co.bg : "rgba(255,255,255,0.02)",
-                  border: `1px solid ${hoveredCompany === i ? co.color + "40" : "rgba(255,255,255,0.06)"}`,
-                  borderRadius: 24, padding: "36px 32px",
-                  transition: "all 0.3s ease",
-                  opacity: co.status === "concept" ? 0.85 : 1,
-                  position: "relative", overflow: "hidden"
-                }}>
-
-                {/* Concept Mode Banner */}
-                {co.status === "concept" && (
-                  <div style={{
-                    position: "absolute", top: 16, right: 16,
-                    background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.35)",
-                    color: "#EF4444", fontSize: 10, fontWeight: 800,
-                    padding: "4px 12px", borderRadius: 20, letterSpacing: 1, textTransform: "uppercase"
-                  }}>🔬 Concept Mode · Not Started</div>
-                )}
-
-                {co.status === "live" && (
-                  <div style={{
-                    position: "absolute", top: 16, right: 16,
-                    background: "rgba(74,222,128,0.12)", border: "1px solid rgba(74,222,128,0.3)",
-                    color: "#4ade80", fontSize: 10, fontWeight: 800,
-                    padding: "4px 12px", borderRadius: 20, letterSpacing: 1, textTransform: "uppercase"
-                  }}>● Live</div>
-                )}
-
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                    <img src={co.logo} alt={co.name} style={{ width: 52, height: 52, borderRadius: 14, objectFit: "cover", boxShadow: `0 8px 20px ${co.color}30`, filter: co.status === "concept" ? "grayscale(50%)" : "none" }} />
-                    <div>
-                      <div style={{ fontSize: 22, fontWeight: 800, color: "#fff" }}>{co.name}</div>
-                      <div style={{ fontSize: 12, color: co.color, marginTop: 2 }}>{co.domain}</div>
-                    </div>
-                  </div>
-                  <div style={{
-                    fontSize: 11, color: co.color, fontWeight: 700,
-                    background: `${co.color}15`, border: `1px solid ${co.color}30`,
-                    padding: "5px 14px", borderRadius: 20, letterSpacing: 0.5, whiteSpace: "nowrap"
-                  }}>{co.category}</div>
-                </div>
-
-                <p style={{ fontSize: 14, color: "#C9A84C", fontStyle: "italic", fontWeight: 600, marginBottom: 12, lineHeight: 1.5 }}>
-                  "{co.tagline}"
-                </p>
-
-                <p style={{ fontSize: 14, color: "rgba(255,255,255,0.58)", lineHeight: 1.8, marginBottom: 24 }}>
-                  {co.description}
-                </p>
-
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 28 }}>
-                  {co.features.map((f, j) => (
-                    <span key={j} style={{
-                      fontSize: 12, color: co.status === "concept" ? "rgba(255,255,255,0.35)" : "rgba(255,255,255,0.65)",
-                      background: "rgba(255,255,255,0.05)",
-                      border: "1px solid rgba(255,255,255,0.08)",
-                      padding: "5px 14px", borderRadius: 20
-                    }}>{co.status === "concept" ? "○" : "✓"} {f}</span>
-                  ))}
-                </div>
-
-                {co.status === "live" ? (
-                  <a href={co.url} target="_blank" rel="noreferrer" style={{
-                    display: "inline-flex", alignItems: "center", gap: 8,
-                    background: `linear-gradient(135deg, ${co.color}, ${co.color}aa)`,
-                    color: "#000", padding: "12px 28px", borderRadius: 30,
-                    fontWeight: 700, textDecoration: "none", fontSize: 14,
-                    boxShadow: `0 6px 20px ${co.color}30`
-                  }}>Visit {co.name} →</a>
-                ) : (
-                  <a href={co.url} target="_blank" rel="noreferrer" style={{
-                    display: "inline-flex", alignItems: "center", gap: 8,
-                    background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.35)",
-                    color: "#fca5a5", padding: "12px 28px", borderRadius: 30,
-                    fontWeight: 700, fontSize: 14, textDecoration: "none"
-                  }}>🔜 Preview Concept Page →</a>
-                )}
-              </div>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            {[["overview","📊 Overview"],["directories","📋 All Directories"],["submit","🚀 Submit"],["bizinfo","🏢 Business Info"]].map(([id, label]) => (
+              <button key={id} onClick={() => setActiveTab(id)} style={{ padding: "7px 16px", borderRadius: 99, fontSize: 12, fontWeight: 700, cursor: "pointer", border: "none", background: activeTab === id ? "#C9A84C" : "#1f2937", color: activeTab === id ? "#000" : "#9ca3af" }}>{label}</button>
             ))}
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* ABOUT */}
-      <section id="about" style={{ padding: "100px 24px", background: "linear-gradient(180deg, #080810 0%, #0e0c04 100%)" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
-            <div>
-              <div style={{ color: "#C9A84C", fontSize: 12, letterSpacing: 3, textTransform: "uppercase", marginBottom: 16 }}>About the Company</div>
-              <h2 style={{ fontSize: "clamp(28px, 3.5vw, 46px)", fontWeight: 900, lineHeight: 1.2, marginBottom: 24 }}>
-                A Digital Innovation<br />
-                <span style={{ background: "linear-gradient(135deg, #E8C870, #C9A84C)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                  Company Built to Last
-                </span>
-              </h2>
-              <p style={{ fontSize: 16, color: "rgba(255,255,255,0.58)", lineHeight: 1.9, marginBottom: 20 }}>
-                King Xcel Innovations is a U.S.-based digital technology company dedicated to building platforms that educate, connect, and empower people online.
-              </p>
-              <p style={{ fontSize: 16, color: "rgba(255,255,255,0.58)", lineHeight: 1.9, marginBottom: 32 }}>
-                Our portfolio spans social networking, educational marketplaces, career development tools, healthcare technology, and interactive learning games — each product designed to lead its market and deliver real value to real users.
-              </p>
-              <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-                {[["5", "PLATFORMS"], ["USA", "BASED"], ["2025", "FOUNDED"]].map(([val, label]) => (
-                  <div key={label} style={{
-                    background: "rgba(201,168,76,0.08)", border: "1px solid rgba(201,168,76,0.2)",
-                    borderRadius: 14, padding: "16px 24px", textAlign: "center"
-                  }}>
-                    <div style={{ fontSize: 24, fontWeight: 900, color: "#C9A84C" }}>{val}</div>
-                    <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginTop: 4, letterSpacing: 1 }}>{label}</div>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "28px 20px 80px" }}>
+
+        {/* ===== OVERVIEW ===== */}
+        {activeTab === "overview" && (
+          <>
+            {/* Progress */}
+            <div style={{ background: "linear-gradient(135deg, #C9A84C22, #1f2937)", border: "2px solid #C9A84C44", borderRadius: 20, padding: "28px", marginBottom: 28 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12, flexWrap: "wrap", gap: 8 }}>
+                <div>
+                  <h2 style={{ color: "#C9A84C", fontWeight: 900, fontSize: 20, margin: "0 0 4px" }}>Submission Progress</h2>
+                  <div style={{ color: "#9ca3af", fontSize: 13 }}>{submitted.length + verified.length} of {directories.length} directories submitted or verified</div>
+                </div>
+                <div style={{ color: "#C9A84C", fontWeight: 900, fontSize: 36 }}>{pct}%</div>
+              </div>
+              <div style={{ background: "#111827", borderRadius: 99, height: 14 }}>
+                <div style={{ background: "linear-gradient(90deg, #C9A84C, #d4956e)", width: `${pct}%`, height: 14, borderRadius: 99, transition: "width 0.6s" }} />
+              </div>
+            </div>
+
+            {/* Stats */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px,1fr))", gap: 14, marginBottom: 28 }}>
+              {[["📋","Total Directories", directories.length, "#C9A84C"], ["🔴","High Priority", highPriority.length, "#ef4444"], ["📤","Submitted", submitted.length, "#eab308"], ["✅","Verified", verified.length, "#22c55e"], ["❌","Not Submitted", notSubmitted.length, "#6b7280"]].map(([icon, label, val, color], i) => (
+                <div key={i} style={{ background: "#111827", border: `1px solid ${color}33`, borderRadius: 14, padding: "18px 16px", textAlign: "center" }}>
+                  <div style={{ fontSize: 24, marginBottom: 6 }}>{icon}</div>
+                  <div style={{ color, fontWeight: 900, fontSize: 26 }}>{val}</div>
+                  <div style={{ color: "#9ca3af", fontSize: 12, marginTop: 3 }}>{label}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* High priority quick actions */}
+            <div style={{ background: "#111827", border: "2px solid #ef444433", borderRadius: 16, padding: "22px", marginBottom: 24 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, flexWrap: "wrap", gap: 10 }}>
+                <h3 style={{ color: "#ef4444", fontWeight: 800, fontSize: 15, margin: 0 }}>🔴 High Priority — Submit These First ({highPriority.length})</h3>
+                <button onClick={() => openAll(highPriority)} disabled={bulkOpening || highPriority.length === 0} style={{ background: "#ef444422", border: "1px solid #ef4444", color: "#ef4444", borderRadius: 8, padding: "8px 18px", fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
+                  {bulkOpening ? "Opening..." : `🚀 Open All ${highPriority.length} in Tabs`}
+                </button>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px,1fr))", gap: 10 }}>
+                {highPriority.map(d => (
+                  <div key={d.id} style={{ background: "#1f2937", borderRadius: 10, padding: "12px 14px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ color: "#f3f4f6", fontWeight: 700, fontSize: 13 }}>{d.directory_name}</div>
+                      <div style={{ color: "#6b7280", fontSize: 11 }}>{d.category} · DA {d.domain_authority}</div>
+                    </div>
+                    <div style={{ display: "flex", gap: 6 }}>
+                      <a href={d.url} target="_blank" rel="noopener noreferrer" style={{ background: "#C9A84C", color: "#000", borderRadius: 6, padding: "5px 10px", fontSize: 11, fontWeight: 800, textDecoration: "none" }}>Submit →</a>
+                      <button onClick={() => updateStatus(d.id, "Submitted")} disabled={updating === d.id} style={{ background: "#22c55e22", border: "1px solid #22c55e44", color: "#4ade80", borderRadius: 6, padding: "5px 8px", fontSize: 10, fontWeight: 700, cursor: "pointer" }}>✓ Done</button>
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-              {values.map((v, i) => (
-                <div key={i} style={{
-                  background: "rgba(255,255,255,0.02)", border: "1px solid rgba(201,168,76,0.1)",
-                  borderRadius: 18, padding: "28px 22px", transition: "all 0.3s"
-                }}
-                  onMouseOver={e => { e.currentTarget.style.background = "rgba(201,168,76,0.05)"; e.currentTarget.style.borderColor = "rgba(201,168,76,0.25)"; }}
-                  onMouseOut={e => { e.currentTarget.style.background = "rgba(255,255,255,0.02)"; e.currentTarget.style.borderColor = "rgba(201,168,76,0.1)"; }}>
-                  <div style={{ fontSize: 30, marginBottom: 14 }}>{v.icon}</div>
-                  <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 8 }}>{v.title}</div>
-                  <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", lineHeight: 1.7 }}>{v.desc}</div>
+
+            {/* Category breakdown */}
+            <div style={{ background: "#111827", border: "1px solid #1f2937", borderRadius: 16, padding: "22px" }}>
+              <h3 style={{ color: "#C9A84C", fontWeight: 800, fontSize: 15, margin: "0 0 16px" }}>📊 By Category</h3>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px,1fr))", gap: 10 }}>
+                {Object.entries(CATEGORY_COLORS).map(([cat, color]) => {
+                  const catDirs = directories.filter(d => d.category === cat);
+                  const catDone = catDirs.filter(d => d.status === "Submitted" || d.status === "Verified").length;
+                  return (
+                    <div key={cat} onClick={() => { setActiveTab("directories"); setFilterCategory(cat); }} style={{ background: "#1f2937", border: `1px solid ${color}33`, borderRadius: 12, padding: "14px", cursor: "pointer" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                        <span style={{ color, fontWeight: 700, fontSize: 13 }}>{cat}</span>
+                        <span style={{ color: "#f3f4f6", fontWeight: 900 }}>{catDone}/{catDirs.length}</span>
+                      </div>
+                      <div style={{ background: "#111827", borderRadius: 99, height: 6 }}>
+                        <div style={{ background: color, width: `${catDirs.length ? (catDone / catDirs.length) * 100 : 0}%`, height: 6, borderRadius: 99 }} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </>
+        )}
+
+        {/* ===== ALL DIRECTORIES ===== */}
+        {activeTab === "directories" && (
+          <>
+            {/* Filters */}
+            <div style={{ background: "#111827", border: "1px solid #1f2937", borderRadius: 14, padding: "16px 18px", marginBottom: 20, display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
+              <input value={search} onChange={e => setSearch(e.target.value)} placeholder="🔍 Search directories..." style={{ background: "#1f2937", border: "1px solid #374151", borderRadius: 8, padding: "8px 12px", color: "#f3f4f6", fontSize: 13, flex: 1, minWidth: 160 }} />
+              <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)} style={{ background: "#1f2937", border: "1px solid #374151", borderRadius: 8, padding: "8px 12px", color: "#f3f4f6", fontSize: 13 }}>
+                {allCategories.map(c => <option key={c}>{c}</option>)}
+              </select>
+              <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} style={{ background: "#1f2937", border: "1px solid #374151", borderRadius: 8, padding: "8px 12px", color: "#f3f4f6", fontSize: 13 }}>
+                {allStatuses.map(s => <option key={s}>{s}</option>)}
+              </select>
+              <select value={filterPriority} onChange={e => setFilterPriority(e.target.value)} style={{ background: "#1f2937", border: "1px solid #374151", borderRadius: 8, padding: "8px 12px", color: "#f3f4f6", fontSize: 13 }}>
+                {allPriorities.map(p => <option key={p}>{p}</option>)}
+              </select>
+              <div style={{ color: "#6b7280", fontSize: 12 }}>{filtered.length} results</div>
+            </div>
+
+            {/* Bulk actions */}
+            <div style={{ display: "flex", gap: 10, marginBottom: 16, flexWrap: "wrap" }}>
+              <button onClick={() => openAll(filtered.filter(d => d.status === "Not Submitted"))} disabled={bulkOpening} style={{ background: "#C9A84C22", border: "1px solid #C9A84C55", color: "#C9A84C", borderRadius: 8, padding: "8px 18px", fontWeight: 800, fontSize: 13, cursor: "pointer" }}>
+                🚀 Open All Unsubmitted in Tabs ({filtered.filter(d => d.status === "Not Submitted").length})
+              </button>
+            </div>
+
+            {/* Directory cards */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {filtered.map(d => (
+                <div key={d.id} style={{ background: "#111827", border: `1px solid ${STATUS_COLORS[d.status] || "#1f2937"}22`, borderRadius: 12, padding: "16px 18px", display: "flex", alignItems: "flex-start", gap: 14, flexWrap: "wrap" }}>
+                  <div style={{ flex: 1, minWidth: 200 }}>
+                    <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 6, alignItems: "center" }}>
+                      <span style={{ color: "#f3f4f6", fontWeight: 800, fontSize: 15 }}>{d.directory_name}</span>
+                      <span style={{ background: PRIORITY_COLORS[d.priority] + "22", color: PRIORITY_COLORS[d.priority], border: `1px solid ${PRIORITY_COLORS[d.priority]}44`, borderRadius: 99, padding: "2px 8px", fontSize: 10, fontWeight: 700 }}>{d.priority}</span>
+                      <span style={{ background: CATEGORY_COLORS[d.category] + "22", color: CATEGORY_COLORS[d.category], borderRadius: 99, padding: "2px 8px", fontSize: 10, fontWeight: 700 }}>{d.category}</span>
+                      {d.is_free && <span style={{ background: "#22c55e22", color: "#4ade80", borderRadius: 99, padding: "2px 8px", fontSize: 10, fontWeight: 700 }}>FREE</span>}
+                    </div>
+                    <div style={{ color: "#9ca3af", fontSize: 12, marginBottom: 4 }}>{d.notes}</div>
+                    <div style={{ color: "#6b7280", fontSize: 11 }}>DA {d.domain_authority} · {d.difficulty} · {d.url}</div>
+                    {d.submitted_date && <div style={{ color: "#6b7280", fontSize: 11, marginTop: 3 }}>Submitted: {d.submitted_date}</div>}
+                    {d.verified_date && <div style={{ color: "#22c55e", fontSize: 11, marginTop: 2 }}>✅ Verified: {d.verified_date}</div>}
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 6, alignItems: "flex-end", flexShrink: 0 }}>
+                    <div style={{ background: STATUS_COLORS[d.status] + "22", color: STATUS_COLORS[d.status], border: `1px solid ${STATUS_COLORS[d.status]}44`, borderRadius: 99, padding: "4px 12px", fontSize: 11, fontWeight: 700 }}>{d.status}</div>
+                    <a href={d.url} target="_blank" rel="noopener noreferrer" style={{ background: "#C9A84C", color: "#000", borderRadius: 8, padding: "7px 16px", fontSize: 12, fontWeight: 800, textDecoration: "none" }}>Submit →</a>
+                    <div style={{ display: "flex", gap: 5 }}>
+                      {["Not Submitted","Submitted","Verified"].map(s => (
+                        <button key={s} onClick={() => updateStatus(d.id, s)} disabled={updating === d.id || d.status === s} style={{ background: d.status === s ? STATUS_COLORS[s] + "33" : "#1f2937", border: `1px solid ${STATUS_COLORS[s]}44`, color: STATUS_COLORS[s], borderRadius: 6, padding: "3px 8px", fontSize: 9, fontWeight: 700, cursor: d.status === s ? "default" : "pointer", opacity: d.status === s ? 1 : 0.7 }}>
+                          {s === "Not Submitted" ? "Reset" : s}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
+          </>
+        )}
 
-      {/* WHAT WE SELL — For Stripe Compliance */}
-      <section style={{ padding: "80px 24px", background: "#080810" }}>
-        <div style={{ maxWidth: 900, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 52 }}>
-            <div style={{ color: "#C9A84C", fontSize: 12, letterSpacing: 3, textTransform: "uppercase", marginBottom: 14 }}>Products & Services</div>
-            <h2 style={{ fontSize: "clamp(24px, 3.5vw, 42px)", fontWeight: 900 }}>What We Offer</h2>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 20 }}>
-            {[
-              { icon: "💳", title: "SaaS Subscriptions", desc: "Monthly and annual subscription plans for premium platform access across all products.", price: "From $4.99/mo" },
-              { icon: "🎓", title: "Tutoring Marketplace", desc: "Transaction-based platform fees for homework help and academic tutoring sessions.", price: "From $9.99/answer" },
-              { icon: "📄", title: "Resume Downloads", desc: "One-time purchase for professional resume PDF downloads with premium templates.", price: "From $4.99" },
-              { icon: "🏫", title: "Classroom Licenses", desc: "Annual licenses for schools and educators to use WheelMath in classroom settings.", price: "From $99/yr" },
-            ].map((p, i) => (
-              <div key={i} style={{
-                background: "rgba(201,168,76,0.04)", border: "1px solid rgba(201,168,76,0.12)",
-                borderRadius: 18, padding: "28px 22px", textAlign: "center"
-              }}>
-                <div style={{ fontSize: 32, marginBottom: 12 }}>{p.icon}</div>
-                <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 8 }}>{p.title}</div>
-                <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", lineHeight: 1.7, marginBottom: 12 }}>{p.desc}</div>
-                <div style={{ fontSize: 13, color: "#C9A84C", fontWeight: 700 }}>{p.price}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        {/* ===== SUBMIT TAB ===== */}
+        {activeTab === "submit" && (
+          <>
+            <div style={{ marginBottom: 24 }}>
+              <h2 style={{ color: "#C9A84C", fontWeight: 900, fontSize: 20, margin: "0 0 6px" }}>🚀 Bulk Submit Strategy</h2>
+              <p style={{ color: "#9ca3af", fontSize: 14, margin: 0 }}>Submit to all directories efficiently. Open in batches and use your pre-filled business info below.</p>
+            </div>
 
-      {/* CONTACT */}
-      <section id="contact" style={{ padding: "100px 24px 80px", background: "linear-gradient(135deg, #0e0c04, #080810)" }}>
-        <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
-          <div style={{
-            background: "rgba(201,168,76,0.06)", border: "1px solid rgba(201,168,76,0.2)",
-            borderRadius: 28, padding: "64px 48px", boxShadow: "0 0 60px rgba(201,168,76,0.06)"
-          }}>
-            <div style={{ fontSize: 48, marginBottom: 20 }}>👑</div>
-            <h2 style={{ fontSize: "clamp(26px, 4vw, 44px)", fontWeight: 900, marginBottom: 16 }}>
-              Partner With <span style={{ background: "linear-gradient(135deg, #E8C870, #C9A84C)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>King Xcel</span>
-            </h2>
-            <p style={{ fontSize: 16, color: "rgba(255,255,255,0.55)", lineHeight: 1.8, marginBottom: 36, maxWidth: 480, margin: "0 auto 36px" }}>
-              Interested in partnerships, advertising, or business inquiries? We'd love to hear from you.
-            </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 16, alignItems: "center" }}>
-              <a href="mailto:anthonykittles@outlook.com" style={{
-                display: "inline-flex", alignItems: "center", gap: 10,
-                background: "linear-gradient(135deg, #C9A84C, #8B6914)",
-                color: "#000", padding: "16px 40px", borderRadius: 30,
-                fontWeight: 800, textDecoration: "none", fontSize: 15,
-                boxShadow: "0 8px 25px rgba(201,168,76,0.3)"
-              }}>📬 anthonykittles@outlook.com</a>
-              <div style={{ fontSize: 14, color: "rgba(255,255,255,0.3)" }}>
-                📍 205 Seva Ct, Irving, Texas 75061
+            {/* Batch openers by priority */}
+            {[["🔴 High Priority", "High", "#ef4444"], ["🟠 Medium Priority", "Medium", "#f97316"], ["⚪ Low Priority", "Low", "#6b7280"]].map(([label, prio, color]) => {
+              const batch = notSubmitted.filter(d => d.priority === prio);
+              return (
+                <div key={prio} style={{ background: "#111827", border: `1px solid ${color}33`, borderRadius: 16, padding: "20px", marginBottom: 16 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12, flexWrap: "wrap", gap: 8 }}>
+                    <div>
+                      <span style={{ color, fontWeight: 800, fontSize: 15 }}>{label}</span>
+                      <span style={{ color: "#6b7280", fontSize: 13, marginLeft: 8 }}>{batch.length} unsubmitted</span>
+                    </div>
+                    <button onClick={() => openAll(batch)} disabled={bulkOpening || batch.length === 0} style={{ background: color + "22", border: `1px solid ${color}55`, color, borderRadius: 8, padding: "8px 18px", fontWeight: 800, fontSize: 12, cursor: batch.length === 0 ? "not-allowed" : "pointer", opacity: batch.length === 0 ? 0.5 : 1 }}>
+                      {bulkOpening ? "Opening tabs..." : `Open All ${batch.length} →`}
+                    </button>
+                  </div>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                    {batch.map(d => (
+                      <a key={d.id} href={d.url} target="_blank" rel="noopener noreferrer" style={{ background: "#1f2937", border: "1px solid #374151", color: "#e5e7eb", borderRadius: 8, padding: "6px 12px", fontSize: 12, fontWeight: 600, textDecoration: "none" }}>{d.directory_name} ↗</a>
+                    ))}
+                    {batch.length === 0 && <span style={{ color: "#4ade80", fontSize: 13 }}>✅ All {prio} priority directories submitted!</span>}
+                  </div>
+                </div>
+              );
+            })}
+
+            {/* Social Media channels */}
+            <div style={{ background: "#111827", border: "2px solid #3b82f633", borderRadius: 16, padding: "20px", marginBottom: 16 }}>
+              <h3 style={{ color: "#3b82f6", fontWeight: 800, fontSize: 15, margin: "0 0 14px" }}>📱 Social Media Channels — Post eDecades Now</h3>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px,1fr))", gap: 10 }}>
+                {[
+                  { name: "Facebook Business", url: "https://www.facebook.com/business", emoji: "📘", note: "Create a business page" },
+                  { name: "Instagram Business", url: "https://business.instagram.com", emoji: "📸", note: "Switch to business account" },
+                  { name: "TikTok Business", url: "https://www.tiktok.com/business/en", emoji: "🎵", note: "Create business account" },
+                  { name: "X / Twitter", url: "https://twitter.com/i/flow/signup", emoji: "🐦", note: "Post nostalgia content" },
+                  { name: "YouTube Channel", url: "https://studio.youtube.com", emoji: "▶️", note: "Create/manage channel" },
+                  { name: "Pinterest (Active)", url: "https://pinterest.com", emoji: "📌", note: "✅ Already connected" },
+                  { name: "LinkedIn (Active)", url: "https://linkedin.com", emoji: "💼", note: "✅ Auto-posting daily" },
+                  { name: "Discord (Active)", url: "https://discord.com", emoji: "💬", note: "✅ Webhook connected" },
+                ].map((ch, i) => (
+                  <a key={i} href={ch.url} target="_blank" rel="noopener noreferrer" style={{ background: "#1f2937", border: "1px solid #374151", borderRadius: 10, padding: "12px 14px", textDecoration: "none", display: "block" }}>
+                    <div style={{ fontSize: 22, marginBottom: 4 }}>{ch.emoji}</div>
+                    <div style={{ color: "#f3f4f6", fontWeight: 700, fontSize: 13 }}>{ch.name}</div>
+                    <div style={{ color: "#6b7280", fontSize: 11, marginTop: 2 }}>{ch.note}</div>
+                  </a>
+                ))}
               </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </>
+        )}
 
-      {/* FOOTER */}
-      <footer style={{ background: "#04040a", padding: "40px 24px", textAlign: "center", borderTop: "1px solid rgba(201,168,76,0.08)" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginBottom: 16 }}>
-          <div style={{
-            width: 32, height: 32, borderRadius: 8,
-            background: "linear-gradient(135deg, #C9A84C, #8B6914)",
-            display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16
-          }}>👑</div>
-          <span style={{ fontSize: 16, fontWeight: 800 }}>King <span style={{ color: "#C9A84C" }}>Xcel</span> Innovations</span>
-        </div>
-        <p style={{ color: "rgba(255,255,255,0.2)", fontSize: 12 }}>© 2025 King Xcel Innovations. All rights reserved. · Irving, Texas</p>
-        <span onClick={() => { const c = (window._ac = (window._ac||0)+1); if(c>=5){window.open("https://antonio-major-help-app.base44.app/KingXcelPanel","_blank");window._ac=0;} }} style={{ color: "rgba(255,255,255,0.04)", cursor: "default", userSelect: "none", fontSize: 10 }}>·</span>
-      </footer>
+        {/* ===== BUSINESS INFO ===== */}
+        {activeTab === "bizinfo" && (
+          <>
+            <div style={{ marginBottom: 20 }}>
+              <h2 style={{ color: "#C9A84C", fontWeight: 900, fontSize: 20, margin: "0 0 6px" }}>🏢 Business Info — Copy & Paste for Submissions</h2>
+              <p style={{ color: "#9ca3af", fontSize: 14, margin: 0 }}>Use these exact values when filling out directory submission forms.</p>
+            </div>
+            {[
+              { label: "Business Name", value: BUSINESS_INFO.name, key: "name" },
+              { label: "Company Name", value: BUSINESS_INFO.company, key: "company" },
+              { label: "Website URL", value: BUSINESS_INFO.url, key: "url" },
+              { label: "Short Description (160 chars)", value: BUSINESS_INFO.shortDesc, key: "short" },
+              { label: "Full Description", value: BUSINESS_INFO.description, key: "desc" },
+              { label: "Address", value: BUSINESS_INFO.address, key: "addr" },
+              { label: "City", value: BUSINESS_INFO.city, key: "city" },
+              { label: "State", value: BUSINESS_INFO.state, key: "state" },
+              { label: "ZIP Code", value: BUSINESS_INFO.zip, key: "zip" },
+              { label: "Email", value: BUSINESS_INFO.email, key: "email" },
+              { label: "Business Category", value: BUSINESS_INFO.category, key: "cat" },
+              { label: "Keywords / Tags", value: BUSINESS_INFO.keywords, key: "kw" },
+              { label: "QR Code URL", value: "https://base44.app/api/apps/69c207112c5856fdf7bb496b/files/mp/public/69c207112c5856fdf7bb496b/596e7b25a_edecades_qr_square.png", key: "qr" },
+            ].map(item => (
+              <div key={item.key} style={{ background: "#111827", border: "1px solid #1f2937", borderRadius: 12, padding: "16px 18px", marginBottom: 10 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, flexWrap: "wrap" }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ color: "#6b7280", fontSize: 11, fontWeight: 700, textTransform: "uppercase", marginBottom: 6 }}>{item.label}</div>
+                    <div style={{ color: "#f3f4f6", fontSize: 14, lineHeight: 1.5, wordBreak: "break-all" }}>{item.value}</div>
+                  </div>
+                  <CopyButton text={item.value} label={item.label} />
+                </div>
+              </div>
+            ))}
 
+            <div style={{ background: "#111827", border: "2px solid #C9A84C33", borderRadius: 14, padding: "18px", marginTop: 20 }}>
+              <div style={{ color: "#C9A84C", fontWeight: 800, fontSize: 14, marginBottom: 10 }}>📦 Copy Full Submission Package</div>
+              <CopyButton
+                text={`Business Name: ${BUSINESS_INFO.name}\nCompany: ${BUSINESS_INFO.company}\nWebsite: ${BUSINESS_INFO.url}\nDescription: ${BUSINESS_INFO.description}\nAddress: ${BUSINESS_INFO.address}\nCity: ${BUSINESS_INFO.city}, ${BUSINESS_INFO.state} ${BUSINESS_INFO.zip}\nEmail: ${BUSINESS_INFO.email}\nCategory: ${BUSINESS_INFO.category}\nKeywords: ${BUSINESS_INFO.keywords}`}
+                label="Full Package"
+              />
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }

@@ -1,0 +1,64 @@
+{
+  "type": "object",
+  "properties": {
+    "directory_name": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "Major Search",
+        "Social Media",
+        "Business Directory",
+        "Tech/Startup",
+        "Local Texas",
+        "Backlink Source"
+      ]
+    },
+    "url": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Not Submitted",
+        "Submitted",
+        "Verified",
+        "Rejected"
+      ]
+    },
+    "domain_authority": {
+      "type": "string"
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": [
+        "Easy",
+        "Medium",
+        "Hard"
+      ]
+    },
+    "notes": {
+      "type": "string"
+    },
+    "submitted_date": {
+      "type": "string"
+    },
+    "verified_date": {
+      "type": "string"
+    },
+    "is_free": {
+      "type": "boolean"
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "High",
+        "Medium",
+        "Low"
+      ]
+    }
+  },
+  "required": [],
+  "name": "DirectorySubmission"
+}
