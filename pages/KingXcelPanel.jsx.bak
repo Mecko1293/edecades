@@ -8,7 +8,7 @@ const ADMIN_PASSWORD = "KingXcel2026";
 // CONSTANTS
 // ─────────────────────────────────────────────
 const PRODUCTS = [
-  { name:"eDecades", icon:"⏰", color:"#FFD700", status:"rebuild", appUrl:"https://benevolent-decade-dive-now.base44.app", newAppUrl:"https://edecades.com", category:"Social Network", description:"Decade-themed social network exploring history, music, fashion & culture 1920s–2020s. ✅ Full clean rebuild complete — deploying to eDecades.com via Vercel." },
+  { name:"eDecades", icon:"⏰", color:"#FFD700", status:"live", appUrl:"https://benevolent-decade-dive-now.base44.app", category:"Social Network", description:"Decade-themed social network exploring history, music, fashion & culture 1920s–2020s." },
   { name:"CourseGek", icon:"🎓", color:"#7C3AED", status:"live", appUrl:"https://course-gek-23543b27.base44.app", category:"EdTech", description:"Homework help marketplace. Students pay for answers, tutors earn by responding." },
   { name:"ResumeCrafted", icon:"📄", color:"#4A90D9", status:"live", appUrl:"https://resume-dashing-craft-pro.base44.app", category:"Career Tools", description:"AI-powered resume builder. ATS-optimized resumes in minutes." },
   { name:"WheelMath", icon:"🔢", color:"#F59E0B", status:"coming_soon", appUrl:"https://pie-math-quest.base44.app", category:"EdTech Game", description:"Interactive math puzzles for students and classrooms." },
@@ -29,9 +29,6 @@ const QUICK_LINKS = [
   { label:"Buffer Scheduler", url:"https://buffer.com/app", icon:"📅" },
   { label:"Google Search Console", url:"https://search.google.com/search-console", icon:"🔍" },
   { label:"Google Business", url:"https://business.google.com", icon:"📍" },
-  { label:"Vercel Deploy", url:"https://vercel.com/new", icon:"▲" },
-  { label:"GitHub Repo", url:"https://github.com/AnthonyKittles", icon:"🐙" },
-  { label:"eDecades Source", url:"https://base44.app/api/apps/69c207112c5856fdf7bb496b/files/mp/public/69c207112c5856fdf7bb496b/0ae45c926_edecades-source.zip", icon:"📦" },
 ];
 
 const AUTOMATIONS = [
@@ -107,7 +104,6 @@ const TABS = [
   { id:"automations", label:"⚡ Automations" },
   { id:"bizinfo", label:"🏢 Biz Info" },
   { id:"data", label:"🗃️ Data" },
-  { id:"rebuild", label:"🔄 eDecades Rebuild" },
 ];
 
 // ─────────────────────────────────────────────
@@ -409,7 +405,7 @@ export default function KingXcelPanel() {
                       <div style={{ color:p.color, fontWeight:900, fontSize:17 }}>{p.name}</div>
                       <div style={{ color:"#6b7280", fontSize:11 }}>{p.category}</div>
                     </div>
-                    <span style={{ marginLeft:"auto", background:p.status==="live"?"#22c55e22":p.status==="rebuild"?"#f9731622":"#6b728022", color:p.status==="live"?"#4ade80":p.status==="rebuild"?"#fb923c":"#9ca3af", border:`1px solid ${p.status==="live"?"#22c55e44":p.status==="rebuild"?"#f9731644":"#6b728044"}`, borderRadius:99, padding:"3px 10px", fontSize:10, fontWeight:700 }}>{p.status==="live"?"✅ Live":p.status==="rebuild"?"🔄 Rebuilding":"🔜 Soon"}</span>
+                    <span style={{ marginLeft:"auto", background:p.status==="live"?"#22c55e22":"#6b728022", color:p.status==="live"?"#4ade80":"#9ca3af", border:`1px solid ${p.status==="live"?"#22c55e44":"#6b728044"}`, borderRadius:99, padding:"3px 10px", fontSize:10, fontWeight:700 }}>{p.status==="live"?"✅ Live":"🔜 Soon"}</span>
                   </div>
                   <p style={{ color:"#9ca3af", fontSize:12, margin:"0 0 14px", lineHeight:1.5 }}>{p.description}</p>
                   {p.appUrl!=="##" && p.appUrl!=="#" && (
@@ -758,100 +754,6 @@ export default function KingXcelPanel() {
             <div style={{ background:"#111827", border:"2px solid #C9A84C33", borderRadius:12, padding:"16px", marginTop:10 }}>
               <div style={{ color:"#C9A84C", fontWeight:800, fontSize:13, marginBottom:10 }}>📦 Copy Full Package</div>
               <CopyBtn text={`Business Name: ${BUSINESS_INFO.name}\nCompany: ${BUSINESS_INFO.company}\nWebsite: ${BUSINESS_INFO.url}\nDescription: ${BUSINESS_INFO.description}\nAddress: ${BUSINESS_INFO.address}\nEmail: ${BUSINESS_INFO.email}\nCategory: ${BUSINESS_INFO.category}\nKeywords: ${BUSINESS_INFO.keywords}`} label="Full Package" />
-            </div>
-          </>
-        )}
-
-
-        {/* ══════════════════════════════════
-            eDECADES REBUILD
-        ══════════════════════════════════ */}
-        {tab==="rebuild" && (
-          <>
-            <h2 style={{ color:"#f97316", fontWeight:900, fontSize:20, margin:"0 0 6px" }}>🔄 eDecades Clean Rebuild</h2>
-            <p style={{ color:"#6b7280", fontSize:13, marginBottom:20 }}>Full React + Vite rebuild. Zero corruption. All pages working. Ready to deploy to eDecades.com.</p>
-
-            {/* Status Banner */}
-            <div style={{ background:"#22c55e11", border:"2px solid #22c55e", borderRadius:12, padding:"16px 20px", marginBottom:20, display:"flex", alignItems:"center", gap:12 }}>
-              <span style={{ fontSize:24 }}>✅</span>
-              <div>
-                <div style={{ color:"#4ade80", fontWeight:800, fontSize:15 }}>Build Complete — Zero Errors</div>
-                <div style={{ color:"#6b7280", fontSize:12, marginTop:2 }}>React 18 + Vite + Tailwind CSS · Built May 6, 2026 · 10 pages · 13 decades</div>
-              </div>
-            </div>
-
-            {/* Pages Built */}
-            <div style={{ background:"#111827", border:"1px solid #1f2937", borderRadius:14, padding:"18px 20px", marginBottom:16 }}>
-              <div style={{ color:"#C9A84C", fontWeight:800, fontSize:14, marginBottom:14 }}>📄 Pages Built (All Working)</div>
-              <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))", gap:8 }}>
-                {[
-                  ["🏠","Home","Hero, decade grid, feature cards"],
-                  ["📅","Decades","All 13 decades 1900s–2020s"],
-                  ["🔍","Decade Detail","Fashion, Food, Music, Sports per decade"],
-                  ["📚","Every Decade","7 categories × 13 decades of content"],
-                  ["🎵","Music","Genre guides, artists, YouTube links"],
-                  ["🏆","Sports MVPs","13 legends filterable by decade"],
-                  ["🎯","Trivia Quiz","15 questions, scoring, results screen"],
-                  ["📅","On This Day","18 pivotal moments, filterable"],
-                  ["⏳","Time Capsule","Write & seal decade memories"],
-                  ["🔍","Search","Full-text across all content"],
-                ].map(([icon,page,desc])=>(
-                  <div key={page} style={{ background:"#1f2937", borderRadius:10, padding:"12px 14px", border:"1px solid #374151" }}>
-                    <div style={{ fontSize:18, marginBottom:4 }}>{icon}</div>
-                    <div style={{ color:"#f3f4f6", fontWeight:700, fontSize:13 }}>{page}</div>
-                    <div style={{ color:"#6b7280", fontSize:11, marginTop:2 }}>{desc}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Tech Stack */}
-            <div style={{ background:"#111827", border:"1px solid #1f2937", borderRadius:14, padding:"18px 20px", marginBottom:16 }}>
-              <div style={{ color:"#C9A84C", fontWeight:800, fontSize:14, marginBottom:12 }}>⚙️ Tech Stack</div>
-              <div style={{ display:"flex", flexWrap:"wrap", gap:8 }}>
-                {["React 18","Vite 5","Tailwind CSS 3","React Router 6","Charcoal #333d4d","Rose Gold #d4956e"].map(t=>(
-                  <span key={t} style={{ background:"#1f2937", border:"1px solid #374151", color:"#d1d5db", borderRadius:99, padding:"5px 12px", fontSize:12, fontWeight:600 }}>{t}</span>
-                ))}
-              </div>
-            </div>
-
-            {/* Deploy Steps */}
-            <div style={{ background:"#111827", border:"2px solid #f97316", borderRadius:14, padding:"20px", marginBottom:16 }}>
-              <div style={{ color:"#f97316", fontWeight:800, fontSize:14, marginBottom:16 }}>▲ Deploy to eDecades.com — 3 Steps</div>
-              {[
-                { step:"1", title:"Download Source Code", desc:"Click the button below to download the full source zip", action:"📦 Download Source", url:"https://base44.app/api/apps/69c207112c5856fdf7bb496b/files/mp/public/69c207112c5856fdf7bb496b/0ae45c926_edecades-source.zip" },
-                { step:"2", title:"Push to GitHub → Deploy on Vercel", desc:"Go to vercel.com/new → Import your GitHub repo → Framework: Vite → Deploy", action:"▲ Open Vercel", url:"https://vercel.com/new" },
-                { step:"3", title:"Connect eDecades.com Domain", desc:"In Vercel dashboard → Domains → Add edecades.com → Update GoDaddy DNS to Vercel nameservers", action:"🌐 Open GoDaddy", url:"https://godaddy.com" },
-              ].map(s=>(
-                <div key={s.step} style={{ display:"flex", gap:14, alignItems:"flex-start", marginBottom:14, paddingBottom:14, borderBottom:"1px solid #1f2937" }}>
-                  <div style={{ background:"#f97316", color:"#000", fontWeight:900, borderRadius:99, width:28, height:28, display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, flexShrink:0 }}>{s.step}</div>
-                  <div style={{ flex:1 }}>
-                    <div style={{ color:"#f3f4f6", fontWeight:700, fontSize:14, marginBottom:4 }}>{s.title}</div>
-                    <div style={{ color:"#6b7280", fontSize:12, marginBottom:8 }}>{s.desc}</div>
-                    <a href={s.url} target="_blank" rel="noopener noreferrer" style={{ background:"#f97316", color:"#000", borderRadius:8, padding:"6px 14px", fontSize:12, fontWeight:800, textDecoration:"none", display:"inline-block" }}>{s.action}</a>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* GitHub note */}
-            <div style={{ background:"#111827", border:"1px solid #374151", borderRadius:12, padding:"14px 18px", marginBottom:16 }}>
-              <div style={{ color:"#9ca3af", fontSize:13 }}>
-                💡 <strong style={{ color:"#f3f4f6" }}>GitHub Push:</strong> Authorize GitHub in the Superagent chat and I will push directly to your repo for true one-click Vercel deploys going forward.
-              </div>
-            </div>
-
-            {/* Source download */}
-            <div style={{ display:"flex", gap:10, flexWrap:"wrap" }}>
-              <a href="https://base44.app/api/apps/69c207112c5856fdf7bb496b/files/mp/public/69c207112c5856fdf7bb496b/0ae45c926_edecades-source.zip"
-                target="_blank" rel="noopener noreferrer"
-                style={{ background:"#C9A84C", color:"#000", borderRadius:10, padding:"12px 22px", fontSize:14, fontWeight:800, textDecoration:"none", display:"inline-block" }}>
-                📦 Download Full Source (.zip)
-              </a>
-              <a href="https://vercel.com/new" target="_blank" rel="noopener noreferrer"
-                style={{ background:"#1f2937", color:"#f3f4f6", border:"2px solid #374151", borderRadius:10, padding:"12px 22px", fontSize:14, fontWeight:800, textDecoration:"none", display:"inline-block" }}>
-                ▲ Deploy on Vercel
-              </a>
             </div>
           </>
         )}
