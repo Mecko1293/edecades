@@ -1,0 +1,17 @@
+export const TRIVIA = [
+  { decade: '1950s', category: 'Music', question: 'Who recorded "Rock Around the Clock" in 1954?', options: ['Elvis Presley','Bill Haley & His Comets','Chuck Berry','Little Richard'], answer: 1, points: 10 },
+  { decade: '1960s', category: 'Culture', question: 'In what year did the Beatles appear on The Ed Sullivan Show?', options: ['1963','1964','1965','1966'], answer: 1, points: 10 },
+  { decade: '1970s', category: 'Film', question: 'Which film launched the modern blockbuster era in 1977?', options: ['Jaws','Close Encounters','Star Wars','Superman'], answer: 2, points: 10 },
+  { decade: '1980s', category: 'Technology', question: 'What did MTV launch in 1981?', options: ['The internet','24-hour music video channel','Cable news','Satellite radio'], answer: 1, points: 10 },
+  { decade: '1990s', category: 'Technology', question: 'What year did the World Wide Web become publicly available?', options: ['1989','1990','1991','1993'], answer: 2, points: 10 },
+  { decade: '1920s', category: 'History', question: 'What was Prohibition a ban on?', options: ['Tobacco','Alcohol','Gambling','Immigration'], answer: 1, points: 10 },
+  { decade: '1940s', category: 'History', question: 'In what year did WWII end?', options: ['1943','1944','1945','1946'], answer: 2, points: 10 },
+  { decade: '1960s', category: 'History', question: 'In what year did humans first land on the Moon?', options: ['1965','1967','1969','1971'], answer: 2, points: 10 },
+  { decade: '2000s', category: 'Technology', question: 'What year did the first iPhone launch?', options: ['2005','2006','2007','2008'], answer: 2, points: 10 },
+  { decade: '1950s', category: 'Culture', question: 'Which TV show first aired in 1951 and ran until 1957?', options: ['I Love Lucy','The Twilight Zone','Leave it to Beaver','Gunsmoke'], answer: 0, points: 10 },
+  { decade: '1930s', category: 'Culture', question: 'Which superhero debuted in Action Comics in 1938?', options: ['Batman','Superman','Captain America','Green Lantern'], answer: 1, points: 10 },
+  { decade: '1980s', category: 'Music', question: 'Which artist released "Thriller" in 1982?', options: ['Prince','Madonna','Michael Jackson','David Bowie'], answer: 2, points: 10 },
+  { decade: '1970s', category: 'Music', question: 'What genre of music was born in New York\'s South Bronx in the 1970s?', options: ['Punk','Disco','Hip-Hop','New Wave'], answer: 2, points: 10 },
+  { decade: '1990s', category: 'Music', question: 'Which Seattle band popularized the grunge movement?', options: ['Pearl Jam','Soundgarden','Nirvana','Alice in Chains'], answer: 2, points: 10 },
+  { decade: '2010s', category: 'Technology', question: 'Which app launched in 2010 and changed photo sharing forever?', options: ['Snapchat','Pinterest','Instagram','TikTok'], answer: 2, points: 10 },
+];

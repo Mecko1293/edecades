@@ -1,0 +1,15 @@
+export const SPORTS_MVPS = [
+  { name: 'Babe Ruth', sport: 'Baseball', team: 'New York Yankees', decade: '1920s', highlights: '714 career home runs, 7x World Series champion. Transformed baseball into America\'s national obsession.', emoji: '⚾' },
+  { name: 'Jesse Owens', sport: 'Track & Field', team: 'USA', decade: '1930s', highlights: '4 gold medals at 1936 Berlin Olympics, defying Nazi ideology with athletic greatness.', emoji: '🏃' },
+  { name: 'Joe Louis', sport: 'Boxing', team: 'USA', decade: '1940s', highlights: 'Heavyweight champion for 12 years. His 1938 rematch with Max Schmeling was the fight of the century.', emoji: '🥊' },
+  { name: 'Willie Mays', sport: 'Baseball', team: 'New York Giants', decade: '1950s', highlights: '660 career home runs, 2x MVP, 12x Gold Glove. Made "The Catch" in the 1954 World Series.', emoji: '⚾' },
+  { name: 'Muhammad Ali', sport: 'Boxing', team: 'USA', decade: '1960s', highlights: '3x Heavyweight World Champion. "Float like a butterfly, sting like a bee." Olympic gold in 1960.', emoji: '🥊' },
+  { name: 'Pelé', sport: 'Soccer', team: 'Brazil', decade: '1970s', highlights: '3x World Cup champion. Scored over 1,000 career goals. The greatest soccer player of all time.', emoji: '⚽' },
+  { name: 'Michael Jordan', sport: 'Basketball', team: 'Chicago Bulls', decade: '1980s', highlights: '6x NBA Champion, 6x Finals MVP, 5x league MVP. Redefined what an athlete could be globally.', emoji: '🏀' },
+  { name: 'Wayne Gretzky', sport: 'Hockey', team: 'Edmonton Oilers', decade: '1980s', highlights: '4x Stanley Cup champion. Holds 61 NHL records. "The Great One" — universally considered the greatest hockey player.', emoji: '🏒' },
+  { name: 'Michael Johnson', sport: 'Track & Field', team: 'USA', decade: '1990s', highlights: '4x Olympic gold medalist. World record in 200m and 400m. Dominated sprinting through the decade.', emoji: '🏃' },
+  { name: 'Tiger Woods', sport: 'Golf', team: 'USA', decade: '2000s', highlights: '15 Major championships. Transformed golf into a global sport and became the highest-paid athlete of the era.', emoji: '⛳' },
+  { name: 'LeBron James', sport: 'Basketball', team: 'Cleveland Cavaliers / Miami Heat / LA Lakers', decade: '2010s', highlights: '4x NBA Champion, 4x MVP. The most complete basketball player of his generation.', emoji: '🏀' },
+  { name: 'Serena Williams', sport: 'Tennis', team: 'USA', decade: '2010s', highlights: '23 Grand Slam singles titles. Dominated women\'s tennis for two decades. Redefined athletic excellence.', emoji: '🎾' },
+  { name: 'Simone Biles', sport: 'Gymnastics', team: 'USA', decade: '2020s', highlights: '7 Olympic medals, 25 World Championship medals. Considered the greatest gymnast in history. Advocate for mental health in sports.', emoji: '🤸' },
+];
