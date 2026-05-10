@@ -1,5 +1,5 @@
-import { useState, useMemo, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useMemo, useCallback, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { DECADES, CATEGORIES, CATEGORY_DATA } from '../data/decades';
 import { TRIVIA } from '../data/trivia';
 import { SPORTS_MVPS } from '../data/sports';
@@ -82,6 +82,13 @@ function MediaCard({ item }) {
 
 export default function Search() {
   const [query, setQuery] = useState('');
+  const [searchParams] = useSearchParams();
+
+  // Pre-fill from ?q= param (set by quick-search navbar)
+  useEffect(() => {
+    const q = searchParams.get('q');
+    if (q) { setQuery(q); fetchMedia(q); }
+  }, [searchParams]);
   const [mediaResults, setMediaResults] = useState(null);
   const [loadingMedia, setLoadingMedia] = useState(false);
   const [activeTab, setActiveTab] = useState('all');
