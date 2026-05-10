@@ -10,6 +10,9 @@ import Trivia from './pages/Trivia';
 import OnThisDay from './pages/OnThisDay';
 import TimeCapsule from './pages/TimeCapsule';
 import Search from './pages/Search';
+import DirectorySubmit from './pages/DirectorySubmit';
+import VideoShorts from './pages/VideoShorts';
+import Profile from './pages/Profile';
 
 function NotFound() {
   return (
@@ -37,6 +40,9 @@ export default function App() {
         <Route path="/onthisday" element={<OnThisDay />} />
         <Route path="/timecapsule" element={<TimeCapsule />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/shorts" element={<VideoShorts />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/directory" element={<DirectorySubmit />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
