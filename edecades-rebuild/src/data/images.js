@@ -1,5 +1,6 @@
-// Royalty-free images from Pixabay & Unsplash for every decade × category
-// All images are free to use (Pixabay/Unsplash license, no attribution required)
+// Royalty-free images from Unsplash for every decade × category
+// All images are free to use (Unsplash license, no attribution required)
+// Fashion images are carefully curated to match the actual style of each decade
 
 export const DECADE_IMAGES = {
   // ── HERO images per decade (shown on decade cards) ──
@@ -19,21 +20,36 @@ export const DECADE_IMAGES = {
 };
 
 export const CATEGORY_IMAGES = {
+  // ── FASHION — each image matches the actual style of the decade ──
   Fashion: {
-    '1900s': 'https://images.unsplash.com/photo-1617019114583-affb34d1b3cd?w=600&q=80',
+    // 1900s: Edwardian portrait, high collar, swept-up hair
+    '1900s': 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600&q=80',
+    // 1910s: Early 20th century women's fashion, looser silhouette
     '1910s': 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80',
-    '1920s': 'https://images.unsplash.com/photo-1503342394128-c104d54dba01?w=600&q=80',
+    // 1920s: Art Deco / Jazz Age / flapper aesthetic
+    '1920s': 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600&q=80',
+    // 1930s: Bias-cut glamour gown, Hollywood golden age elegance
     '1930s': 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&q=80',
-    '1940s': 'https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=600&q=80',
+    // 1940s: Victory rolls, pin-up red lips, WWII-era style
+    '1940s': 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=600&q=80',
+    // 1950s: Full skirt, petticoat, retro diner/rockabilly look
     '1950s': 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=600&q=80',
+    // 1960s: Mod fashion, geometric patterns, bold colors
     '1960s': 'https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=600&q=80',
-    '1970s': 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600&q=80',
+    // 1970s: Boho / earthy tones / bohemian fashion
+    '1970s': 'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=600&q=80',
+    // 1980s: Bold neon, power fashion, statement style
     '1980s': 'https://images.unsplash.com/photo-1571513722275-4b41940f54b8?w=600&q=80',
+    // 1990s: Grunge, oversized, casual cool
     '1990s': 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=600&q=80',
+    // 2000s: Y2K low-rise, trendy early 2000s aesthetic
     '2000s': 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&q=80',
-    '2010s': 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=600&q=80',
-    '2020s': 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=600&q=80',
+    // 2010s: Streetwear, athleisure, minimalist chic
+    '2010s': 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&q=80',
+    // 2020s: Gen Z maximalism, thrift, oversized contemporary
+    '2020s': 'https://images.unsplash.com/photo-1588117305388-c2631a279f82?w=600&q=80',
   },
+
   Food: {
     '1900s': 'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=600&q=80',
     '1910s': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80',
@@ -49,6 +65,7 @@ export const CATEGORY_IMAGES = {
     '2010s': 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80',
     '2020s': 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&q=80',
   },
+
   Beauty: {
     '1900s': 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&q=80',
     '1910s': 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=600&q=80',
@@ -58,12 +75,13 @@ export const CATEGORY_IMAGES = {
     '1950s': 'https://images.unsplash.com/photo-1526045612212-70caf35c14df?w=600&q=80',
     '1960s': 'https://images.unsplash.com/photo-1512207736890-6ffed8a84e8d?w=600&q=80',
     '1970s': 'https://images.unsplash.com/photo-1522337209714-35f7f68a7635?w=600&q=80',
-    '1980s': 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&q=80',
+    '1980s': 'https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=600&q=80',
     '1990s': 'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=600&q=80',
-    '2000s': 'https://images.unsplash.com/photo-1596704017248-8a3e09e751e2?w=600&q=80',
+    '2000s': 'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=600&q=80',
     '2010s': 'https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=600&q=80',
     '2020s': 'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=600&q=80',
   },
+
   Art: {
     '1900s': 'https://images.unsplash.com/photo-1579541591970-288a5f8a5b6a?w=600&q=80',
     '1910s': 'https://images.unsplash.com/photo-1560015534-cee980ba7e13?w=600&q=80',
@@ -79,9 +97,10 @@ export const CATEGORY_IMAGES = {
     '2010s': 'https://images.unsplash.com/photo-1561214115-f2f134cc4912?w=600&q=80',
     '2020s': 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80',
   },
+
   Technology: {
     '1900s': 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80',
-    '1910s': 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&q=80',
+    '1910s': 'https://images.unsplash.com/photo-1580130775562-0ef92da028de?w=600&q=80',
     '1920s': 'https://images.unsplash.com/photo-1590859808308-3d2d9c515b1a?w=600&q=80',
     '1930s': 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=600&q=80',
     '1940s': 'https://images.unsplash.com/photo-1563770660941-10a63607dc5e?w=600&q=80',
@@ -94,6 +113,7 @@ export const CATEGORY_IMAGES = {
     '2010s': 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&q=80',
     '2020s': 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&q=80',
   },
+
   Homes: {
     '1900s': 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&q=80',
     '1910s': 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=600&q=80',
@@ -109,6 +129,7 @@ export const CATEGORY_IMAGES = {
     '2010s': 'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=600&q=80',
     '2020s': 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80',
   },
+
   Culture: {
     '1900s': 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80',
     '1910s': 'https://images.unsplash.com/photo-1533105045747-55e7e3ccab3a?w=600&q=80',
