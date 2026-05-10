@@ -13,6 +13,7 @@ import Search from './pages/Search';
 import DirectorySubmit from './pages/DirectorySubmit';
 import VideoShorts from './pages/VideoShorts';
 import Profile from './pages/Profile';
+import Admin from './pages/Admin';
 
 function NotFound() {
   return (
@@ -43,6 +44,7 @@ export default function App() {
         <Route path="/shorts" element={<VideoShorts />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/directory" element={<DirectorySubmit />} />
+        <Route path="/admin" element={<Admin />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
