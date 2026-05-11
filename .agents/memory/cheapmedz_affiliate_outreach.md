@@ -1,7 +1,9 @@
 # CheapMedz Affiliate Outreach Emails
-**Date:** 2026-03-24
+**Date:** 2026-03-24 | **Updated:** 2026-05-11
 **From:** Anthony D. Kittles Sr. — anthonykittles@outlook.com
 **Company:** King Xcel Innovations | CheapMedz.com
+
+> ⚠️ **NOTE:** Mark Cuban / Cost Plus Drugs confirmed they do NOT offer affiliate partnerships (direct conversation with Mark Cuban, May 2026). Removed from all outreach lists.
 
 ---
 
@@ -62,35 +64,7 @@ Founder, King Xcel Innovations | CheapMedz.com
 
 ---
 
-## PARTNER 3: Mark Cuban Cost Plus Drugs
-**Contact:** mark@costplusdrugs.com (Mark Cuban's direct email — confirmed public)
-**Alt:** press@costplusdrugs.com
-**Program type:** Affiliate Pharmacy Network / referral
-**Note:** Cost Plus Drugs has an affiliate pharmacy network. Mark is known to respond personally.
-
-### EMAIL:
-**Subject:** Affiliate Partnership — CheapMedz + Cost Plus Drugs
-
-Hi Mark,
-
-My name is Anthony D. Kittles Sr., founder of CheapMedz (CheapMedz.com) — a prescription price comparison platform I'm building under King Xcel Innovations, based in Irving, Texas.
-
-CheapMedz helps Americans find the lowest prescription prices near them. Cost Plus Drugs is one of the most important stories in affordable healthcare right now, and I want to make sure every CheapMedz user knows about your pricing.
-
-I'm looking to feature Cost Plus Drugs as a top-tier partner in our comparison results. When users search a medication, Cost Plus Drugs would appear prominently with your transparent pricing — and we'd drive referral traffic your way through an affiliate arrangement.
-
-This is a win-win: more Americans discover your platform, and CheapMedz earns a small referral commission per transaction.
-
-Would love to connect and explore this.
-
-Anthony D. Kittles Sr.
-Founder, King Xcel Innovations | CheapMedz.com
-📧 anthonykittles@outlook.com
-🌐 https://antonio-app-264b69b7.base44.app/CheapMedz
-
----
-
-## PARTNER 4: Amazon Pharmacy (Amazon Associates)
+## PARTNER 3: Amazon Pharmacy (Amazon Associates)
 **Contact:** affiliate-program.amazon.com/signup
 **Program type:** Amazon Associates (standard affiliate)
 **Commission:** Up to 10% — Amazon Pharmacy products qualify
@@ -105,7 +79,7 @@ Founder, King Xcel Innovations | CheapMedz.com
 
 ---
 
-## PARTNER 5: RxSpark
+## PARTNER 4: RxSpark
 **Contact:** partners@rxspark.com
 **Apply at:** rxspark.com/become-a-partner/organization
 **Program type:** Affiliate revenue share
@@ -132,9 +106,13 @@ Founder, King Xcel Innovations | CheapMedz.com
 
 ---
 
+## ❌ REMOVED PARTNERS
+- **Mark Cuban Cost Plus Drugs** — Confirmed NO affiliate program (direct conversation with Mark Cuban, May 2026)
+
+---
+
 ## QUICK ACTION CHECKLIST
 - [ ] Submit GoodRx API application at goodrx.com/developer/apply
 - [ ] Apply to Blink Health affiliate via FlexOffers.com (instant approval)
-- [ ] Email Mark Cuban directly: mark@costplusdrugs.com
 - [ ] Sign up for Amazon Associates at affiliate-program.amazon.com
 - [ ] Submit RxSpark application at rxspark.com/become-a-partner/organization + email partners@rxspark.com
