@@ -1,4 +1,18 @@
 export const MUSIC_BY_DECADE = {
+  '1900s': {
+    genre: 'Ragtime & Early Blues',
+    description: 'Ragtime syncopated rhythms swept the nation. Scott Joplin became the King of Ragtime. Early blues emerged from the Mississippi Delta.',
+    artists: ['Scott Joplin', 'W.C. Handy', 'Jelly Roll Morton', 'John Philip Sousa', 'Ada Jones'],
+    songs: ['Maple Leaf Rag', 'The Entertainer', 'St. Louis Blues'],
+    youtube: 'https://www.youtube.com/results?search_query=1900s+ragtime+music',
+  },
+  '1910s': {
+    genre: 'Ragtime, Tin Pan Alley & Early Jazz',
+    description: 'Tin Pan Alley songwriters dominated American music. Jazz began its rise in New Orleans. Phonograph recordings made music available to every home.',
+    artists: ['Enrico Caruso', 'Al Jolson', 'Irving Berlin', 'Original Dixieland Jazz Band', 'W.C. Handy'],
+    songs: ['Alexander\'s Ragtime Band', 'Beale Street Blues', 'Tiger Rag'],
+    youtube: 'https://www.youtube.com/results?search_query=1910s+tin+pan+alley+early+jazz',
+  },
   '1920s': {
     genre: 'Jazz & Blues',
     description: 'The Jazz Age — Louis Armstrong, Duke Ellington, and Bessie Smith defined an era of improvisation and soul.',
@@ -17,7 +31,7 @@ export const MUSIC_BY_DECADE = {
     genre: 'Bebop & Wartime Pop',
     description: 'Bebop emerged as a complex jazz rebellion. Frank Sinatra became the first teen idol. Victory songs lifted spirits.',
     artists: ['Frank Sinatra', 'Charlie Parker', 'Dizzy Gillespie', 'Doris Day', 'Bing Crosby'],
-    songs: ['New York New York', 'White Christmas', "Boogie Woogie Bugle Boy"],
+    songs: ['New York New York', 'White Christmas', 'Boogie Woogie Bugle Boy'],
     youtube: 'https://www.youtube.com/results?search_query=1940s+music+wartime+pop',
   },
   '1950s': {
@@ -50,7 +64,7 @@ export const MUSIC_BY_DECADE = {
   },
   '1990s': {
     genre: 'Grunge, Hip-Hop & R&B',
-    description: 'Nirvana flipped rock upside down. Tupac and Biggie defined hip-hop. TLC and Destiny\'s Child owned R&B.',
+    description: "Nirvana flipped rock upside down. Tupac and Biggie defined hip-hop. TLC and Destiny's Child owned R&B.",
     artists: ['Nirvana', 'Tupac', 'Biggie', 'TLC', 'Mariah Carey'],
     songs: ['Smells Like Teen Spirit', 'California Love', 'Waterfalls'],
     youtube: 'https://www.youtube.com/results?search_query=1990s+grunge+hip+hop+hits',
@@ -66,7 +80,7 @@ export const MUSIC_BY_DECADE = {
     genre: 'Pop, EDM & Streaming Era',
     description: 'Streaming killed the music store. Drake, Taylor Swift, and Adele dominated charts. EDM festivals exploded.',
     artists: ['Drake', 'Taylor Swift', 'Adele', 'Kendrick Lamar', 'Ed Sheeran'],
-    songs: ['Rolling in the Deep', 'God\'s Plan', 'Shape of You'],
+    songs: ['Rolling in the Deep', "God's Plan", 'Shape of You'],
     youtube: 'https://www.youtube.com/results?search_query=2010s+pop+hits+decade',
   },
   '2020s': {

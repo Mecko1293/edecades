@@ -1,6 +1,9 @@
 export const SPORTS_MVPS = [
+  { name: 'Jim Thorpe', sport: 'Multi-Sport', team: 'USA', decade: '1900s', highlights: 'Considered one of the greatest athletes of all time. Won gold in pentathlon and decathlon at the 1912 Olympics. Also starred in professional baseball and football.', emoji: '🏅' },
+  { name: 'Cy Young', sport: 'Baseball', team: 'Boston Americans', decade: '1900s', highlights: '511 career wins — the all-time record. Dominated pitching in the early modern era. The Cy Young Award is named in his honor.', emoji: '⚾' },
+  { name: 'Jack Johnson', sport: 'Boxing', team: 'USA', decade: '1910s', highlights: 'First African American World Heavyweight Champion (1908–1915). Overcame racism and became a cultural symbol of Black excellence and defiance.', emoji: '🥊' },
   { name: 'Babe Ruth', sport: 'Baseball', team: 'New York Yankees', decade: '1920s', highlights: '714 career home runs, 7x World Series champion. Transformed baseball into America\'s national obsession.', emoji: '⚾' },
-  { name: 'Jesse Owens', sport: 'Track & Field', team: 'USA', decade: '1930s', highlights: '4 gold medals at 1936 Berlin Olympics, defying Nazi ideology with athletic greatness.', emoji: '🏃' },
+  { name: 'Jesse Owens', sport: 'Track & Field', team: 'USA', decade: '1930s', highlights: '4 gold medals at the 1936 Berlin Olympics, defying Nazi ideology with athletic greatness.', emoji: '🏃' },
   { name: 'Joe Louis', sport: 'Boxing', team: 'USA', decade: '1940s', highlights: 'Heavyweight champion for 12 years. His 1938 rematch with Max Schmeling was the fight of the century.', emoji: '🥊' },
   { name: 'Willie Mays', sport: 'Baseball', team: 'New York Giants', decade: '1950s', highlights: '660 career home runs, 2x MVP, 12x Gold Glove. Made "The Catch" in the 1954 World Series.', emoji: '⚾' },
   { name: 'Muhammad Ali', sport: 'Boxing', team: 'USA', decade: '1960s', highlights: '3x Heavyweight World Champion. "Float like a butterfly, sting like a bee." Olympic gold in 1960.', emoji: '🥊' },
