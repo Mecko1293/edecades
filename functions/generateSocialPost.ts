@@ -1,20 +1,58 @@
-export default async function generateSocialPost(req, res) {
-  const decades = ['1910s', '1920s', '1930s', '1940s', '1950s', '1960s', '1970s', '1980s', '1990s', '2000s', '2010s', '2020s'];
-  const randomDecade = decades[Math.floor(Math.random() * decades.length)];
-  
-  const topics = {
-    music: 'Did you know? The first jazz recordings changed music forever.',
-    sports: 'Legendary athletes continue to inspire generations.',
-    culture: 'Every decade has a story worth celebrating.',
-    history: 'History lives in the moments we remember.',
-    innovation: 'From the past, inspiration for the future.'
-  };
-  
-  const topicKeys = Object.keys(topics);
-  const randomTopic = topicKeys[Math.floor(Math.random() * topicKeys.length)];
-  const hashtags = `#${randomDecade} #Nostalgia #eDecades #History #CultureTrivia`;
-  
-  const post = `🎭 ${topics[randomTopic]}\n\nExplore ${randomDecade} memories and stories at eDecades.com\n\n${hashtags}`;
-  
-  return { post, decade: randomDecade, topic: randomTopic };
+import Anthropic from "@anthropic-ai/sdk";
+
+const client = new Anthropic();
+
+export default async function generateSocialPost(req: Request): Promise<Response> {
+  if (req.method !== "POST") {
+    return new Response(JSON.stringify({ error: "Method not allowed" }), {
+      status: 405,
+    });
+  }
+
+  try {
+    const { decade, topic, site, site_url } = await req.json();
+
+    if (!decade || !topic || !site) {
+      return new Response(
+        JSON.stringify({ error: "Missing required fields" }),
+        { status: 400 }
+      );
+    }
+
+    const prompt = `Generate a unique, engaging social media post about ${topic} in the ${decade}. 
+Make it nostalgic, fun, and educational. Include 3-5 relevant hashtags for social media.
+Keep it under 280 characters for Twitter/LinkedIn compatibility.
+Reference ${site} (${site_url}) naturally if it fits.
+Format: [Post text] [Hashtags]`;
+
+    const message = await client.messages.create({
+      model: "claude-3-5-sonnet-20241022",
+      max_tokens: 300,
+      messages: [
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+    });
+
+    const postText =
+      message.content[0].type === "text" ? message.content[0].text : "";
+
+    return new Response(
+      JSON.stringify({
+        decade,
+        topic,
+        post: postText,
+        timestamp: new Date().toISOString(),
+      }),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    );
+  } catch (error) {
+    console.error("Error generating social post:", error);
+    return new Response(
+      JSON.stringify({ error: "Failed to generate post" }),
+      { status: 500 }
+    );
+  }
 }
