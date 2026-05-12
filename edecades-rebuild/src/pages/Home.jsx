@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { DECADES } from '../data/decades';
+import { usePixabay } from '../hooks/usePixabay';
 
 const FEATURES = [
   { to: '/categories', icon: '📚', title: 'Everything About Every Decade', desc: 'Fashion, Food, Art, Tech, Homes & Culture — all 13 decades' },
@@ -13,38 +14,25 @@ const FEATURES = [
   { to: '/search', icon: '🔍', title: 'Universal Search', desc: 'Search songs, movies, TV shows, history & more in one place' },
 ];
 
-// Rotating photos per decade for the era grid
-const DECADE_PHOTOS = {
-  '1900s': ['https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Wright_first_flight03.jpg/400px-Wright_first_flight03.jpg', 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80'],
-  '1910s': ['https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/RMS_Titanic_3.jpg/400px-RMS_Titanic_3.jpg', 'https://images.unsplash.com/photo-1547592180-85f173990554?w=400&q=80'],
-  '1920s': ['https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&q=80', 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=400&q=80'],
-  '1930s': ['https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Lange-MigrantMother02.jpg/400px-Lange-MigrantMother02.jpg', 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=400&q=80'],
-  '1940s': ['https://images.unsplash.com/photo-1563986768609-322da13575f3?w=400&q=80', 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&q=80'],
-  '1950s': ['https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80', 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=80'],
-  '1960s': ['https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Buzz_salutes_the_U.S._Flag.jpg/400px-Buzz_salutes_the_U.S._Flag.jpg', 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=400&q=80'],
-  '1970s': ['https://images.unsplash.com/photo-1504805572947-34fad45aed93?w=400&q=80', 'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=400&q=80'],
-  '1980s': ['https://images.unsplash.com/photo-1571513722275-4b41940f54b8?w=400&q=80', 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400&q=80'],
-  '1990s': ['https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=400&q=80', 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&q=80'],
-  '2000s': ['https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400&q=80', 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&q=80'],
-  '2010s': ['https://images.unsplash.com/photo-1611162616305-c69b3037c7bb?w=400&q=80', 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&q=80'],
-  '2020s': ['https://images.unsplash.com/photo-1584118624012-df056829fbd0?w=400&q=80', 'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=400&q=80'],
-};
+
 
 function EraCard({ d }) {
-  const photos = DECADE_PHOTOS[d.id] || [];
+  const { images, loading } = usePixabay({ decade: d.id, count: 2 });
   const [idx, setIdx] = useState(0);
 
   useEffect(() => {
-    if (photos.length < 2) return;
-    const t = setInterval(() => setIdx(i => (i + 1) % photos.length), 3500 + Math.random() * 1500);
-    return () => clearInterval(t);
-  }, [photos.length]);
+    if (images.length > 1) {
+      const t = setInterval(() => setIdx(i => (i + 1) % images.length), 3500 + Math.random() * 1500);
+      return () => clearInterval(t);
+    }
+  }, [images.length]);
 
   return (
     <Link to={`/decade/${d.id}`}
       className="group relative rounded-2xl overflow-hidden border border-white/10 hover:border-rose-gold/60 block transition-all hover:shadow-lg hover:shadow-rose-gold/10 hover:-translate-y-0.5">
       <div className="relative h-32 sm:h-36 overflow-hidden bg-charcoal">
-        {photos.map((src, i) => (
+        {loading && <div className="absolute inset-0 flex items-center justify-center"><div className="w-5 h-5 border-2 border-rose-gold/30 border-t-rose-gold rounded-full animate-spin" /></div>}
+        {images.map((src, i) => (
           <img key={i} src={src} alt={d.label}
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${i === idx ? 'opacity-100' : 'opacity-0'}`}
             onError={e => { e.target.style.display='none'; }} />
