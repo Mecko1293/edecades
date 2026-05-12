@@ -1,133 +1,173 @@
 import { useState } from 'react';
 import { ON_THIS_DAY } from '../data/onthisday';
 
+const CATEGORIES = ['All', ...new Set(ON_THIS_DAY.map(e => e.category))];
+const DECADES = ['All', ...new Set(ON_THIS_DAY.map(e => e.decade))].sort();
+
 const CAT_COLORS = {
-  History:     'bg-red-900/40 text-red-400 border-red-800/40',
-  Technology:  'bg-blue-900/40 text-blue-400 border-blue-800/40',
-  Culture:     'bg-purple-900/40 text-purple-400 border-purple-800/40',
+  History: 'text-red-400 bg-red-900/20',
+  Technology: 'text-blue-400 bg-blue-900/20',
+  Culture: 'text-purple-400 bg-purple-900/20',
+  Science: 'text-green-400 bg-green-900/20',
 };
-
-const CAT_ICONS = {
-  History: '📜',
-  Technology: '💡',
-  Culture: '🎭',
-};
-
-const CATS = ['All', 'History', 'Technology', 'Culture'];
-const DECADES_LIST = ['All', ...Array.from(new Set(ON_THIS_DAY.map(e => e.decade))).sort()];
 
 export default function OnThisDay() {
-  const [catFilter, setCatFilter]       = useState('All');
+  const [catFilter, setCatFilter] = useState('All');
   const [decadeFilter, setDecadeFilter] = useState('All');
-  const [expanded, setExpanded]         = useState(null);
+  const [enlarged, setEnlarged] = useState(null);
 
   const filtered = ON_THIS_DAY.filter(e =>
-    (catFilter === 'All'    || e.category === catFilter) &&
-    (decadeFilter === 'All' || e.decade   === decadeFilter)
+    (catFilter === 'All' || e.category === catFilter) &&
+    (decadeFilter === 'All' || e.decade === decadeFilter)
   );
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12">
-      {/* Header */}
+    <div className="max-w-7xl mx-auto px-4 py-12">
       <h1 className="font-retro text-4xl font-bold text-white text-center mb-2">📅 On This Day</h1>
-      <p className="text-gray-400 text-center mb-10">Pivotal moments in history that changed everything</p>
+      <p className="text-gray-400 text-center mb-8">Pivotal moments in history — click any card to enlarge</p>
 
-      {/* Category filter */}
+      {/* Category Filters */}
       <div className="flex flex-wrap gap-2 justify-center mb-3">
-        {CATS.map(c => (
+        {CATEGORIES.map(c => (
           <button key={c} onClick={() => setCatFilter(c)}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all border ${
-              catFilter === c
-                ? 'bg-rose-gold text-white border-rose-gold'
-                : 'bg-charcoal text-gray-300 border-white/10 hover:text-rose-gold hover:border-rose-gold/40'
-            }`}>
-            {CAT_ICONS[c] || '🔍'} {c}
-          </button>
+            className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-colors ${
+              catFilter === c ? 'bg-rose-gold text-white' : 'bg-charcoal text-gray-400 border border-white/10 hover:text-white'
+            }`}>{c}</button>
         ))}
       </div>
 
-      {/* Decade filter */}
-      <div className="flex flex-wrap gap-2 justify-center mb-10">
-        {DECADES_LIST.map(d => (
+      {/* Decade Filters */}
+      <div className="flex flex-wrap gap-2 justify-center mb-8">
+        {DECADES.map(d => (
           <button key={d} onClick={() => setDecadeFilter(d)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors border ${
-              decadeFilter === d
-                ? 'bg-white/20 text-white border-white/40'
-                : 'bg-charcoal text-gray-400 border-white/10 hover:text-rose-gold hover:border-rose-gold/30'
-            }`}>
-            {d}
-          </button>
+            className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-colors ${
+              decadeFilter === d ? 'bg-charcoal-dark text-rose-gold border border-rose-gold/50' : 'bg-charcoal text-gray-500 border border-white/10 hover:text-gray-300'
+            }`}>{d === 'All' ? 'All Decades' : d}</button>
         ))}
       </div>
 
-      {/* Events grid */}
-      {filtered.length === 0 ? (
-        <div className="text-center py-16 text-gray-500">No events match your filters.</div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map((e, i) => {
-            const isOpen = expanded === i;
-            const colorClass = CAT_COLORS[e.category] || 'bg-white/10 text-gray-300 border-white/10';
-            return (
-              <div
-                key={i}
-                onClick={() => setExpanded(isOpen ? null : i)}
-                className={`group bg-charcoal rounded-2xl overflow-hidden border cursor-pointer transition-all duration-300 ${
-                  isOpen ? 'border-rose-gold shadow-lg shadow-rose-gold/10' : 'border-white/10 hover:border-rose-gold/40'
-                }`}
-              >
-                {/* Photo */}
-                <div className="relative h-44 overflow-hidden">
-                  <img
-                    src={e.image}
-                    alt={e.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    onError={ev => { ev.target.style.display = 'none'; ev.target.nextSibling.style.display = 'flex'; }}
-                  />
-                  {/* Fallback */}
-                  <div className="hidden w-full h-full bg-charcoal-dark items-center justify-center text-4xl absolute inset-0">
-                    {CAT_ICONS[e.category] || '📅'}
-                  </div>
-                  {/* Gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-transparent to-transparent" />
-                  {/* Date badge */}
-                  <div className="absolute top-3 left-3 bg-charcoal/80 backdrop-blur-sm text-rose-gold text-xs font-bold font-retro px-3 py-1.5 rounded-full border border-rose-gold/30">
-                    {e.date}, {e.year}
-                  </div>
-                  {/* Category badge */}
-                  <div className={`absolute top-3 right-3 text-xs font-medium px-2.5 py-1 rounded-full border ${colorClass}`}>
-                    {CAT_ICONS[e.category]} {e.category}
-                  </div>
+      {/* Photo Card Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {filtered.map((event, i) => {
+          const catStyle = CAT_COLORS[event.category] || 'text-gray-400 bg-gray-800/40';
+          return (
+            <button key={i} onClick={() => setEnlarged(event)}
+              className="group relative rounded-2xl overflow-hidden border border-white/10 hover:border-rose-gold/50 transition-all text-left hover:shadow-lg hover:shadow-rose-gold/10 hover:-translate-y-0.5">
+              {/* Photo */}
+              <div className="relative h-44 overflow-hidden">
+                <img src={event.image} alt={event.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  onError={e => { e.target.style.display='none'; e.target.parentElement.style.background='#1a1f2e'; }} />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                {/* Category badge */}
+                <div className="absolute top-3 left-3">
+                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${catStyle}`}>{event.category}</span>
                 </div>
-
-                {/* Content */}
-                <div className="p-5">
-                  <div className="flex items-start justify-between gap-2 mb-2">
-                    <h2 className="font-retro text-base font-bold text-white leading-snug">{e.title}</h2>
-                    <span className="text-gray-500 text-sm flex-shrink-0 mt-0.5">{isOpen ? '▲' : '▼'}</span>
-                  </div>
-
-                  <span className="text-xs text-gray-500 mb-3 block">{e.decade}</span>
-
-                  {/* Collapsed: preview */}
-                  {!isOpen && (
-                    <p className="text-gray-400 text-sm line-clamp-2 leading-relaxed">{e.description}</p>
-                  )}
-
-                  {/* Expanded: full description */}
-                  {isOpen && (
-                    <div className="mt-1">
-                      <p className="text-gray-200 text-sm leading-relaxed">{e.description}</p>
-                      <div className="mt-4 pt-3 border-t border-white/10 flex items-center gap-2 text-xs text-rose-gold">
-                        <span>📅</span>
-                        <span>Click to collapse</span>
-                      </div>
-                    </div>
-                  )}
+                {/* Year badge */}
+                <div className="absolute top-3 right-3">
+                  <span className="bg-black/60 text-white text-xs font-bold px-2 py-0.5 rounded-full">{event.year}</span>
+                </div>
+                {/* Tap hint */}
+                <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="bg-rose-gold text-white text-xs px-2 py-1 rounded-full">🔍 Enlarge</span>
                 </div>
               </div>
-            );
-          })}
+              {/* Info */}
+              <div className="bg-charcoal p-4">
+                <p className="text-rose-gold text-xs font-medium mb-1">{event.date}, {event.year} · {event.decade}</p>
+                <h3 className="text-white font-semibold text-sm group-hover:text-rose-gold transition-colors line-clamp-2">{event.title}</h3>
+                {event.location && (
+                  <p className="text-gray-500 text-xs mt-1 flex items-center gap-1">
+                    <span>📍</span>{event.location}
+                  </p>
+                )}
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Enlarged Modal */}
+      {enlarged && (
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4"
+          onClick={() => setEnlarged(null)}>
+          <div className="bg-charcoal rounded-3xl max-w-2xl w-full border border-white/20 shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto"
+            onClick={e => e.stopPropagation()}>
+
+            {/* Big Photo */}
+            <div className="relative">
+              <img src={enlarged.image} alt={enlarged.title}
+                className="w-full h-72 object-cover"
+                onError={e => { e.target.style.display='none'; }} />
+              <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/20 to-transparent" />
+
+              {/* Close */}
+              <button onClick={() => setEnlarged(null)}
+                className="absolute top-4 right-4 w-9 h-9 bg-black/60 hover:bg-black/80 rounded-full flex items-center justify-center text-white transition-colors text-lg">
+                ✕
+              </button>
+
+              {/* Badges */}
+              <div className="absolute top-4 left-4 flex gap-2">
+                <span className={`text-xs font-semibold px-2 py-1 rounded-full ${CAT_COLORS[enlarged.category] || 'text-gray-300 bg-black/40'}`}>
+                  {enlarged.category}
+                </span>
+                <span className="bg-rose-gold text-white text-xs font-bold px-2 py-1 rounded-full">{enlarged.decade}</span>
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="p-6">
+              <p className="text-rose-gold text-sm font-medium mb-2">{enlarged.date}, {enlarged.year}</p>
+              <h2 className="font-retro text-2xl font-bold text-white mb-4">{enlarged.title}</h2>
+              <p className="text-gray-300 leading-relaxed mb-5">{enlarged.description}</p>
+
+              {/* Location + Map */}
+              {enlarged.location && (
+                <div className="bg-charcoal-dark rounded-2xl p-4 mb-5 border border-white/10">
+                  <div className="flex items-start gap-3">
+                    <span className="text-2xl flex-shrink-0">📍</span>
+                    <div className="flex-1">
+                      <p className="text-white font-medium text-sm mb-1">Location</p>
+                      <p className="text-gray-400 text-sm">{enlarged.location}</p>
+                    </div>
+                  </div>
+                  {/* Embedded Map Preview using OpenStreetMap */}
+                  {enlarged.lat && enlarged.lng && (
+                    <div className="mt-3 rounded-xl overflow-hidden border border-white/10">
+                      <iframe
+                        title={`Map: ${enlarged.title}`}
+                        width="100%"
+                        height="200"
+                        frameBorder="0"
+                        scrolling="no"
+                        src={`https://www.openstreetmap.org/export/embed.html?bbox=${enlarged.lng - 0.5}%2C${enlarged.lat - 0.3}%2C${enlarged.lng + 0.5}%2C${enlarged.lat + 0.3}&layer=mapnik&marker=${enlarged.lat}%2C${enlarged.lng}`}
+                        style={{ border: 0 }}
+                      />
+                    </div>
+                  )}
+                  <a href={enlarged.mapUrl} target="_blank" rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 mt-3 text-xs text-blue-400 hover:text-blue-300 transition-colors">
+                    🗺️ Open in Google Maps →
+                  </a>
+                </div>
+              )}
+
+              {/* Action links */}
+              <div className="flex gap-3 flex-wrap">
+                <a href={`https://en.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(enlarged.title)}`}
+                  target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-xl transition-colors">
+                  📖 Wikipedia
+                </a>
+                <a href={`https://www.youtube.com/results?search_query=${encodeURIComponent(enlarged.title + ' ' + enlarged.year)}`}
+                  target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm bg-red-900/30 hover:bg-red-900/50 text-red-400 px-4 py-2 rounded-xl transition-colors">
+                  ▶ YouTube
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>

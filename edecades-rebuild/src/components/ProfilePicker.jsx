@@ -1,26 +1,27 @@
 import { useState, useRef } from 'react';
 
-const PRESET_AVATARS = [
-  { id: 'av1',  emoji: '🎩', label: '1900s Gent',    bg: '#8B7355' },
-  { id: 'av2',  emoji: '💃', label: 'Flapper',        bg: '#D4AF37' },
-  { id: 'av3',  emoji: '🎷', label: 'Jazz Cat',       bg: '#4A5C6B' },
-  { id: 'av4',  emoji: '🎬', label: 'Hollywood Star', bg: '#7C6D6D' },
-  { id: 'av5',  emoji: '✈️', label: 'WWII Ace',       bg: '#3D5A80' },
-  { id: 'av6',  emoji: '🎸', label: 'Rock \'n\' Roller',bg: '#E8A87C' },
-  { id: 'av7',  emoji: '☮️', label: 'Peace Child',    bg: '#9B59B6' },
-  { id: 'av8',  emoji: '🕺', label: 'Disco King',     bg: '#D4956E' },
-  { id: 'av9',  emoji: '📼', label: 'VHS Kid',        bg: '#FF6B9D' },
-  { id: 'av10', emoji: '💿', label: 'Mixtape Maker',  bg: '#00BCD4' },
-  { id: 'av11', emoji: '📱', label: 'Y2K Digital',    bg: '#7CB9E8' },
-  { id: 'av12', emoji: '📸', label: 'Selfie Pro',     bg: '#A8E6CF' },
-  { id: 'av13', emoji: '🌐', label: 'AI Native',      bg: '#B39DDB' },
-  { id: 'av14', emoji: '🎮', label: 'Gamer',          bg: '#F97316' },
-  { id: 'av15', emoji: '🎨', label: 'Artist',         bg: '#EC4899' },
-  { id: 'av16', emoji: '🦁', label: 'Lion',           bg: '#EAB308' },
+// Real historical/era-accurate avatar photos — no cartoons
+export const PRESET_AVATARS = [
+  { id: 'av1',  label: '1900s Gent',      decade: '1900s', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80&fit=crop&crop=face' },
+  { id: 'av2',  label: 'Flapper Girl',    decade: '1920s', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/1920s_woman_portrait.jpg/200px-1920s_woman_portrait.jpg' },
+  { id: 'av3',  label: 'Jazz Cat',        decade: '1920s', photo: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=200&q=80&fit=crop&crop=face' },
+  { id: 'av4',  label: 'Hollywood Star',  decade: '1940s', photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&q=80&fit=crop&crop=face' },
+  { id: 'av5',  label: 'WWII Veteran',    decade: '1940s', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/USMC-03434.jpg/200px-USMC-03434.jpg' },
+  { id: 'av6',  label: 'Rock \'n\' Roller', decade: '1950s', photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&q=80&fit=crop&crop=face' },
+  { id: 'av7',  label: 'Peace Child',     decade: '1960s', photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=80&fit=crop&crop=face' },
+  { id: 'av8',  label: 'Disco King',      decade: '1970s', photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80&fit=crop&crop=face' },
+  { id: 'av9',  label: 'Punk Rebel',      decade: '1970s', photo: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=80&fit=crop&crop=face' },
+  { id: 'av10', label: 'VHS Kid',         decade: '1980s', photo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&q=80&fit=crop&crop=face' },
+  { id: 'av11', label: 'Power Suit',      decade: '1980s', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80&fit=crop&crop=face' },
+  { id: 'av12', label: 'Grunge Era',      decade: '1990s', photo: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=200&q=80&fit=crop&crop=face' },
+  { id: 'av13', label: 'Y2K Digital',     decade: '2000s', photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80&fit=crop&crop=face' },
+  { id: 'av14', label: 'Selfie Pro',      decade: '2010s', photo: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=200&q=80&fit=crop&crop=face' },
+  { id: 'av15', label: 'AI Native',       decade: '2020s', photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&q=80&fit=crop&crop=face' },
+  { id: 'av16', label: 'Time Traveler',   decade: 'All',   photo: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=200&q=80&fit=crop&crop=face' },
 ];
 
 export default function ProfilePicker({ onSave, initialValue }) {
-  const [mode, setMode] = useState(initialValue?.mode || 'avatar'); // 'photo' | 'avatar' | 'anonymous'
+  const [mode, setMode] = useState(initialValue?.mode || 'avatar');
   const [selectedAvatar, setSelectedAvatar] = useState(initialValue?.avatarId || 'av8');
   const [photoPreview, setPhotoPreview] = useState(initialValue?.photoUrl || null);
   const [saved, setSaved] = useState(false);
@@ -38,7 +39,7 @@ export default function ProfilePicker({ onSave, initialValue }) {
     const result = {
       mode,
       avatarId: selectedAvatar,
-      photoUrl: photoPreview,
+      photoUrl: mode === 'photo' ? photoPreview : null,
       avatar: PRESET_AVATARS.find(a => a.id === selectedAvatar),
     };
     if (onSave) onSave(result);
@@ -48,19 +49,16 @@ export default function ProfilePicker({ onSave, initialValue }) {
   };
 
   const currentAvatar = PRESET_AVATARS.find(a => a.id === selectedAvatar);
+  const displayPhoto = mode === 'photo' ? photoPreview : (mode === 'avatar' ? currentAvatar?.photo : null);
 
   return (
     <div className="max-w-lg mx-auto">
       {/* Preview */}
       <div className="flex flex-col items-center mb-8">
         <div className="relative">
-          {mode === 'photo' && photoPreview ? (
-            <img src={photoPreview} alt="Profile" className="w-24 h-24 rounded-full object-cover ring-4 ring-rose-gold shadow-xl" />
-          ) : mode === 'avatar' ? (
-            <div className="w-24 h-24 rounded-full flex items-center justify-center text-5xl ring-4 ring-rose-gold shadow-xl"
-              style={{ background: currentAvatar?.bg || '#333d4d' }}>
-              {currentAvatar?.emoji}
-            </div>
+          {displayPhoto ? (
+            <img src={displayPhoto} alt="Profile"
+              className="w-24 h-24 rounded-full object-cover ring-4 ring-rose-gold shadow-xl" />
           ) : (
             <div className="w-24 h-24 rounded-full bg-gray-700 flex items-center justify-center ring-4 ring-gray-600 shadow-xl">
               <span className="text-4xl">👤</span>
@@ -68,99 +66,80 @@ export default function ProfilePicker({ onSave, initialValue }) {
           )}
           <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-rose-gold rounded-full flex items-center justify-center text-sm shadow">✏️</div>
         </div>
-        <p className="text-gray-400 text-sm mt-4">
-          {mode === 'anonymous' ? 'You\'ll appear as Anonymous' : mode === 'photo' ? 'Your photo' : currentAvatar?.label}
+        <p className="text-white font-medium mt-4 text-sm">
+          {mode === 'anonymous' ? 'Anonymous' : mode === 'photo' ? 'Your Photo' : currentAvatar?.label}
         </p>
+        {mode === 'avatar' && currentAvatar && (
+          <p className="text-gray-500 text-xs">{currentAvatar.decade} Era</p>
+        )}
       </div>
 
       {/* Mode Tabs */}
       <div className="flex gap-2 bg-gray-800/60 rounded-2xl p-1.5 mb-6">
         {[
-          { key: 'photo', icon: '📷', label: 'Photo' },
-          { key: 'avatar', icon: '🎭', label: 'Avatar' },
+          { key: 'photo', icon: '📷', label: 'My Photo' },
+          { key: 'avatar', icon: '🎭', label: 'Era Avatar' },
           { key: 'anonymous', icon: '👤', label: 'Anonymous' },
-        ].map(tab => (
-          <button key={tab.key} onClick={() => setMode(tab.key)}
-            className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold transition-all ${
-              mode === tab.key ? 'bg-rose-gold text-white shadow' : 'text-gray-400 hover:text-white'
-            }`}>
-            <span>{tab.icon}</span>{tab.label}
+        ].map(m => (
+          <button key={m.key} onClick={() => setMode(m.key)}
+            className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors ${mode === m.key ? 'bg-rose-gold text-white' : 'text-gray-400 hover:text-white'}`}>
+            {m.icon} {m.label}
           </button>
         ))}
       </div>
 
-      {/* Content per mode */}
+      {/* Upload Photo */}
       {mode === 'photo' && (
-        <div className="text-center space-y-4">
-          <div
-            onClick={() => fileRef.current?.click()}
-            className="border-2 border-dashed border-rose-gold/40 rounded-2xl p-8 cursor-pointer hover:border-rose-gold/80 hover:bg-rose-gold/5 transition-all">
-            {photoPreview ? (
-              <div>
-                <img src={photoPreview} alt="Preview" className="w-20 h-20 rounded-full object-cover mx-auto mb-3" />
-                <p className="text-gray-400 text-sm">Click to change photo</p>
-              </div>
-            ) : (
-              <div>
-                <div className="text-5xl mb-3">📷</div>
-                <p className="text-white font-semibold mb-1">Upload your photo</p>
-                <p className="text-gray-500 text-xs">JPG, PNG, WebP — max 5MB</p>
-              </div>
-            )}
-          </div>
+        <div className="mb-6 text-center">
+          <button onClick={() => fileRef.current?.click()}
+            className="bg-charcoal border border-white/20 hover:border-rose-gold/50 text-gray-300 hover:text-white px-6 py-3 rounded-xl text-sm transition-all">
+            📷 Upload Your Photo
+          </button>
           <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handlePhoto} />
           {photoPreview && (
-            <button onClick={() => setPhotoPreview(null)} className="text-gray-500 text-xs hover:text-red-400 transition">
-              Remove photo
-            </button>
+            <p className="text-green-400 text-xs mt-2">✓ Photo uploaded</p>
           )}
         </div>
       )}
 
+      {/* Avatar Grid — Real Photos */}
       {mode === 'avatar' && (
-        <div>
-          <p className="text-gray-400 text-sm mb-4 text-center">Pick your decade persona</p>
-          <div className="grid grid-cols-4 gap-3">
-            {PRESET_AVATARS.map(av => (
-              <button key={av.id} onClick={() => setSelectedAvatar(av.id)}
-                className={`flex flex-col items-center gap-1.5 p-3 rounded-2xl border transition-all ${
-                  selectedAvatar === av.id
-                    ? 'border-rose-gold bg-rose-gold/10 scale-105 shadow-lg'
-                    : 'border-white/10 hover:border-rose-gold/40 bg-charcoal'
-                }`}>
-                <div className="w-12 h-12 rounded-full flex items-center justify-center text-2xl"
-                  style={{ background: av.bg }}>
-                  {av.emoji}
+        <div className="grid grid-cols-4 gap-3 mb-6">
+          {PRESET_AVATARS.map(av => (
+            <button key={av.id} onClick={() => setSelectedAvatar(av.id)}
+              className={`relative rounded-2xl overflow-hidden aspect-square border-2 transition-all ${
+                selectedAvatar === av.id ? 'border-rose-gold shadow-lg shadow-rose-gold/30 scale-105' : 'border-transparent hover:border-white/30'
+              }`}>
+              <img src={av.photo} alt={av.label}
+                className="w-full h-full object-cover"
+                onError={e => {
+                  e.target.style.display = 'none';
+                  e.target.parentElement.style.background = '#333d4d';
+                }} />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+              <div className="absolute bottom-1 left-0 right-0 text-center">
+                <p className="text-white text-[9px] font-medium leading-tight px-1">{av.label}</p>
+              </div>
+              {selectedAvatar === av.id && (
+                <div className="absolute top-1 right-1 w-4 h-4 bg-rose-gold rounded-full flex items-center justify-center">
+                  <span className="text-white text-[8px]">✓</span>
                 </div>
-                <span className="text-gray-300 text-xs text-center leading-tight">{av.label}</span>
-              </button>
-            ))}
-          </div>
+              )}
+            </button>
+          ))}
         </div>
       )}
 
       {mode === 'anonymous' && (
-        <div className="text-center py-8 bg-charcoal rounded-2xl border border-white/10">
-          <div className="text-6xl mb-4">👤</div>
-          <h3 className="text-white font-semibold mb-2">Stay Anonymous</h3>
-          <p className="text-gray-400 text-sm max-w-xs mx-auto">
-            Your identity stays private. You'll appear as "Anonymous Member" throughout eDecades.
-          </p>
-          <div className="mt-4 flex flex-wrap justify-center gap-3 text-xs text-gray-500">
-            <span>✓ No photo required</span>
-            <span>✓ Full access to all features</span>
-            <span>✓ Change anytime</span>
-          </div>
+        <div className="bg-charcoal rounded-2xl p-4 mb-6 text-center border border-white/10">
+          <p className="text-gray-400 text-sm">You'll appear as <strong className="text-white">Anonymous</strong> — your identity stays private.</p>
         </div>
       )}
 
-      {/* Save Button */}
-      <button
-        onClick={handleSave}
-        className={`w-full mt-6 py-3.5 rounded-2xl font-bold text-sm transition-all ${
-          saved ? 'bg-green-600 text-white' : 'bg-rose-gold text-white hover:opacity-90 shadow-lg shadow-rose-gold/20'
-        }`}>
-        {saved ? '✓ Profile Saved!' : 'Save Profile Picture'}
+      {/* Save */}
+      <button onClick={handleSave}
+        className="w-full bg-rose-gold hover:opacity-90 text-white font-semibold py-3 rounded-xl transition-all shadow-lg">
+        {saved ? '✓ Saved!' : 'Save Profile'}
       </button>
     </div>
   );
