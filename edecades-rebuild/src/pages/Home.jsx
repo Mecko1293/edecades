@@ -45,17 +45,35 @@ const FEATURE_ICONS = {
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
     </svg>
   ),
+  '/presidents': (
+    <svg className="w-7 h-7 text-rose-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
+    </svg>
+  ),
+  '/chat': (
+    <svg className="w-7 h-7 text-rose-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+    </svg>
+  ),
+  '/stats': (
+    <svg className="w-7 h-7 text-rose-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+    </svg>
+  ),
 };
 
 const FEATURES = [
-  { to: '/categories', title: 'Everything About Every Decade', desc: 'Fashion, Food, Art, Tech, Homes & Culture — all 13 decades' },
-  { to: '/music',      title: 'Music by Decade',               desc: 'Artist photos, album covers, and clickable songs from Jazz to TikTok pop' },
-  { to: '/shorts',     title: 'Decade Shorts',                 desc: 'Decade-accurate clips organized by era — tap to watch on YouTube' },
-  { to: '/trivia',     title: 'Decade Trivia',                 desc: 'Test your knowledge across history, music, film and culture' },
-  { to: '/onthisday',  title: 'On This Day',                   desc: 'Pivotal moments in history with photos that click to enlarge' },
-  { to: '/sports',     title: 'Sports MVPs',                   desc: 'Real athlete photos — the greatest from every era' },
-  { to: '/timecapsule',title: 'Time Capsule',                  desc: 'Write a letter to the future — your moment in history' },
-  { to: '/search',     title: 'Universal Search',              desc: 'Search songs, movies, TV shows, history & more in one place' },
+  { to: '/categories',  title: 'Everything About Every Decade', desc: 'Fashion, Food, Art, Tech, Homes & Culture — all 13 decades' },
+  { to: '/music',       title: 'Music by Decade',               desc: 'Artist photos, album covers, and clickable songs from Jazz to TikTok pop' },
+  { to: '/shorts',      title: 'Decade Shorts',                 desc: 'Decade-accurate clips organized by era — tap to watch on YouTube' },
+  { to: '/trivia',      title: 'Decade Trivia',                 desc: 'Test your knowledge across history, music, film and culture' },
+  { to: '/onthisday',   title: 'On This Day',                   desc: 'Pivotal moments in history with photos that click to enlarge' },
+  { to: '/sports',      title: 'Sports MVPs',                   desc: 'Real athlete photos — the greatest from every era' },
+  { to: '/presidents',  title: 'Presidents by Decade',          desc: 'Every US commander-in-chief from 1900 to today — click for full bio' },
+  { to: '/chat',        title: 'Ask a Historical Figure',       desc: 'Have a real AI conversation with MLK, Elvis, Einstein, Obama & more' },
+  { to: '/stats',       title: 'Decade Stats',                  desc: 'Economics, wages, inflation, tech & culture — every era at a glance' },
+  { to: '/timecapsule', title: 'Time Capsule',                  desc: 'Write a letter to the future — your moment in history' },
+  { to: '/search',      title: 'Universal Search',              desc: 'Search songs, movies, TV shows, history & more in one place' },
 ];
 
 function EraCard({ d }) {
