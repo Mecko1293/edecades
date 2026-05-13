@@ -1,5 +1,17 @@
 Deno.serve(async (req) => {
-  const YOUTUBE_API_KEY = Deno.env.get('YOUTUBE_API_KEY') || 'AIzaSyCP18vlyXOmSW3zxinLP5dTulfEhobyMjI';
+  // IMPORTANT: YouTube API key must be set as YOUTUBE_API_KEY environment secret
+  // Never hardcode API keys — rotate any previously exposed key in Google Cloud Console
+  const YOUTUBE_API_KEY = Deno.env.get('YOUTUBE_API_KEY');
+
+  if (!YOUTUBE_API_KEY) {
+    return new Response(JSON.stringify({
+      success: false,
+      error: 'YouTube API key not configured. Set YOUTUBE_API_KEY as an environment secret.',
+    }), {
+      status: 503,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
 
   const DECADE_QUERIES = [
     { decade: '1920s', query: '1920s history culture jazz flappers' },
@@ -23,7 +35,6 @@ Deno.serve(async (req) => {
     let results: any[] = [];
 
     if (mode === 'channel') {
-      // Fetch Anthony's channel latest videos
       const channelRes = await fetch(
         `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCMSSwEeAkDoTKuH6PcCaFSg&order=date&type=video&maxResults=${maxResults}&key=${YOUTUBE_API_KEY}`
       );
@@ -49,7 +60,6 @@ Deno.serve(async (req) => {
         }));
       }
     } else {
-      // Fetch decade-tagged content from YouTube
       const queries = decade ? DECADE_QUERIES.filter(d => d.decade === decade) : DECADE_QUERIES;
       const fetches = queries.map(async ({ decade: d, query }) => {
         const res = await fetch(
