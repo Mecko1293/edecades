@@ -44,7 +44,6 @@ function RotatingDecadeCard({ d }) {
         {/* Decade label overlay */}
         <div className="absolute bottom-3 left-4">
           <div className="flex items-center gap-2">
-            <span className="text-3xl">{d.emoji}</span>
             <h2 className="font-retro text-2xl font-bold text-white group-hover:text-rose-gold transition-colors">{d.label}</h2>
           </div>
         </div>

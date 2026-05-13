@@ -148,7 +148,7 @@ export default function Search() {
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-12">
-      <h1 className="font-retro text-4xl font-bold text-white text-center mb-2">🔍 Search eDecades</h1>
+      <h1 className="font-retro text-4xl font-bold text-white text-center mb-2">Search eDecades</h1>
       <p className="text-gray-400 text-center mb-8">Search across decades, music, movies, TV shows, history & more</p>
 
       {/* Search Input */}
@@ -160,7 +160,7 @@ export default function Search() {
           className="w-full bg-charcoal text-white rounded-2xl px-6 py-4 border border-white/20 focus:border-rose-400 outline-none text-base pl-12"
           autoFocus
         />
-        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
+        <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" /></svg>
         {loadingMedia && (
           <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 animate-pulse text-sm">searching...</span>
         )}

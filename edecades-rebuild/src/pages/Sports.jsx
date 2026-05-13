@@ -73,7 +73,7 @@ export default function Sports() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
-      <h1 className="font-retro text-4xl font-bold text-white text-center mb-2">🏆 Sports MVPs</h1>
+      <h1 className="font-retro text-4xl font-bold text-white text-center mb-2">Sports MVPs</h1>
       <p className="text-gray-400 text-center mb-8">The greatest athletes from every era — click any card for their full story</p>
 
       {/* Decade Filter */}

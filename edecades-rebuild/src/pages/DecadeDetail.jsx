@@ -31,7 +31,7 @@ export default function DecadeDetail() {
 
   if (!decade) return (
     <div className="text-center py-24 text-gray-400">
-      <div className="text-5xl mb-4">🕰️</div>
+      
       <p>Decade not found. <Link to="/decades" className="text-rose-gold underline">Back to Decades</Link></p>
     </div>
   );
@@ -57,7 +57,7 @@ export default function DecadeDetail() {
         <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/60 to-transparent" />
         <div className="absolute bottom-6 left-6">
           <div className="flex items-center gap-3 mb-1">
-            <span className="text-5xl">{decade.emoji}</span>
+            
             <h1 className="font-retro text-5xl font-black text-white">{decade.label}</h1>
           </div>
           <p className="text-rose-gold italic">{decade.tagline}</p>
@@ -91,7 +91,7 @@ export default function DecadeDetail() {
 
       {/* ── MUSIC ── */}
       {(narr.music || music) && (
-        <Section icon="🎵" title={music ? `Music — ${music.genre}` : 'Music'}>
+        <Section icon={<svg className="w-5 h-5 text-rose-gold inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" /></svg>} title={music ? `Music — ${music.genre}` : 'Music'}>
           <NarrativeParagraph text={narr.music} />
           {music && (
             <div className="mt-5">
@@ -107,7 +107,7 @@ export default function DecadeDetail() {
               <div className="flex flex-wrap gap-2 mb-5">
                 {music.songs.map(s => (
                   <span key={s} className="bg-white/5 text-gray-300 text-xs px-3 py-1.5 rounded-full border border-white/10">
-                    🎶 {s}
+                    {s}
                   </span>
                 ))}
               </div>
@@ -124,7 +124,7 @@ export default function DecadeDetail() {
 
       {/* ── FASHION ── */}
       {narr.fashion && (
-        <Section icon="👗" title="Fashion Trends">
+        <Section icon={<svg className="w-5 h-5 text-rose-gold inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>} title="Fashion Trends">
           <div className="flex flex-col sm:flex-row gap-5 items-start">
             <img
               src={getCategoryImage('Fashion', id)}
@@ -159,7 +159,7 @@ export default function DecadeDetail() {
 
       {/* ── KEY INVENTIONS ── */}
       {narr.keyInventions && (
-        <Section icon="💡" title="Key Inventions">
+        <Section icon={<svg className="w-5 h-5 text-rose-gold inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>} title="Key Inventions">
           <NarrativeParagraph text={narr.keyInventions} />
         </Section>
       )}
@@ -168,7 +168,7 @@ export default function DecadeDetail() {
 
       {/* ── SPORTS MVPs ── */}
       {athletes.length > 0 && (
-        <Section icon="🏆" title={`Sports MVPs of the ${id}`}>
+        <Section icon={<svg className="w-5 h-5 text-rose-gold inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>} title={`Sports MVPs of the ${id}`}>
           <div className="space-y-4">
             {athletes.map(a => (
               <div key={a.name} className="flex items-start gap-4">

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { DECADES, CATEGORIES, CATEGORY_DATA } from '../data/decades';
 import { usePixabay } from '../hooks/usePixabay';
 
-const CAT_ICONS = { Fashion: '👗', Food: '🍔', Beauty: '💄', Art: '🎨', Technology: '💻', Homes: '🏠', Culture: '🎭' };
+
 const CAT_COLORS = {
   Fashion: 'from-pink-900/70', Food: 'from-yellow-900/70', Beauty: 'from-purple-900/70',
   Art: 'from-orange-900/70', Technology: 'from-blue-900/70', Homes: 'from-green-900/70', Culture: 'from-teal-900/70',
@@ -60,12 +60,12 @@ function DecadeCard({ cat, decade, isOpen, onToggle }) {
 
         {/* Powered by Pixabay badge */}
         <div className="absolute top-3 left-3">
-          <span className="bg-black/40 text-white/50 text-[9px] px-1.5 py-0.5 rounded">📷 Pixabay</span>
+          
         </div>
 
         {/* Bottom info */}
         <div className="absolute bottom-0 left-0 right-0 p-3 flex items-end gap-2">
-          <span className="text-2xl">{decade.emoji}</span>
+          
           <div className="flex-1">
             <h3 className="font-retro text-lg font-bold text-white leading-tight">{decade.label}</h3>
             <p className="text-xs text-rose-gold/80">{decade.tagline}</p>
@@ -112,7 +112,7 @@ export default function Categories() {
                 ? 'bg-rose-gold text-white shadow-lg shadow-rose-gold/20 scale-105'
                 : 'bg-charcoal text-gray-300 hover:text-rose-gold border border-white/10 hover:border-rose-gold/40'
             }`}>
-            <span className="text-base">{CAT_ICONS[cat]}</span>{cat}
+            {cat}
           </button>
         ))}
       </div>

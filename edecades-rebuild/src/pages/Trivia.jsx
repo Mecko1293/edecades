@@ -58,7 +58,7 @@ export default function Trivia() {
 
   if (done) return (
     <div className="max-w-2xl mx-auto px-4 py-16 text-center">
-      <div className="text-6xl mb-4">🎯</div>
+      
       <h1 className="font-retro text-4xl font-bold text-white mb-2">Quiz Complete!</h1>
       <p className="text-gray-400 mb-6">
         You scored <span className="text-rose-gold font-bold text-2xl">{score}</span> out of {TRIVIA.length * 10} points
@@ -66,7 +66,7 @@ export default function Trivia() {
       <div className="bg-charcoal rounded-2xl p-6 mb-6 text-left">
         {answers.map((a, i) => (
           <div key={i} className="flex items-center gap-2 py-2 border-b border-white/10 last:border-0">
-            <span>{a.correct ? '✅' : '❌'}</span>
+            <span>{a.correct ? '✓' : '✗'}</span>
             <span className="text-sm text-gray-300">{a.question}</span>
           </div>
         ))}
@@ -80,7 +80,7 @@ export default function Trivia() {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-12">
-      <h1 className="font-retro text-4xl font-bold text-white text-center mb-2">🎯 Decade Trivia</h1>
+      <h1 className="font-retro text-4xl font-bold text-white text-center mb-2">Decade Trivia</h1>
       <p className="text-gray-400 text-center mb-8">Test your knowledge across history, music, film and culture</p>
 
       {/* Progress */}
@@ -141,7 +141,7 @@ export default function Trivia() {
       {selected !== null && (
         <div className="text-center">
           <div className={`mb-4 text-lg font-semibold ${selected === q.answer ? 'text-green-400' : 'text-red-400'}`}>
-            {selected === q.answer ? '🎉 Correct! +10 points' : `❌ The answer was: ${q.options[q.answer]}`}
+            {selected === q.answer ? 'Correct! +10 points' : `✗ The answer was: ${q.options[q.answer]}`}
           </div>
           <button onClick={next}
             className="bg-rose-gold hover:opacity-90 text-white font-semibold px-8 py-3 rounded-xl transition-colors">

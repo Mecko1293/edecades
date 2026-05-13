@@ -150,7 +150,7 @@ export default function OnThisDay() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
-      <h1 className="font-retro text-4xl font-bold text-white text-center mb-2">📅 On This Day</h1>
+      <h1 className="font-retro text-4xl font-bold text-white text-center mb-2">On This Day</h1>
       <p className="text-gray-400 text-center mb-8">
         Pivotal moments in history — every card shows the event photo <span className="text-rose-gold">+</span> the key person behind it
       </p>

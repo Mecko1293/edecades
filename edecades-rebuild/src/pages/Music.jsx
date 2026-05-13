@@ -23,7 +23,7 @@ function ArtistCard({ artist }) {
       <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 bg-gray-700">
         <img src={artist.photo} alt={artist.name}
           className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform"
-          onError={e => { e.target.style.display='none'; e.target.parentElement.innerHTML='<div class="w-full h-full flex items-center justify-center text-2xl">🎤</div>'; }} />
+          onError={e => { e.target.style.display='none'; e.target.parentElement.style.background='#1a1f2e'; }} />
       </div>
       <div>
         <p className="text-white text-sm font-semibold group-hover:text-rose-gold transition-colors">{artist.name}</p>
@@ -43,7 +43,7 @@ function SongCard({ song }) {
       <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 bg-gray-700">
         <img src={song.cover} alt={song.title}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform"
-          onError={e => { e.target.style.display='none'; e.target.parentElement.innerHTML='<div class="w-full h-full flex items-center justify-center text-2xl">🎵</div>'; }} />
+          onError={e => { e.target.style.display='none'; e.target.parentElement.style.background='#1a1f2e'; }} />
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-white text-sm font-semibold group-hover:text-rose-gold transition-colors truncate">"{song.title}"</p>
@@ -72,7 +72,7 @@ export default function Music() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
-      <h1 className="font-retro text-4xl font-bold text-white text-center mb-2">🎵 Music by Decade</h1>
+      <h1 className="font-retro text-4xl font-bold text-white text-center mb-2">Music by Decade</h1>
       <p className="text-gray-400 text-center mb-8">From Jazz to TikTok Pop — explore every era's sound</p>
 
       {/* Decade Selector */}
@@ -91,7 +91,7 @@ export default function Music() {
           <div className="w-16 h-16 rounded-2xl overflow-hidden bg-gray-700 flex-shrink-0">
             <img src={featuredArtist?.photo} alt={featuredArtist?.name}
               className="w-full h-full object-cover object-top"
-              onError={e => { e.target.style.display='none'; e.target.parentElement.innerHTML='<div class="w-full h-full flex items-center justify-center text-3xl">🎶</div>'; }} />
+              onError={e => { e.target.style.display='none'; e.target.parentElement.style.background='#1a1f2e'; }} />
           </div>
           <div>
             <h2 className="font-retro text-3xl font-bold text-white">{selected}</h2>
@@ -104,11 +104,11 @@ export default function Music() {
         {/* Featured rotating spotlight */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 p-4 bg-white/5 rounded-2xl border border-white/10">
           <div>
-            <p className="text-gray-500 text-xs uppercase tracking-widest mb-2">🌟 Now Featuring</p>
+            <p className="text-gray-500 text-xs uppercase tracking-widest mb-2">Now Featuring</p>
             {featuredArtist && <ArtistCard artist={featuredArtist} />}
           </div>
           <div>
-            <p className="text-gray-500 text-xs uppercase tracking-widest mb-2">🎵 Spotlight Song</p>
+            <p className="text-gray-500 text-xs uppercase tracking-widest mb-2">Spotlight Song</p>
             {featuredSong && <SongCard song={featuredSong} />}
           </div>
         </div>
@@ -117,7 +117,7 @@ export default function Music() {
           {/* All Artists */}
           <div>
             <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
-              <span>🌟</span> Iconic Artists
+              Iconic Artists
             </h3>
             <div className="space-y-2">
               {m.artists.map((a, i) => (
@@ -129,7 +129,7 @@ export default function Music() {
           {/* All Songs */}
           <div>
             <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
-              <span>🎵</span> Iconic Songs
+              Iconic Songs
             </h3>
             <div className="space-y-2">
               {m.songs.map((s, i) => (
@@ -142,7 +142,7 @@ export default function Music() {
         {/* Listen Button */}
         <a href={m.youtube} target="_blank" rel="noopener noreferrer"
           className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-3 rounded-xl transition-colors">
-          ▶ Explore All {selected} Music on YouTube
+          Explore All {selected} Music on YouTube
         </a>
       </div>
     </div>
