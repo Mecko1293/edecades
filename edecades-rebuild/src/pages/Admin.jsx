@@ -1,923 +1,706 @@
-import { useState } from 'react';
-import { DECADES } from '../data/decades';
+/**
+ * Admin.jsx — eDecades Command Center
+ * Theme: Charcoal (#1a2332 dark, #333d4d mid) + Rose Gold (#d4956e)
+ * Matches the site's Navbar, cards, and typography exactly.
+ */
+import { useState, useEffect } from 'react';
 
 const ADMIN_PASSWORD = 'KingXcel2026';
-const STORAGE_KEY = 'edecades_admin_auth';
+const STORAGE_KEY    = 'edecades_admin_auth_v2';
 
-function useStore(key, initial) {
-  const [data, setData] = useState(() => {
-    try { return JSON.parse(localStorage.getItem(key)) || initial; }
-    catch { return initial; }
-  });
-  const save = (val) => { setData(val); localStorage.setItem(key, JSON.stringify(val)); };
-  return [data, save];
-}
+// ── Colour palette (mirrors Tailwind config) ─────────────────────────────────
+const C = {
+  bg:         '#1a2332',   // charcoal-dark (body bg)
+  card:       '#232f42',   // slightly lighter card surface
+  card2:      '#2a3850',   // hover / secondary card
+  border:     '#3d5166',   // subtle dividers
+  roseGold:   '#d4956e',
+  roseLight:  '#e8b89a',
+  textPrimary:'#f5f0eb',
+  textMuted:  '#94a3b8',
+  danger:     '#ef4444',
+  success:    '#22c55e',
+  warn:       '#f59e0b',
+};
 
-// ── SVG Icons ──
-const Icon = ({ d, className = 'w-4 h-4' }) => (
-  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+// ── Shared SVG icon ───────────────────────────────────────────────────────────
+const Icon = ({ d, size = 16, color = 'currentColor', fill = false }) => (
+  <svg width={size} height={size} fill={fill ? color : 'none'} stroke={fill ? 'none' : color}
+    viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={d} />
   </svg>
 );
+
 const ICONS = {
-  dashboard: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6',
-  submissions: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
-  shorts: 'M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z',
-  directories: 'M4 6h16M4 10h16M4 14h16M4 18h16',
-  errors: 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z',
-  content: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253',
-  social: 'M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z',
-  affiliate: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
-  seo: 'M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z',
-  ops: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4',
-  lock: 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z',
-  logout: 'M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1',
-  check: 'M5 13l4 4L19 7',
-  x: 'M6 18L18 6M6 6l12 12',
-  plus: 'M12 4v16m8-8H4',
-  edit: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z',
-  trash: 'M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16',
-  external: 'M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14',
-  chevronDown: 'M19 9l-7 7-7-7',
-  chevronUp: 'M5 15l7-7 7 7',
+  dashboard:   'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6',
+  products:    'M13 10V3L4 14h7v7l9-11h-7z',
+  errors:      'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z',
+  directories: 'M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z',
+  social:      'M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z',
+  ops:         'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4',
+  automations: 'M13 10V3L4 14h7v7l9-11h-7z',
+  bizinfo:     'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4',
+  photos:      'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z',
+  youtube:     'M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z',
+  seo:         'M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z',
+  copy:        'M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z',
+  link:        'M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14',
+  check:       'M5 13l4 4L19 7',
+  star:        'M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z',
+  clock:       'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
+  mail:        'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+  globe:       'M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9',
+  refresh:     'M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15',
+  user:        'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z',
+  bolt:        'M13 10V3L4 14h7v7l9-11h-7z',
+  chart:       'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z',
+  building:    'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4',
+  warning:     'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z',
+  pill:        'M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18',
+  cog:         'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z',
+  academic:    'M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222',
+  document:    'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
+  music:       'M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3',
+  game:        'M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z',
+  lock:        'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z',
+  eye:         'M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z',
 };
 
-// ── Components ──
-function StatCard({ iconPath, label, value, sub, accent = false }) {
-  return (
-    <div className={`rounded-2xl p-5 border ${accent ? 'bg-rose-gold/10 border-rose-gold/30' : 'bg-[#1a1f2e] border-white/10'}`}>
-      <div className="flex items-start justify-between mb-3">
-        <p className="text-gray-400 text-xs uppercase tracking-widest">{label}</p>
-        <Icon d={iconPath} className={`w-4 h-4 ${accent ? 'text-rose-gold' : 'text-gray-500'}`} />
-      </div>
-      <p className={`text-3xl font-bold ${accent ? 'text-rose-gold' : 'text-white'}`}>{value}</p>
-      {sub && <p className="text-gray-500 text-xs mt-1">{sub}</p>}
-    </div>
-  );
-}
-
-function Section({ title, iconPath, children, defaultOpen = true }) {
-  const [open, setOpen] = useState(defaultOpen);
-  return (
-    <div className="bg-[#1a1f2e] rounded-2xl border border-white/10 overflow-hidden mb-5">
-      <button onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between px-6 py-4 hover:bg-white/5 transition-colors">
-        <div className="flex items-center gap-2">
-          <Icon d={iconPath} className="w-4 h-4 text-rose-gold" />
-          <h2 className="font-retro text-base font-bold text-white">{title}</h2>
-        </div>
-        <Icon d={open ? ICONS.chevronUp : ICONS.chevronDown} className="w-4 h-4 text-gray-500" />
-      </button>
-      {open && <div className="px-6 pb-6">{children}</div>}
-    </div>
-  );
-}
-
-function Badge({ label, color = 'gray' }) {
-  const cls = {
-    green: 'bg-green-900/40 text-green-400 border-green-800/40',
-    red: 'bg-red-900/40 text-red-400 border-red-800/40',
-    yellow: 'bg-yellow-900/40 text-yellow-400 border-yellow-800/40',
-    blue: 'bg-blue-900/40 text-blue-400 border-blue-800/40',
-    purple: 'bg-purple-900/40 text-purple-400 border-purple-800/40',
-    gray: 'bg-white/5 text-gray-400 border-white/10',
-  }[color] || 'bg-white/5 text-gray-400 border-white/10';
-  return <span className={`text-xs px-2.5 py-0.5 rounded-full border font-medium ${cls}`}>{label}</span>;
-}
-
-function Input({ value, onChange, placeholder, type = 'text', className = '' }) {
-  return (
-    <input type={type} value={value} onChange={onChange} placeholder={placeholder}
-      className={`bg-[#0c0f14] border border-white/10 focus:border-rose-gold/50 rounded-xl px-3 py-2 text-white text-sm outline-none placeholder-gray-600 transition-colors w-full ${className}`} />
-  );
-}
-
-function Select({ value, onChange, children, className = '' }) {
-  return (
-    <select value={value} onChange={onChange}
-      className={`bg-[#0c0f14] border border-white/10 rounded-xl px-3 py-2 text-white text-sm outline-none w-full ${className}`}>
-      {children}
-    </select>
-  );
-}
-
-// ══════════════════════════════════════════════
-// TABS
-// ══════════════════════════════════════════════
 const TABS = [
-  { id: 'dashboard',   label: 'Dashboard',    icon: ICONS.dashboard },
-  { id: 'submissions', label: 'Admissions',   icon: ICONS.submissions },
-  { id: 'shorts',      label: 'Shorts',       icon: ICONS.shorts },
-  { id: 'directories', label: 'Directories',  icon: ICONS.directories },
-  { id: 'errors',      label: 'Site Errors',  icon: ICONS.errors },
-  { id: 'content',     label: 'Content',      icon: ICONS.content },
-  { id: 'social',      label: 'Social',       icon: ICONS.social },
-  { id: 'affiliate',   label: 'Affiliates',   icon: ICONS.affiliate },
-  { id: 'seo',         label: 'SEO',          icon: ICONS.seo },
-  { id: 'ops',         label: 'Ops Tracker',  icon: ICONS.ops },
+  { id:'dashboard',   label:'Dashboard',   iconKey:'dashboard'   },
+  { id:'products',    label:'Products',    iconKey:'products'    },
+  { id:'errors',      label:'Errors',      iconKey:'errors'      },
+  { id:'directories', label:'Directories', iconKey:'directories' },
+  { id:'social',      label:'Social',      iconKey:'social'      },
+  { id:'ops',         label:'Ops Tasks',   iconKey:'ops'         },
+  { id:'automations', label:'Automations', iconKey:'automations' },
+  { id:'bizinfo',     label:'Biz Info',    iconKey:'bizinfo'     },
+  { id:'photos',      label:'Photos',      iconKey:'photos'      },
+  { id:'youtube',     label:'YouTube',     iconKey:'youtube'     },
+  { id:'seo',         label:'SEO',         iconKey:'seo'         },
 ];
 
-// ══════════════════════════════════════════════
-// TAB VIEWS
-// ══════════════════════════════════════════════
+const PRODUCTS = [
+  { name:'eDecades',      iconKey:'clock',    accent:'#d4956e', status:'live',        url:'https://edecades.com',                               category:'Social Network', desc:'Decade-themed social network. Live at eDecades.com.' },
+  { name:'CourseGek',     iconKey:'academic', accent:'#a78bfa', status:'live',        url:'https://course-gek-23543b27.base44.app',             category:'EdTech',         desc:'Homework help marketplace. Students pay for answers.' },
+  { name:'ResumeCrafted', iconKey:'document', accent:'#60a5fa', status:'live',        url:'https://resume-dashing-craft-pro.base44.app',        category:'Career Tools',   desc:'AI-powered resume builder. ATS-optimized.' },
+  { name:'WheelMath',     iconKey:'chart',    accent:'#fbbf24', status:'coming_soon', url:'https://pie-math-quest.base44.app',                  category:'EdTech Game',    desc:'Interactive math puzzles for students.' },
+  { name:'GameForge',     iconKey:'game',     accent:'#818cf8', status:'live',        url:'https://app.base44.com/apps/69cefe45fb6ca50b89904e8e',category:'Game Dev',       desc:'AI game design studio. Concept to full GDD.' },
+  { name:'CheapMedz',    iconKey:'pill',     accent:'#f87171', status:'coming_soon', url:'#',                                                  category:'Healthcare',     desc:'Medication price comparison tool. Affiliate model.' },
+  { name:'NexusCraft',    iconKey:'cog',      accent:'#34d399', status:'coming_soon', url:'#',                                                  category:'Dev Tools',      desc:'Next-gen development toolkit. Coming soon.' },
+  { name:'SETH',          iconKey:'bolt',     accent:'#c084fc', status:'coming_soon', url:'#',                                                  category:'AI Agent',       desc:'Specialized AI assistant platform. Coming soon.' },
+];
 
-function DashboardTab({ submissions, shorts, directories, errors, socialPosts }) {
-  const pending = submissions.filter(s => s.status === 'pending').length;
-  const liveShorts = shorts.filter(s => s.status === 'live').length;
-  const submitted = directories.filter(d => d.status === 'submitted').length;
-  const openErrors = errors.filter(e => e.status === 'open').length;
+const QUICK_LINKS = [
+  { label:'eDecades Live',         url:'https://edecades.com',                              iconKey:'globe'      },
+  { label:'GitHub Repo',           url:'https://github.com/Mecko1293/edecades',             iconKey:'link'       },
+  { label:'Vercel Dashboard',      url:'https://vercel.com/mecko1293s-projects/edecades',   iconKey:'bolt'       },
+  { label:'Stripe Dashboard',      url:'https://dashboard.stripe.com',                      iconKey:'chart'      },
+  { label:'Pinterest Analytics',   url:'https://analytics.pinterest.com',                   iconKey:'star'       },
+  { label:'Google Search Console', url:'https://search.google.com/search-console',          iconKey:'seo'        },
+  { label:'Google Business',       url:'https://business.google.com',                       iconKey:'building'   },
+  { label:'Google Analytics',      url:'https://analytics.google.com',                      iconKey:'chart'      },
+  { label:'LinkedIn Page',         url:'https://linkedin.com/company/edecades',             iconKey:'social'     },
+  { label:'Discord Server',        url:'https://discord.com',                               iconKey:'social'     },
+  { label:'TikTok Studio',         url:'https://www.tiktok.com/tiktokstudio',               iconKey:'music'      },
+  { label:'GoDaddy DNS',           url:'https://dcc.godaddy.com/manage/dns',                iconKey:'globe'      },
+];
 
-  const QUICK_LINKS = [
-    { label: 'Vercel Dashboard', url: 'https://vercel.com/mecko1293s-projects/edecades', icon: ICONS.external },
-    { label: 'GitHub Repo', url: 'https://github.com/Mecko1293/edecades', icon: ICONS.external },
-    { label: 'Stripe Dashboard', url: 'https://dashboard.stripe.com', icon: ICONS.external },
-    { label: 'Google Search Console', url: 'https://search.google.com/search-console', icon: ICONS.seo },
-    { label: 'Google Analytics', url: 'https://analytics.google.com', icon: ICONS.external },
-    { label: 'Google Business Profile', url: 'https://business.google.com', icon: ICONS.external },
-    { label: 'Pinterest Analytics', url: 'https://analytics.pinterest.com', icon: ICONS.external },
-    { label: 'TikTok Studio', url: 'https://www.tiktok.com/tiktokstudio', icon: ICONS.external },
-    { label: 'LinkedIn Page', url: 'https://linkedin.com/company/edecades', icon: ICONS.external },
-    { label: 'Discord Server', url: 'https://discord.com', icon: ICONS.external },
-    { label: 'GoDaddy DNS', url: 'https://dcc.godaddy.com/manage/dns', icon: ICONS.external },
-    { label: 'Pixabay Account', url: 'https://pixabay.com', icon: ICONS.external },
-  ];
+const AUTOMATIONS = [
+  { name:'Daily Social Auto-Post',  schedule:'9 AM, 3 PM, 9 PM Central', platforms:'LinkedIn, Slack, Discord',       status:'active', iconKey:'social'   },
+  { name:'Affiliate Reply Monitor', schedule:'8 AM daily',               platforms:'Outlook → edecades@outlook.com', status:'active', iconKey:'mail'     },
+  { name:'Daily Task Email',        schedule:'8 AM Central daily',       platforms:'anthonykittles@outlook.com',     status:'active', iconKey:'mail'     },
+  { name:'Affiliate Follow-up',     schedule:'Every 7 days',             platforms:'GoodRx, Blink, RxSpark, Amazon', status:'active', iconKey:'refresh'  },
+  { name:'DNS Monitor',             schedule:'Every 30 min',             platforms:'eDecades.com → Vercel',          status:'active', iconKey:'globe'    },
+];
 
+const DIRECTORIES = [
+  { name:'Google Business Profile',  url:'https://business.google.com',       da:92, status:'submitted' },
+  { name:'Bing Places',              url:'https://www.bingplaces.com',         da:88, status:'pending'   },
+  { name:'Yelp',                     url:'https://biz.yelp.com',               da:93, status:'submitted' },
+  { name:'Manta',                    url:'https://www.manta.com',              da:71, status:'pending'   },
+  { name:'Crunchbase',               url:'https://www.crunchbase.com',         da:91, status:'submitted' },
+  { name:'AngelList',                url:'https://angel.co',                   da:85, status:'pending'   },
+  { name:'Product Hunt',             url:'https://www.producthunt.com',        da:91, status:'submitted' },
+  { name:'AlternativeTo',            url:'https://alternativeto.net',          da:78, status:'pending'   },
+  { name:'SaaS Hub',                 url:'https://www.saashub.com',            da:62, status:'pending'   },
+  { name:'G2',                       url:'https://www.g2.com',                 da:89, status:'submitted' },
+];
+
+const REDDIT_COMMUNITIES = [
+  { name:'r/nostalgia',      url:'https://reddit.com/r/nostalgia',      members:'1.2M' },
+  { name:'r/90s',            url:'https://reddit.com/r/90s',            members:'380K' },
+  { name:'r/80s',            url:'https://reddit.com/r/80s',            members:'290K' },
+  { name:'r/history',        url:'https://reddit.com/r/history',        members:'15M'  },
+  { name:'r/OldSchoolCool',  url:'https://reddit.com/r/OldSchoolCool',  members:'4M'   },
+  { name:'r/vintageads',     url:'https://reddit.com/r/vintageads',     members:'198K' },
+  { name:'r/historyporn',    url:'https://reddit.com/r/historyporn',    members:'8M'   },
+  { name:'r/maybemaybemaybe',url:'https://reddit.com/r/maybemaybemaybe',members:'3.5M' },
+];
+
+const SOCIAL_SCHEDULE = [
+  { time:'9:00 AM CT',  type:'Morning Throwback',    content:'Decade memory post + historical image',           platforms:'LinkedIn, Discord, Slack' },
+  { time:'3:00 PM CT',  type:'Afternoon Highlight',  content:'Notable figure or event deep-dive',              platforms:'LinkedIn, Discord, Slack' },
+  { time:'9:00 PM CT',  type:'Evening Nostalgia',    content:'Pop culture moment + community question',        platforms:'LinkedIn, Discord, Slack' },
+];
+
+const PHOTO_SECTIONS = [
+  { section:'Home Hero',     count:3,  notes:'Rotating decade montage — 1920s–2020s'   },
+  { section:'Decade Cards',  count:13, notes:'One featured image per decade'           },
+  { section:'On This Day',   count:36, notes:'Event thumbnails, amber lightbox style'  },
+  { section:'Sports MVPs',   count:25, notes:'Athlete portraits via Wikimedia/Pixabay' },
+  { section:'Presidents',    count:13, notes:'Era-grouped presidential portraits'      },
+  { section:'Music Artists', count:40, notes:'Genre-sorted album covers & portraits'   },
+  { section:'Shorts Covers', count:40, notes:'YouTube thumbnail previews'              },
+];
+
+const SEO_CHECKLIST = [
+  { item:'Sitemap submitted to Google',           status:'done'    },
+  { item:'robots.txt configured',                 status:'done'    },
+  { item:'Canonical tags on all pages',           status:'pending' },
+  { item:'Open Graph meta tags',                  status:'done'    },
+  { item:'Twitter Card meta tags',                status:'pending' },
+  { item:'Structured data (JSON-LD)',             status:'pending' },
+  { item:'Page speed < 3s (desktop)',             status:'done'    },
+  { item:'Mobile responsive audit',              status:'done'    },
+  { item:'Alt text on all images',               status:'pending' },
+  { item:'Google Analytics connected',           status:'done'    },
+  { item:'Search Console verified',              status:'done'    },
+  { item:'Pinterest domain verified',            status:'done'    },
+];
+
+// ── Sub-components ────────────────────────────────────────────────────────────
+
+function StatCard({ label, value, iconKey, accent }) {
   return (
-    <div className="space-y-6">
-      {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard iconPath={ICONS.submissions} label="Pending Admissions" value={pending} sub="Awaiting review" accent={pending > 0} />
-        <StatCard iconPath={ICONS.shorts}      label="Live Shorts"        value={liveShorts} sub={`${shorts.length} total clips`} />
-        <StatCard iconPath={ICONS.directories} label="Directories Filed"  value={submitted} sub={`of ${directories.length} total`} />
-        <StatCard iconPath={ICONS.errors}      label="Open Errors"        value={openErrors} sub="Site issues logged" accent={openErrors > 0} />
+    <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: '18px 20px', display: 'flex', alignItems: 'center', gap: 14 }}>
+      <div style={{ width: 44, height: 44, borderRadius: 10, background: `${accent || C.roseGold}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+        <Icon d={ICONS[iconKey]} size={22} color={accent || C.roseGold} />
       </div>
-
-      {/* Site Status */}
-      <Section title="Live Site Status" iconPath={ICONS.external}>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {[
-            { label: 'Production URL', value: 'edecades.com', status: 'Live', color: 'green' },
-            { label: 'Vercel Deployment', value: 'Auto-deploy on push', status: 'Active', color: 'green' },
-            { label: 'GitHub Repo', value: 'Mecko1293/edecades', status: 'Connected', color: 'green' },
-            { label: 'Pixabay API', value: '17942546-...', status: 'Active', color: 'green' },
-            { label: 'Spotify API', value: '68548dcd...', status: 'Active', color: 'green' },
-            { label: 'TMDB API', value: 'c906cf54...', status: 'Active', color: 'green' },
-          ].map(item => (
-            <div key={item.label} className="bg-[#0c0f14] rounded-xl p-3 border border-white/10">
-              <p className="text-gray-500 text-xs mb-1">{item.label}</p>
-              <p className="text-white text-sm font-medium truncate">{item.value}</p>
-              <Badge label={item.status} color={item.color} />
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* Automation Status */}
-      <Section title="Active Automations" iconPath={ICONS.ops}>
-        <div className="space-y-2">
-          {[
-            { name: 'Daily Social Auto-Post', schedule: '9 AM, 3 PM, 9 PM Central', status: 'Active' },
-            { name: 'Daily Task Email', schedule: '8 AM Central daily → edecades@outlook.com', status: 'Active' },
-            { name: 'Weekly Directory Reminder', schedule: 'Sundays 10 AM Central', status: 'Active' },
-            { name: 'Affiliate Reply Monitor', schedule: 'Every 12 hours → edecades@outlook.com', status: 'Active' },
-          ].map(a => (
-            <div key={a.name} className="flex items-center justify-between py-2 border-b border-white/5 last:border-0">
-              <div>
-                <p className="text-white text-sm font-medium">{a.name}</p>
-                <p className="text-gray-500 text-xs">{a.schedule}</p>
-              </div>
-              <Badge label={a.status} color="green" />
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* Quick Links */}
-      <Section title="Quick Links" iconPath={ICONS.external}>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
-          {QUICK_LINKS.map(l => (
-            <a key={l.label} href={l.url} target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-[#0c0f14] hover:bg-white/5 border border-white/10 hover:border-rose-gold/30 rounded-xl px-3 py-2.5 text-sm text-gray-300 hover:text-rose-gold transition-all">
-              <Icon d={l.icon} className="w-3.5 h-3.5 flex-shrink-0 text-gray-500" />
-              <span className="truncate">{l.label}</span>
-            </a>
-          ))}
-        </div>
-      </Section>
-
-      {/* Business Info */}
-      <Section title="Business Info" iconPath={ICONS.content} defaultOpen={false}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-          {[
-            ['Company', 'King Xcel Innovations'],
-            ['Site', 'eDecades.com'],
-            ['Address', '205 Seva Ct, Irving, Texas 75061'],
-            ['Email', 'edecades@outlook.com'],
-            ['Admin Email', 'anthonykittles@outlook.com'],
-            ['Pinterest Tag', '549770222914'],
-            ['Admin Password', 'KingXcel2026'],
-            ['Stripe Account', 'acct_1T4XQARonfiMrfdu'],
-          ].map(([k, v]) => (
-            <div key={k} className="bg-[#0c0f14] rounded-xl p-3 border border-white/10">
-              <p className="text-gray-500 text-xs mb-0.5">{k}</p>
-              <p className="text-white font-medium">{v}</p>
-            </div>
-          ))}
-        </div>
-      </Section>
+      <div>
+        <div style={{ fontSize: 22, fontWeight: 700, color: C.textPrimary, fontFamily: '"Playfair Display", Georgia, serif' }}>{value}</div>
+        <div style={{ fontSize: 12, color: C.textMuted, marginTop: 2 }}>{label}</div>
+      </div>
     </div>
   );
 }
 
-function SubmissionsTab({ submissions, setSubmissions }) {
-  const update = (id, status) => setSubmissions(submissions.map(s => s.id === id ? { ...s, status } : s));
-  const remove = (id) => setSubmissions(submissions.filter(s => s.id !== id));
-  const [filter, setFilter] = useState('pending');
-  const filtered = filter === 'all' ? submissions : submissions.filter(s => s.status === filter);
+function CopyBtn({ text }) {
+  const [copied, setCopied] = useState(false);
+  const copy = () => {
+    navigator.clipboard.writeText(text).then(() => { setCopied(true); setTimeout(() => setCopied(false), 1800); });
+  };
+  return (
+    <button onClick={copy} title="Copy" style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: '2px 4px', color: copied ? C.success : C.textMuted }}>
+      <Icon d={copied ? ICONS.check : ICONS.copy} size={14} color={copied ? C.success : C.textMuted} />
+    </button>
+  );
+}
 
+function SectionTitle({ children, iconKey }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
+      {iconKey && <Icon d={ICONS[iconKey]} size={18} color={C.roseGold} />}
+      <h2 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: C.roseGold, fontFamily: '"Playfair Display", Georgia, serif', letterSpacing: '0.03em', textTransform: 'uppercase' }}>{children}</h2>
+    </div>
+  );
+}
+
+function Badge({ label, color }) {
+  const colors = { live: C.success, active: C.success, done: C.success, submitted: C.roseGold, pending: C.warn, coming_soon: C.textMuted };
+  const bg = colors[color || label] || C.textMuted;
+  return (
+    <span style={{ background: `${bg}22`, color: bg, border: `1px solid ${bg}55`, borderRadius: 20, padding: '2px 10px', fontSize: 11, fontWeight: 600, whiteSpace: 'nowrap' }}>
+      {label.replace('_', ' ')}
+    </span>
+  );
+}
+
+function LinkRow({ href, label, iconKey, extra }) {
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer"
+      style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderRadius: 8, background: C.card2, border: `1px solid ${C.border}`, textDecoration: 'none', color: C.textPrimary, transition: 'border-color 0.2s', marginBottom: 6 }}
+      onMouseEnter={e => e.currentTarget.style.borderColor = C.roseGold}
+      onMouseLeave={e => e.currentTarget.style.borderColor = C.border}>
+      <Icon d={ICONS[iconKey]} size={16} color={C.roseGold} />
+      <span style={{ flex: 1, fontSize: 13 }}>{label}</span>
+      {extra && <span style={{ fontSize: 11, color: C.textMuted }}>{extra}</span>}
+      <Icon d={ICONS.link} size={13} color={C.textMuted} />
+    </a>
+  );
+}
+
+// ── Tab panels ────────────────────────────────────────────────────────────────
+
+function TabDashboard() {
   return (
     <div>
-      <div className="flex gap-2 mb-5 flex-wrap">
-        {['all', 'pending', 'approved', 'rejected'].map(f => (
-          <button key={f} onClick={() => setFilter(f)}
-            className={`px-4 py-1.5 rounded-xl text-sm font-medium capitalize transition-colors ${filter === f ? 'bg-rose-gold text-white' : 'bg-[#1a1f2e] text-gray-400 border border-white/10 hover:text-white'}`}>
-            {f} {f === 'pending' && submissions.filter(s => s.status === 'pending').length > 0 &&
-              <span className="ml-1 bg-white/20 px-1.5 rounded-full text-xs">{submissions.filter(s => s.status === 'pending').length}</span>}
-          </button>
-        ))}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 14, marginBottom: 28 }}>
+        <StatCard label="Products" value="8" iconKey="bolt" />
+        <StatCard label="Live Apps" value="4" iconKey="check" accent={C.success} />
+        <StatCard label="Directories" value="10+" iconKey="directories" />
+        <StatCard label="Automations" value="5" iconKey="automations" accent="#a78bfa" />
+        <StatCard label="Daily Posts" value="3/day" iconKey="social" />
+        <StatCard label="API Keys" value="4 Active" iconKey="cog" accent={C.warn} />
       </div>
 
-      <div className="space-y-4">
-        {filtered.map(s => (
-          <div key={s.id} className="bg-[#1a1f2e] rounded-2xl border border-white/10 p-5">
-            <div className="flex items-start justify-between gap-3 mb-3">
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <Badge label={s.type} color="blue" />
-                  <Badge label={s.decade} color="purple" />
-                  <Badge label={s.status} color={s.status === 'approved' ? 'green' : s.status === 'rejected' ? 'red' : 'yellow'} />
-                </div>
-                <p className="text-white font-semibold">{s.name}</p>
-                <p className="text-gray-500 text-xs">{s.email} · {s.date}</p>
-              </div>
-              <button onClick={() => remove(s.id)} className="text-gray-600 hover:text-red-400 transition-colors flex-shrink-0">
-                <Icon d={ICONS.trash} className="w-4 h-4" />
-              </button>
-            </div>
-            <p className="text-gray-300 text-sm leading-relaxed bg-[#0c0f14] rounded-xl p-3 mb-3">{s.content}</p>
-            {s.status === 'pending' && (
-              <div className="flex gap-2">
-                <button onClick={() => update(s.id, 'approved')}
-                  className="flex items-center gap-1.5 bg-green-900/30 hover:bg-green-900/50 border border-green-800/40 text-green-400 text-sm font-medium px-4 py-2 rounded-xl transition-colors">
-                  <Icon d={ICONS.check} className="w-3.5 h-3.5" /> Approve
-                </button>
-                <button onClick={() => update(s.id, 'rejected')}
-                  className="flex items-center gap-1.5 bg-red-900/30 hover:bg-red-900/50 border border-red-800/40 text-red-400 text-sm font-medium px-4 py-2 rounded-xl transition-colors">
-                  <Icon d={ICONS.x} className="w-3.5 h-3.5" /> Reject
-                </button>
-              </div>
-            )}
-          </div>
-        ))}
-        {filtered.length === 0 && (
-          <div className="text-center py-16 text-gray-500">No {filter === 'all' ? '' : filter} submissions.</div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function ShortsTab({ shorts, setShorts }) {
-  const [newShort, setNewShort] = useState({ title: '', decade: '1980s', category: 'Music & Dance', videoId: '', thumbnail: '' });
-  const toggle = (id) => setShorts(shorts.map(s => s.id === id ? { ...s, status: s.status === 'live' ? 'hidden' : 'live' } : s));
-  const remove = (id) => setShorts(shorts.filter(s => s.id !== id));
-  const add = () => {
-    if (!newShort.title || !newShort.videoId) return;
-    setShorts([...shorts, { id: `s${Date.now()}`, ...newShort, status: 'live', likes: 0 }]);
-    setNewShort({ title: '', decade: '1980s', category: 'Music & Dance', videoId: '', thumbnail: '' });
-  };
-
-  return (
-    <div className="space-y-5">
-      {/* Add new short */}
-      <Section title="Add New Short" iconPath={ICONS.plus}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
-          <Input value={newShort.title} onChange={e => setNewShort(n => ({...n, title: e.target.value}))} placeholder="Short title" />
-          <Input value={newShort.videoId} onChange={e => setNewShort(n => ({...n, videoId: e.target.value}))} placeholder="YouTube Video ID (e.g. dQw4w9WgXcQ)" />
-          <Select value={newShort.decade} onChange={e => setNewShort(n => ({...n, decade: e.target.value}))}>
-            {DECADES.map(d => <option key={d.id} value={d.id}>{d.label}</option>)}
-          </Select>
-          <Select value={newShort.category} onChange={e => setNewShort(n => ({...n, category: e.target.value}))}>
-            {['Music & Dance','Fashion','Culture','Sports','History','Technology'].map(c => <option key={c}>{c}</option>)}
-          </Select>
-          <Input value={newShort.thumbnail} onChange={e => setNewShort(n => ({...n, thumbnail: e.target.value}))} placeholder="Custom thumbnail URL (optional)" className="sm:col-span-2" />
-        </div>
-        <button onClick={add} className="flex items-center gap-2 bg-rose-gold hover:opacity-90 text-white font-semibold px-5 py-2.5 rounded-xl transition-opacity text-sm">
-          <Icon d={ICONS.plus} className="w-4 h-4" /> Add Short
-        </button>
-      </Section>
-
-      {/* Shorts list */}
-      <div className="space-y-3">
-        {shorts.map(s => (
-          <div key={s.id} className="flex items-center gap-4 bg-[#1a1f2e] rounded-2xl border border-white/10 p-4">
-            {s.videoId && (
-              <img src={`https://img.youtube.com/vi/${s.videoId}/mqdefault.jpg`} alt={s.title}
-                className="w-20 h-14 object-cover rounded-lg flex-shrink-0 bg-[#0c0f14]"
-                onError={e => { e.target.style.display='none'; }} />
-            )}
-            <div className="flex-1 min-w-0">
-              <p className="text-white font-semibold text-sm truncate">{s.title}</p>
-              <div className="flex gap-2 mt-1 flex-wrap">
-                <Badge label={s.decade} color="purple" />
-                <Badge label={s.category} color="blue" />
-                <Badge label={s.status} color={s.status === 'live' ? 'green' : 'gray'} />
-                {s.likes > 0 && <span className="text-xs text-gray-500">{s.likes.toLocaleString()} likes</span>}
-              </div>
-            </div>
-            <div className="flex gap-2 flex-shrink-0">
-              {s.videoId && (
-                <a href={`https://youtube.com/watch?v=${s.videoId}`} target="_blank" rel="noreferrer"
-                  className="text-gray-500 hover:text-rose-gold transition-colors">
-                  <Icon d={ICONS.external} className="w-4 h-4" />
-                </a>
-              )}
-              <button onClick={() => toggle(s.id)} className={`text-xs font-medium px-3 py-1 rounded-xl border transition-colors ${s.status === 'live' ? 'bg-green-900/30 text-green-400 border-green-800/30 hover:bg-red-900/30 hover:text-red-400 hover:border-red-800/30' : 'bg-white/5 text-gray-400 border-white/10 hover:bg-green-900/30 hover:text-green-400 hover:border-green-800/30'}`}>
-                {s.status === 'live' ? 'Hide' : 'Show'}
-              </button>
-              <button onClick={() => remove(s.id)} className="text-gray-600 hover:text-red-400 transition-colors">
-                <Icon d={ICONS.trash} className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function DirectoriesTab({ directories, setDirectories }) {
-  const [newDir, setNewDir] = useState({ name: '', da: '', notes: '' });
-  const update = (id, field, val) => setDirectories(directories.map(d => d.id === id ? { ...d, [field]: val } : d));
-  const add = () => {
-    if (!newDir.name) return;
-    setDirectories([...directories, { id: Date.now(), ...newDir, status: 'pending', date: '' }]);
-    setNewDir({ name: '', da: '', notes: '' });
-  };
-
-  const stats = { submitted: directories.filter(d => d.status === 'submitted').length, pending: directories.filter(d => d.status === 'pending').length };
-
-  return (
-    <div className="space-y-5">
-      <div className="grid grid-cols-3 gap-3">
-        <StatCard iconPath={ICONS.check} label="Submitted" value={stats.submitted} />
-        <StatCard iconPath={ICONS.directories} label="Pending" value={stats.pending} accent />
-        <StatCard iconPath={ICONS.directories} label="Total" value={directories.length} />
-      </div>
-
-      <Section title="Add Directory" iconPath={ICONS.plus}>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
-          <Input value={newDir.name} onChange={e => setNewDir(n => ({...n, name: e.target.value}))} placeholder="Directory name" />
-          <Input value={newDir.da} onChange={e => setNewDir(n => ({...n, da: e.target.value}))} placeholder="Domain Authority (1-100)" />
-          <Input value={newDir.notes} onChange={e => setNewDir(n => ({...n, notes: e.target.value}))} placeholder="Notes" />
-        </div>
-        <button onClick={add} className="flex items-center gap-2 bg-rose-gold hover:opacity-90 text-white font-semibold px-5 py-2.5 rounded-xl transition-opacity text-sm">
-          <Icon d={ICONS.plus} className="w-4 h-4" /> Add Directory
-        </button>
-      </Section>
-
-      <div className="overflow-x-auto rounded-2xl border border-white/10">
-        <table className="w-full text-sm">
-          <thead className="bg-[#0c0f14]">
-            <tr>
-              {['Directory','DA','Status','Date','Notes','Action'].map(h => (
-                <th key={h} className="text-left text-gray-500 text-xs uppercase tracking-widest px-4 py-3 font-medium">{h}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {directories.sort((a, b) => (b.da || 0) - (a.da || 0)).map((d, i) => (
-              <tr key={d.id} className={`border-t border-white/5 ${i % 2 === 0 ? 'bg-[#1a1f2e]' : 'bg-[#141822]'} hover:bg-white/5`}>
-                <td className="px-4 py-3 text-white font-medium">{d.name}</td>
-                <td className="px-4 py-3 text-gray-400">{d.da || '—'}</td>
-                <td className="px-4 py-3">
-                  <Select value={d.status} onChange={e => update(d.id, 'status', e.target.value)} className="!w-28 !py-1 text-xs">
-                    <option value="pending">Pending</option>
-                    <option value="submitted">Submitted</option>
-                    <option value="verified">Verified</option>
-                    <option value="rejected">Rejected</option>
-                  </Select>
-                </td>
-                <td className="px-4 py-3 text-gray-500 text-xs">{d.date || '—'}</td>
-                <td className="px-4 py-3">
-                  <Input value={d.notes || ''} onChange={e => update(d.id, 'notes', e.target.value)} placeholder="Add note..." className="!text-xs !py-1" />
-                </td>
-                <td className="px-4 py-3">
-                  <button onClick={() => update(d.id, 'date', new Date().toISOString().slice(0, 10))}
-                    className="text-xs bg-rose-gold/20 text-rose-gold hover:bg-rose-gold/30 px-2 py-1 rounded-lg transition-colors">
-                    Mark Today
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-}
-
-function ErrorsTab({ errors, setErrors }) {
-  const [newError, setNewError] = useState({ section: '', desc: '', severity: 'medium' });
-  const toggle = (id) => setErrors(errors.map(e => e.id === id ? { ...e, status: e.status === 'open' ? 'resolved' : 'open' } : e));
-  const remove = (id) => setErrors(errors.filter(e => e.id !== id));
-  const add = () => {
-    if (!newError.section || !newError.desc) return;
-    setErrors([...errors, { id: Date.now(), ...newError, status: 'open', date: new Date().toISOString().slice(0, 10) }]);
-    setNewError({ section: '', desc: '', severity: 'medium' });
-  };
-  const [filter, setFilter] = useState('open');
-  const filtered = filter === 'all' ? errors : errors.filter(e => e.status === filter);
-
-  return (
-    <div className="space-y-5">
-      <div className="grid grid-cols-3 gap-3">
-        <StatCard iconPath={ICONS.errors} label="Open" value={errors.filter(e => e.status === 'open').length} accent />
-        <StatCard iconPath={ICONS.check} label="Resolved" value={errors.filter(e => e.status === 'resolved').length} />
-        <StatCard iconPath={ICONS.errors} label="Total Logged" value={errors.length} />
-      </div>
-
-      <Section title="Log New Error" iconPath={ICONS.plus}>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
-          <Input value={newError.section} onChange={e => setNewError(n => ({...n, section: e.target.value}))} placeholder="Page / Section" />
-          <Input value={newError.desc} onChange={e => setNewError(n => ({...n, desc: e.target.value}))} placeholder="Describe the issue" className="sm:col-span-1" />
-          <Select value={newError.severity} onChange={e => setNewError(n => ({...n, severity: e.target.value}))}>
-            <option value="critical">Critical</option>
-            <option value="high">High</option>
-            <option value="medium">Medium</option>
-            <option value="low">Low</option>
-          </Select>
-        </div>
-        <button onClick={add} className="flex items-center gap-2 bg-rose-gold hover:opacity-90 text-white font-semibold px-5 py-2.5 rounded-xl transition-opacity text-sm">
-          <Icon d={ICONS.plus} className="w-4 h-4" /> Log Error
-        </button>
-      </Section>
-
-      <div className="flex gap-2 mb-3">
-        {['all','open','resolved'].map(f => (
-          <button key={f} onClick={() => setFilter(f)}
-            className={`px-4 py-1.5 rounded-xl text-sm capitalize transition-colors ${filter === f ? 'bg-rose-gold text-white' : 'bg-[#1a1f2e] text-gray-400 border border-white/10 hover:text-white'}`}>{f}</button>
-        ))}
-      </div>
-
-      <div className="space-y-3">
-        {filtered.map(e => (
-          <div key={e.id} className={`flex items-start gap-3 rounded-2xl border p-4 ${e.status === 'resolved' ? 'bg-[#0c0f14] border-white/5 opacity-60' : 'bg-[#1a1f2e] border-white/10'}`}>
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-1">
-                <Badge label={e.section} color="blue" />
-                <Badge label={e.severity} color={e.severity === 'critical' ? 'red' : e.severity === 'high' ? 'red' : e.severity === 'medium' ? 'yellow' : 'gray'} />
-                <Badge label={e.status} color={e.status === 'resolved' ? 'green' : 'red'} />
-                <span className="text-gray-600 text-xs">{e.date}</span>
-              </div>
-              <p className="text-gray-200 text-sm">{e.desc}</p>
-            </div>
-            <div className="flex gap-2 flex-shrink-0">
-              <button onClick={() => toggle(e.id)}
-                className={`text-xs font-medium px-3 py-1 rounded-xl border transition-colors ${e.status === 'open' ? 'bg-green-900/30 text-green-400 border-green-800/30 hover:opacity-80' : 'bg-white/5 text-gray-400 border-white/10 hover:text-white'}`}>
-                {e.status === 'open' ? 'Resolve' : 'Reopen'}
-              </button>
-              <button onClick={() => remove(e.id)} className="text-gray-600 hover:text-red-400 transition-colors">
-                <Icon d={ICONS.trash} className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function ContentTab() {
-  const PAGES = [
-    { name: 'Home', route: '/', status: 'Live' },
-    { name: 'Decades', route: '/decades', status: 'Live' },
-    { name: 'Decade Detail', route: '/decade/:id', status: 'Live' },
-    { name: 'Categories', route: '/categories', status: 'Live' },
-    { name: 'Music by Decade', route: '/music', status: 'Live' },
-    { name: 'Sports MVPs', route: '/sports', status: 'Live' },
-    { name: 'Presidents', route: '/presidents', status: 'Live' },
-    { name: 'On This Day', route: '/onthisday', status: 'Live' },
-    { name: 'Ask a Historical Figure', route: '/chat', status: 'Live' },
-    { name: 'Decade Stats', route: '/stats', status: 'Live' },
-    { name: 'Trivia', route: '/trivia', status: 'Live' },
-    { name: 'Time Capsule', route: '/timecapsule', status: 'Live' },
-    { name: 'Video Shorts', route: '/shorts', status: 'Live' },
-    { name: 'Search', route: '/search', status: 'Live' },
-    { name: 'Profile', route: '/profile', status: 'Live' },
-    { name: 'Directory Submit', route: '/directory', status: 'Live' },
-    { name: 'Admin', route: '/admin', status: 'Live' },
-  ];
-  return (
-    <div className="space-y-5">
-      <Section title="All Site Pages" iconPath={ICONS.content}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {PAGES.map(p => (
-            <div key={p.route} className="flex items-center justify-between bg-[#0c0f14] rounded-xl px-4 py-3 border border-white/10">
-              <div>
-                <p className="text-white text-sm font-medium">{p.name}</p>
-                <p className="text-gray-500 text-xs font-mono">{p.route}</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <Badge label={p.status} color="green" />
-                <a href={`https://edecades.com${p.route.replace(':id', '1980s')}`} target="_blank" rel="noreferrer"
-                  className="text-gray-600 hover:text-rose-gold transition-colors">
-                  <Icon d={ICONS.external} className="w-3.5 h-3.5" />
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Section>
-      <Section title="Data Coverage" iconPath={ICONS.content} defaultOpen={false}>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          {[
-            { label: 'Decades covered', value: '13/13', color: 'green' },
-            { label: 'Music decades', value: '13/13', color: 'green' },
-            { label: 'Sports MVPs', value: '16 athletes', color: 'green' },
-            { label: 'On This Day events', value: '27 events', color: 'green' },
-            { label: 'Trivia questions', value: '26 questions', color: 'green' },
-            { label: 'Presidents', value: '17 presidents', color: 'green' },
-            { label: 'Historical figures', value: '30 AI personas', color: 'green' },
-            { label: 'Video shorts', value: '40+ clips', color: 'green' },
-            { label: 'Categories', value: '7 types × 13 decades', color: 'green' },
-          ].map(item => (
-            <div key={item.label} className="bg-[#0c0f14] rounded-xl p-3 border border-white/10">
-              <p className="text-gray-500 text-xs mb-1">{item.label}</p>
-              <p className="text-green-400 font-semibold text-sm">{item.value}</p>
-            </div>
-          ))}
-        </div>
-      </Section>
-    </div>
-  );
-}
-
-function SocialTab({ socialPosts, setSocialPosts }) {
-  const CHANNELS = [
-    { name: 'TikTok', handle: '@edecades', status: 'Manual posting', url: 'https://tiktok.com/@edecades', statusColor: 'yellow' },
-    { name: 'LinkedIn', handle: 'eDecades', status: 'Auto 3x/day', url: 'https://linkedin.com', statusColor: 'green' },
-    { name: 'Discord', handle: 'edecades', status: 'Webhook live', url: 'https://discord.com', statusColor: 'green' },
-    { name: 'Pinterest', handle: 'eDecades', status: 'Verified + Active', url: 'https://pinterest.com', statusColor: 'green' },
-    { name: 'Instagram', handle: '@edecades', status: 'Manual posting', url: 'https://instagram.com', statusColor: 'yellow' },
-    { name: 'Facebook', handle: 'eDecades', status: 'Manual posting', url: 'https://facebook.com', statusColor: 'yellow' },
-    { name: 'X / Twitter', handle: '@edecades', status: 'Manual posting', url: 'https://twitter.com', statusColor: 'yellow' },
-    { name: 'YouTube', handle: 'eDecades', status: 'Channel active', url: 'https://youtube.com/channel/UCfk_Hh-GE2HJXO8q9s3Pfmw', statusColor: 'green' },
-  ];
-
-  return (
-    <div className="space-y-5">
-      <Section title="Social Channels" iconPath={ICONS.social}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {CHANNELS.map(c => (
-            <div key={c.name} className="flex items-center justify-between bg-[#0c0f14] rounded-xl px-4 py-3 border border-white/10">
-              <div>
-                <p className="text-white font-semibold text-sm">{c.name}</p>
-                <p className="text-gray-500 text-xs">{c.handle}</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <Badge label={c.status} color={c.statusColor} />
-                <a href={c.url} target="_blank" rel="noreferrer" className="text-gray-600 hover:text-rose-gold transition-colors">
-                  <Icon d={ICONS.external} className="w-3.5 h-3.5" />
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      <Section title="Posting Schedule" iconPath={ICONS.ops}>
-        <div className="space-y-2">
-          {[
-            { time: '9:00 AM Central', desc: 'Morning post — decade fact or nostalgia', platforms: 'LinkedIn, Discord' },
-            { time: '3:00 PM Central', desc: 'Afternoon post — music, fashion, or culture hook', platforms: 'LinkedIn, Discord' },
-            { time: '9:00 PM Central', desc: 'Evening post — historical figure or On This Day', platforms: 'LinkedIn, Discord' },
-            { time: 'Daily (manual)', desc: 'TikTok script from generated topics', platforms: 'TikTok' },
-            { time: 'Daily (manual)', desc: 'Instagram Story or Reel', platforms: 'Instagram' },
-          ].map((s, i) => (
-            <div key={i} className="flex items-start gap-3 py-2.5 border-b border-white/5 last:border-0">
-              <div className="w-28 text-rose-gold text-xs font-semibold flex-shrink-0 mt-0.5">{s.time}</div>
-              <div className="flex-1">
-                <p className="text-white text-sm">{s.desc}</p>
-                <p className="text-gray-500 text-xs mt-0.5">{s.platforms}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Section>
-    </div>
-  );
-}
-
-function AffiliateTab() {
-  const PARTNERS = [
-    { name: 'GoodRx', email: 'ada@goodrx.com', status: 'Awaiting reply', sent: '2026-05-11', statusColor: 'yellow', url: 'https://goodrx.com/developer/apply' },
-    { name: 'Blink Health', email: 'partnerships@blinkhealth.com', status: 'Awaiting reply', sent: '2026-05-11', statusColor: 'yellow', url: 'https://blinkhealth.com' },
-    { name: 'RxSpark', email: 'partners@rxspark.com', status: 'Awaiting reply', sent: '2026-05-11', statusColor: 'yellow', url: 'https://rxspark.com' },
-    { name: 'Amazon Pharmacy', email: 'affiliate-program.amazon.com', status: 'Form only', sent: '—', statusColor: 'blue', url: 'https://affiliate-program.amazon.com' },
-    { name: 'Cost Plus Drugs', email: 'N/A', status: 'No affiliate program', sent: '—', statusColor: 'gray', url: 'https://costplusdrugs.com' },
-  ];
-
-  return (
-    <div className="space-y-5">
-      <Section title="CheapMedz Affiliate Outreach" iconPath={ICONS.affiliate}>
-        <div className="space-y-3">
-          {PARTNERS.map(p => (
-            <div key={p.name} className="flex items-center justify-between bg-[#0c0f14] rounded-xl px-4 py-3 border border-white/10">
-              <div>
-                <p className="text-white font-semibold text-sm">{p.name}</p>
-                <p className="text-gray-500 text-xs">{p.email} · Sent: {p.sent}</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <Badge label={p.status} color={p.statusColor} />
-                <a href={p.url} target="_blank" rel="noreferrer" className="text-gray-600 hover:text-rose-gold transition-colors">
-                  <Icon d={ICONS.external} className="w-3.5 h-3.5" />
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      <Section title="Potential eDecades Affiliates" iconPath={ICONS.affiliate} defaultOpen={false}>
-        <div className="space-y-2">
-          {[
-            ['Amazon Associates', 'Decade products, books, music, vintage items', 'affiliate-program.amazon.com'],
-            ['Ancestry.com', 'Family history — links to genealogy content', 'ancestry.com/affiliate'],
-            ['VinylHub / Discogs', 'Vintage vinyl records for music decade fans', 'discogs.com'],
-            ['Google AdSense', 'Display ads — passive income once traffic grows', 'adsense.google.com'],
-            ['Target / Walmart', 'Nostalgia merchandise affiliate programs', 'impact.com'],
-          ].map(([name, desc, url]) => (
-            <div key={name} className="flex items-center justify-between py-2 border-b border-white/5 last:border-0">
-              <div>
-                <p className="text-white text-sm font-medium">{name}</p>
-                <p className="text-gray-500 text-xs">{desc}</p>
-              </div>
-              <a href={`https://${url}`} target="_blank" rel="noreferrer"
-                className="text-xs bg-rose-gold/20 text-rose-gold hover:bg-rose-gold/30 px-3 py-1 rounded-xl transition-colors flex-shrink-0 ml-3">
-                Apply
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18 }}>
+        {/* Quick Links */}
+        <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 18 }}>
+          <SectionTitle iconKey="link">Quick Links</SectionTitle>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            {QUICK_LINKS.map(l => (
+              <a key={l.label} href={l.url} target="_blank" rel="noopener noreferrer"
+                style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 12px', borderRadius: 20, background: C.card2, border: `1px solid ${C.border}`, textDecoration: 'none', color: C.textPrimary, fontSize: 12, transition: 'all 0.2s' }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = C.roseGold; e.currentTarget.style.color = C.roseGold; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.textPrimary; }}>
+                <Icon d={ICONS[l.iconKey]} size={13} color={C.roseGold} />
+                {l.label}
               </a>
-            </div>
-          ))}
-        </div>
-      </Section>
-    </div>
-  );
-}
-
-function SEOTab() {
-  const DIRECTORIES = [
-    { name: 'Google My Business', da: 100, url: 'https://business.google.com', priority: 'Critical' },
-    { name: 'Bing Places', da: 94, url: 'https://bingplaces.com', priority: 'High' },
-    { name: 'Apple Maps Connect', da: 90, url: 'https://mapsconnect.apple.com', priority: 'High' },
-    { name: 'Better Business Bureau', da: 92, url: 'https://bbb.org', priority: 'High' },
-    { name: 'Yelp', da: 94, url: 'https://biz.yelp.com', priority: 'High' },
-    { name: 'Yellow Pages', da: 72, url: 'https://yplocal.us', priority: 'Medium' },
-    { name: 'Foursquare', da: 90, url: 'https://foursquare.com/add-place', priority: 'Medium' },
-    { name: 'Manta', da: 55, url: 'https://manta.com', priority: 'Medium' },
-    { name: 'Hotfrog', da: 50, url: 'https://hotfrog.com', priority: 'Low' },
-    { name: 'MerchantCircle', da: 48, url: 'https://merchantcircle.com', priority: 'Low' },
-  ];
-
-  return (
-    <div className="space-y-5">
-      <Section title="SEO Checklist" iconPath={ICONS.seo}>
-        <div className="space-y-2">
-          {[
-            ['sitemap.xml submitted to Google', 'green', 'Submit at search.google.com/search-console'],
-            ['robots.txt configured', 'green', 'Vercel handles this automatically'],
-            ['Schema markup (JSON-LD)', 'yellow', 'Add Article/WebPage schema to decade pages'],
-            ['Meta titles & descriptions', 'yellow', 'Each page needs unique meta tags'],
-            ['Open Graph tags', 'yellow', 'For social sharing previews on each page'],
-            ['Page speed optimization', 'green', 'Vite build is production-optimized'],
-            ['HTTPS certificate', 'green', 'Vercel provides automatic SSL'],
-            ['Mobile responsive', 'green', 'Tailwind CSS responsive design throughout'],
-            ['Google Analytics connected', 'yellow', 'Add GA4 tracking to index.html'],
-            ['Google Search Console verified', 'yellow', 'Verify ownership at search.google.com'],
-          ].map(([task, status, note]) => (
-            <div key={task} className="flex items-start gap-3 py-2 border-b border-white/5 last:border-0">
-              <div className={`w-2 h-2 rounded-full flex-shrink-0 mt-1.5 ${status === 'green' ? 'bg-green-400' : 'bg-yellow-400'}`} />
-              <div>
-                <p className="text-white text-sm">{task}</p>
-                <p className="text-gray-500 text-xs">{note}</p>
-              </div>
-              <Badge label={status === 'green' ? 'Done' : 'Needed'} color={status === 'green' ? 'green' : 'yellow'} />
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      <Section title="Top Directory Listings" iconPath={ICONS.directories} defaultOpen={false}>
-        <div className="space-y-2">
-          {DIRECTORIES.map(d => (
-            <div key={d.name} className="flex items-center justify-between py-2 border-b border-white/5 last:border-0">
-              <div>
-                <p className="text-white text-sm font-medium">{d.name}</p>
-                <p className="text-gray-500 text-xs">DA: {d.da}</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <Badge label={d.priority} color={d.priority === 'Critical' ? 'red' : d.priority === 'High' ? 'yellow' : 'gray'} />
-                <a href={d.url} target="_blank" rel="noreferrer"
-                  className="text-xs bg-rose-gold/20 text-rose-gold hover:bg-rose-gold/30 px-3 py-1 rounded-xl transition-colors">
-                  Submit
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Section>
-    </div>
-  );
-}
-
-function OpsTab() {
-  const DAILY = [
-    'Post 1–2 fresh pins to Pinterest',
-    'Check new user signups on eDecades',
-    'Respond to forum posts or messages',
-    'Monitor affiliate partner replies',
-    'Share 1 post on TikTok or Instagram',
-    'Check Stripe dashboard for new transactions',
-  ];
-  const WEEKLY = [
-    'Submit eDecades to 1–2 new business directories',
-    'Review Google Analytics traffic report',
-    'Write and publish 1 new On This Day event',
-    'Add 2–3 new trivia questions',
-    'Check Search Console for new keywords',
-    'Review and respond to any affiliate replies',
-    'Post 1 long-form LinkedIn article',
-  ];
-  const MONTHLY = [
-    'Full site audit — check all page links and images',
-    'Update sports MVPs or presidents data if needed',
-    'Create a new Historical Chat persona',
-    'Pinterest board audit and new pins',
-    'Review and update SEO meta descriptions',
-    'Backup GitHub repo and verify Vercel deployment',
-    'Send outreach email to new potential affiliate',
-  ];
-
-  return (
-    <div className="space-y-5">
-      {[
-        { title: 'Daily Tasks', items: DAILY },
-        { title: 'Weekly Tasks', items: WEEKLY },
-        { title: 'Monthly Tasks', items: MONTHLY },
-      ].map(({ title, items }) => (
-        <Section key={title} title={title} iconPath={ICONS.ops}>
-          <div className="space-y-2">
-            {items.map((task, i) => (
-              <div key={i} className="flex items-center gap-3 py-2 border-b border-white/5 last:border-0">
-                <div className="w-5 h-5 rounded-md border border-white/20 flex items-center justify-center flex-shrink-0 cursor-pointer hover:border-rose-gold/50 transition-colors">
-                  <div className="w-2.5 h-2.5 rounded-sm bg-transparent hover:bg-rose-gold/30 transition-colors" />
-                </div>
-                <p className="text-gray-300 text-sm">{task}</p>
-              </div>
             ))}
           </div>
-        </Section>
+        </div>
+
+        {/* Reddit Communities */}
+        <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 18 }}>
+          <SectionTitle iconKey="social">Reddit Communities</SectionTitle>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {REDDIT_COMMUNITIES.map(r => (
+              <a key={r.name} href={r.url} target="_blank" rel="noopener noreferrer"
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '7px 12px', borderRadius: 8, background: C.card2, border: `1px solid ${C.border}`, textDecoration: 'none', color: C.textPrimary, fontSize: 13, transition: 'border-color 0.2s' }}
+                onMouseEnter={e => e.currentTarget.style.borderColor = C.roseGold}
+                onMouseLeave={e => e.currentTarget.style.borderColor = C.border}>
+                <span>{r.name}</span>
+                <span style={{ fontSize: 11, color: C.textMuted }}>{r.members}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TabProducts() {
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 16 }}>
+      {PRODUCTS.map(p => (
+        <div key={p.name} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 20, display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{ width: 40, height: 40, borderRadius: 10, background: `${p.accent}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <Icon d={ICONS[p.iconKey]} size={20} color={p.accent} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 15, fontWeight: 700, color: C.textPrimary, fontFamily: '"Playfair Display", Georgia, serif' }}>{p.name}</div>
+              <div style={{ fontSize: 11, color: C.textMuted }}>{p.category}</div>
+            </div>
+            <Badge label={p.status} />
+          </div>
+          <p style={{ margin: 0, fontSize: 13, color: C.textMuted, lineHeight: 1.5 }}>{p.desc}</p>
+          {p.url !== '#' && (
+            <a href={p.url} target="_blank" rel="noopener noreferrer"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: C.roseGold, fontSize: 12, textDecoration: 'none' }}>
+              <Icon d={ICONS.link} size={12} color={C.roseGold} /> Visit App
+            </a>
+          )}
+        </div>
       ))}
     </div>
   );
 }
 
-// ══════════════════════════════════════════════
-// MAIN EXPORT
-// ══════════════════════════════════════════════
-export default function Admin() {
-  const [authed, setAuthed] = useState(() => sessionStorage.getItem(STORAGE_KEY) === '1');
-  const [pwInput, setPwInput] = useState('');
-  const [pwError, setPwError] = useState('');
-  const [activeTab, setActiveTab] = useState('dashboard');
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+function TabErrors() {
+  const [errors, setErrors] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const [submissions, setSubmissions] = useStore('admin_submissions', [
-    { id: 1, name: 'John Doe',  email: 'john@example.com',  type: 'Time Capsule', content: 'My 1980s memories of arcade games and big hair...', decade: '1980s', status: 'pending', date: '2026-05-10' },
-    { id: 2, name: 'Sarah M.', email: 'sarah@example.com', type: 'Shorts Clip',   content: 'YouTube link: youtube.com/watch?v=abc123 — 1970s disco footage', decade: '1970s', status: 'pending', date: '2026-05-09' },
-    { id: 3, name: 'Mike R.',  email: 'mike@example.com',  type: 'On This Day',   content: 'Moon landing July 20 1969 should be featured', decade: '1960s', status: 'approved', date: '2026-05-08' },
-  ]);
-  const [directories, setDirectories] = useStore('admin_directories', [
-    { id: 1, name: 'Google My Business', status: 'submitted', da: 100, date: '2026-05-01', notes: 'Verified listing live' },
-    { id: 2, name: 'Bing Places',        status: 'submitted', da: 94,  date: '2026-05-02', notes: '' },
-    { id: 3, name: 'Apple Maps',         status: 'pending',   da: 90,  date: '',           notes: 'Need to claim' },
-    { id: 4, name: 'Better Business Bureau', status: 'pending', da: 92, date: '',          notes: '' },
-    { id: 5, name: 'Manta',             status: 'submitted', da: 55,  date: '2026-05-05', notes: '' },
-    { id: 6, name: 'Hotfrog',           status: 'pending',   da: 50,  date: '',           notes: '' },
-    { id: 7, name: 'Yellow Pages',      status: 'pending',   da: 72,  date: '',           notes: '' },
-    { id: 8, name: 'Yahoo Local',       status: 'submitted', da: 68,  date: '2026-05-06', notes: '' },
-    { id: 9, name: 'MerchantCircle',    status: 'pending',   da: 48,  date: '',           notes: '' },
-    { id: 10, name: 'Superpages',       status: 'pending',   da: 45,  date: '',           notes: '' },
-  ]);
-  const [shorts, setShorts] = useStore('admin_shorts', [
-    { id: 's1', title: 'Charleston Dance — 1920s Jazz Age', decade: '1920s', category: 'Music & Dance', videoId: 'MdG7pG16VzE', status: 'live', likes: 4200 },
-    { id: 's2', title: 'Saturday Night Fever — Disco Era',  decade: '1970s', category: 'Music & Dance', videoId: 'I_izvAbhExY', status: 'live', likes: 15600 },
-    { id: 's3', title: 'Big Hair & Power Suits',            decade: '1980s', category: 'Fashion',       videoId: 'nfWlot6h_JM', status: 'live', likes: 18900 },
-    { id: 's4', title: 'Grunge Era — Nirvana Sound',        decade: '1990s', category: 'Music & Dance', videoId: 'hTWKbfoikeg', status: 'live', likes: 27000 },
-    { id: 's5', title: 'TikTok Era & Short-Form Video',     decade: '2020s', category: 'Culture',       videoId: 'dQw4w9WgXcQ', status: 'live', likes: 88000 },
-  ]);
-  const [errors, setErrors] = useStore('admin_errors', [
-    { id: 1, section: 'Search', desc: 'Media search returns empty on mobile', severity: 'high', status: 'open', date: '2026-05-09' },
-    { id: 2, section: 'Shorts', desc: 'Video modal nav arrows not working on iOS', severity: 'medium', status: 'open', date: '2026-05-10' },
-  ]);
-  const [socialPosts, setSocialPosts] = useStore('admin_social', []);
+  useEffect(() => {
+    // Try to fetch from entity API
+    fetch('/api/entities/SiteError/list', { method: 'GET' })
+      .then(r => r.json())
+      .then(d => { setErrors(d?.records || []); setLoading(false); })
+      .catch(() => setLoading(false));
+  }, []);
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    if (pwInput === ADMIN_PASSWORD) { sessionStorage.setItem(STORAGE_KEY, '1'); setAuthed(true); }
-    else { setPwError('Incorrect password.'); }
-  };
-  const logout = () => { sessionStorage.removeItem(STORAGE_KEY); setAuthed(false); };
-
-  // ── LOGIN ──
-  if (!authed) {
-    return (
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="w-full max-w-sm">
-          <div className="text-center mb-8">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-rose-gold/20 border border-rose-gold/30 flex items-center justify-center">
-              <Icon d={ICONS.lock} className="w-8 h-8 text-rose-gold" />
-            </div>
-            <h1 className="font-retro text-3xl font-bold text-white">King Xcel Admin</h1>
-            <p className="text-gray-400 text-sm mt-2">eDecades Control Center</p>
-          </div>
-          <form onSubmit={handleLogin} className="bg-[#1a1f2e] rounded-2xl p-6 border border-white/10">
-            <label className="block text-gray-400 text-xs uppercase tracking-widest mb-2">Admin Password</label>
-            <Input type="password" value={pwInput}
-              onChange={e => { setPwInput(e.target.value); setPwError(''); }}
-              placeholder="Enter password..." />
-            {pwError && <p className="text-red-400 text-xs mt-2">{pwError}</p>}
-            <button type="submit" className="w-full bg-rose-gold text-white font-bold py-3 rounded-xl hover:opacity-90 transition mt-4">
-              Enter Admin
-            </button>
-          </form>
-          <p className="text-center text-gray-600 text-xs mt-4">King Xcel Innovations © 2026</p>
-        </div>
-      </div>
-    );
-  }
-
-  const pendingCount = submissions.filter(s => s.status === 'pending').length;
-
-  // ── ADMIN UI ──
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="font-retro text-2xl font-bold text-white">eDecades Admin</h1>
-          <p className="text-gray-500 text-xs mt-0.5">King Xcel Innovations Control Center</p>
+    <div>
+      <SectionTitle iconKey="errors">Site Errors</SectionTitle>
+      {loading ? (
+        <div style={{ color: C.textMuted, textAlign: 'center', padding: 40 }}>Loading errors…</div>
+      ) : errors.length === 0 ? (
+        <div style={{ background: `${C.success}15`, border: `1px solid ${C.success}40`, borderRadius: 12, padding: 24, textAlign: 'center', color: C.success }}>
+          <Icon d={ICONS.check} size={32} color={C.success} />
+          <div style={{ marginTop: 8, fontSize: 15, fontWeight: 600 }}>No active errors reported</div>
+          <div style={{ fontSize: 13, color: C.textMuted, marginTop: 4 }}>All systems operational</div>
         </div>
-        <div className="flex items-center gap-3">
-          <a href="https://edecades.com" target="_blank" rel="noreferrer"
-            className="hidden sm:flex items-center gap-1.5 text-xs text-gray-400 hover:text-rose-gold transition-colors border border-white/10 hover:border-rose-gold/30 rounded-xl px-3 py-2">
-            <Icon d={ICONS.external} className="w-3.5 h-3.5" /> View Live Site
-          </a>
-          <button onClick={logout} className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-red-400 transition-colors border border-white/10 rounded-xl px-3 py-2">
-            <Icon d={ICONS.logout} className="w-3.5 h-3.5" /> Logout
-          </button>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {errors.map((err, i) => (
+            <div key={i} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 10, padding: '14px 18px', display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+              <Icon d={ICONS.warning} size={18} color={err.severity === 'high' ? C.danger : C.warn} />
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 14, fontWeight: 600, color: C.textPrimary }}>{err.error_type} — <span style={{ fontWeight: 400, color: C.textMuted }}>{err.page}</span></div>
+                <div style={{ fontSize: 13, color: C.textMuted, marginTop: 4 }}>{err.description}</div>
+                {err.fix_notes && <div style={{ fontSize: 12, color: C.roseGold, marginTop: 4 }}>Fix: {err.fix_notes}</div>}
+              </div>
+              <Badge label={err.status || 'open'} />
+            </div>
+          ))}
         </div>
-      </div>
+      )}
+    </div>
+  );
+}
 
-      {/* Tabs — horizontal scroll on mobile */}
-      <div className="flex gap-1 overflow-x-auto pb-2 mb-6 scrollbar-hide">
-        {TABS.map(t => (
-          <button key={t.id} onClick={() => setActiveTab(t.id)}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all flex-shrink-0 ${
-              activeTab === t.id
-                ? 'bg-rose-gold text-white shadow-lg shadow-rose-gold/20'
-                : 'bg-[#1a1f2e] text-gray-400 border border-white/10 hover:text-white hover:border-white/20'
-            }`}>
-            <Icon d={t.icon} className="w-3.5 h-3.5" />
-            {t.label}
-            {t.id === 'submissions' && pendingCount > 0 && (
-              <span className="bg-white/20 text-white text-xs px-1.5 rounded-full leading-none py-0.5">{pendingCount}</span>
-            )}
-          </button>
+function TabDirectories() {
+  const [bulkOpened, setBulkOpened] = useState(false);
+  const openAll = () => {
+    DIRECTORIES.filter(d => d.status === 'pending').forEach(d => window.open(d.url, '_blank'));
+    setBulkOpened(true);
+  };
+  return (
+    <div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
+        <SectionTitle iconKey="directories">Directory Listings</SectionTitle>
+        <button onClick={openAll} style={{ display: 'flex', alignItems: 'center', gap: 7, background: C.roseGold, color: '#fff', border: 'none', borderRadius: 8, padding: '8px 16px', fontSize: 13, cursor: 'pointer', fontWeight: 600 }}>
+          <Icon d={ICONS.link} size={14} color="#fff" />
+          {bulkOpened ? 'Opened!' : 'Open All Pending'}
+        </button>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {DIRECTORIES.map(d => (
+          <div key={d.name} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 10, padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
+            <Icon d={ICONS.globe} size={16} color={C.roseGold} />
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 14, fontWeight: 600, color: C.textPrimary }}>{d.name}</div>
+              <div style={{ fontSize: 11, color: C.textMuted }}>DA: {d.da}</div>
+            </div>
+            <Badge label={d.status} />
+            <a href={d.url} target="_blank" rel="noopener noreferrer" style={{ color: C.textMuted }}>
+              <Icon d={ICONS.link} size={14} color={C.roseGold} />
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function TabSocial() {
+  return (
+    <div>
+      <SectionTitle iconKey="social">Daily Posting Schedule</SectionTitle>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 14, marginBottom: 28 }}>
+        {SOCIAL_SCHEDULE.map(s => (
+          <div key={s.time} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 18 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+              <Icon d={ICONS.clock} size={16} color={C.roseGold} />
+              <span style={{ fontSize: 14, fontWeight: 700, color: C.roseGold, fontFamily: '"Playfair Display", Georgia, serif' }}>{s.time}</span>
+            </div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: C.textPrimary, marginBottom: 4 }}>{s.type}</div>
+            <div style={{ fontSize: 12, color: C.textMuted, lineHeight: 1.5, marginBottom: 8 }}>{s.content}</div>
+            <div style={{ fontSize: 11, color: C.roseGold }}>{s.platforms}</div>
+          </div>
         ))}
       </div>
 
-      {/* Tab Content */}
-      {activeTab === 'dashboard'   && <DashboardTab submissions={submissions} shorts={shorts} directories={directories} errors={errors} socialPosts={socialPosts} />}
-      {activeTab === 'submissions' && <SubmissionsTab submissions={submissions} setSubmissions={setSubmissions} />}
-      {activeTab === 'shorts'      && <ShortsTab shorts={shorts} setShorts={setShorts} />}
-      {activeTab === 'directories' && <DirectoriesTab directories={directories} setDirectories={setDirectories} />}
-      {activeTab === 'errors'      && <ErrorsTab errors={errors} setErrors={setErrors} />}
-      {activeTab === 'content'     && <ContentTab />}
-      {activeTab === 'social'      && <SocialTab socialPosts={socialPosts} setSocialPosts={setSocialPosts} />}
-      {activeTab === 'affiliate'   && <AffiliateTab />}
-      {activeTab === 'seo'         && <SEOTab />}
-      {activeTab === 'ops'         && <OpsTab />}
+      <SectionTitle iconKey="mail">Affiliate Outreach Status</SectionTitle>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 10 }}>
+        {[
+          { name:'GoodRx',                contact:'ada@goodrx.com',             status:'sent' },
+          { name:'Blink Health',           contact:'partnerships@blinkhealth.com',status:'sent' },
+          { name:'Amazon Pharmacy',        contact:'affiliate@amazon.com',       status:'sent' },
+          { name:'RxSpark',                contact:'partnerships@rxspark.com',   status:'sent' },
+          { name:'Mark Cuban Cost Plus',   contact:'n/a — no affiliate program', status:'n/a'  },
+        ].map(a => (
+          <div key={a.name} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 10, padding: 14 }}>
+            <div style={{ fontSize: 14, fontWeight: 600, color: C.textPrimary, marginBottom: 4 }}>{a.name}</div>
+            <div style={{ fontSize: 11, color: C.textMuted, marginBottom: 8 }}>{a.contact}</div>
+            <Badge label={a.status} color={a.status === 'sent' ? 'submitted' : 'pending'} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function TabOps() {
+  const tasks = [
+    { task:'Submit to 5 new directories', freq:'Weekly',  priority:'high',   status:'pending', cat:'SEO'         },
+    { task:'Post Reddit nostalgia content', freq:'Daily',  priority:'medium', status:'active',  cat:'Growth'      },
+    { task:'Monitor Affiliate replies',    freq:'Daily',  priority:'high',   status:'active',  cat:'Revenue'     },
+    { task:'Update On This Day events',    freq:'Monthly',priority:'medium', status:'pending', cat:'Content'     },
+    { task:'Refresh decade images',        freq:'Monthly',priority:'low',    status:'pending', cat:'Content'     },
+    { task:'Review Google Analytics',      freq:'Weekly', priority:'medium', status:'pending', cat:'Analytics'   },
+    { task:'TikTok video upload',          freq:'Daily',  priority:'high',   status:'active',  cat:'Social'      },
+    { task:'Pinterest pin 3 new images',   freq:'Daily',  priority:'medium', status:'active',  cat:'Social'      },
+    { task:'Stripe account review',        freq:'Monthly',priority:'high',   status:'pending', cat:'Finance'     },
+    { task:'Update sitemap',               freq:'Monthly',priority:'medium', status:'pending', cat:'SEO'         },
+  ];
+  const priorityColor = { high: C.danger, medium: C.warn, low: C.textMuted };
+  return (
+    <div>
+      <SectionTitle iconKey="ops">Operational Tasks</SectionTitle>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {tasks.map((t, i) => (
+          <div key={i} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 10, padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{ width: 8, height: 8, borderRadius: '50%', background: priorityColor[t.priority], flexShrink: 0 }} />
+            <div style={{ flex: 1 }}>
+              <span style={{ fontSize: 14, color: C.textPrimary }}>{t.task}</span>
+              <span style={{ fontSize: 11, color: C.textMuted, marginLeft: 8 }}>{t.cat}</span>
+            </div>
+            <span style={{ fontSize: 11, color: C.textMuted }}>{t.freq}</span>
+            <Badge label={t.status} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function TabAutomations() {
+  return (
+    <div>
+      <SectionTitle iconKey="automations">Active Automations</SectionTitle>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {AUTOMATIONS.map((a, i) => (
+          <div key={i} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 14 }}>
+            <div style={{ width: 40, height: 40, borderRadius: 10, background: `${C.roseGold}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <Icon d={ICONS[a.iconKey]} size={20} color={C.roseGold} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 14, fontWeight: 600, color: C.textPrimary }}>{a.name}</div>
+              <div style={{ fontSize: 12, color: C.textMuted, marginTop: 2 }}>{a.schedule} · {a.platforms}</div>
+            </div>
+            <Badge label={a.status} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function TabBizInfo() {
+  const INFO = {
+    company:   'King Xcel Innovations',
+    owner:     'Anthony D. Kittles Sr.',
+    title:     'CEO',
+    email:     'anthonykittles@outlook.com',
+    biz_email: 'edecades@outlook.com',
+    address:   '205 Seva Ct, Irving, Texas 75061',
+    stripe:    'acct_1T4XQARonfiMrfdu',
+    github:    'Mecko1293/edecades',
+    vercel:    'edecades-o1zj.vercel.app',
+    pinterest: '549770222914',
+    yt_channel:'UCfk_Hh-GE2HJXO8q9s3Pfmw',
+    discord:   'https://discord.com/api/webhooks/1490134369434730729/...',
+  };
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 12 }}>
+      {Object.entries(INFO).map(([k, v]) => (
+        <div key={k} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 10, padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{ minWidth: 110, fontSize: 11, color: C.textMuted, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{k.replace(/_/g, ' ')}</div>
+          <div style={{ flex: 1, fontSize: 13, color: C.textPrimary, wordBreak: 'break-all' }}>{v}</div>
+          <CopyBtn text={v} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function TabPhotos() {
+  return (
+    <div>
+      <SectionTitle iconKey="photos">Photo Coverage</SectionTitle>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12 }}>
+        {PHOTO_SECTIONS.map(p => (
+          <div key={p.section} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 16 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+              <Icon d={ICONS.photos} size={16} color={C.roseGold} />
+              <span style={{ fontSize: 14, fontWeight: 600, color: C.textPrimary }}>{p.section}</span>
+            </div>
+            <div style={{ fontSize: 22, fontWeight: 700, color: C.roseGold, fontFamily: '"Playfair Display", Georgia, serif', marginBottom: 4 }}>{p.count}</div>
+            <div style={{ fontSize: 12, color: C.textMuted }}>{p.notes}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{ marginTop: 24, background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 18 }}>
+        <SectionTitle iconKey="refresh">Photo Sources</SectionTitle>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+          {['Pixabay API', 'Wikimedia Commons', 'Library of Congress', 'National Archives', 'Public Domain Review', 'Unsplash'].map(s => (
+            <span key={s} style={{ background: C.card2, border: `1px solid ${C.border}`, borderRadius: 20, padding: '5px 12px', fontSize: 12, color: C.textMuted }}>{s}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TabYouTube() {
+  return (
+    <div>
+      <SectionTitle iconKey="youtube">YouTube Configuration</SectionTitle>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 12, marginBottom: 24 }}>
+        {[
+          { label:'Channel ID',   value:'UCfk_Hh-GE2HJXO8q9s3Pfmw' },
+          { label:'API Key',      value:'YOUTUBE_API_KEY (env var)' },
+          { label:'Restricted To','value':'edecades.com, www.edecades.com' },
+          { label:'Videos Route', value:'/videos' },
+          { label:'Shorts Route', value:'/shorts' },
+          { label:'API Version',  value:'YouTube Data API v3' },
+        ].map(r => (
+          <div key={r.label} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 10, padding: '12px 16px', display: 'flex', gap: 10 }}>
+            <div style={{ minWidth: 100, fontSize: 11, color: C.textMuted, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{r.label}</div>
+            <div style={{ flex: 1, fontSize: 13, color: C.textPrimary, wordBreak: 'break-all' }}>{r.value}</div>
+            <CopyBtn text={r.value} />
+          </div>
+        ))}
+      </div>
+      <SectionTitle iconKey="link">YouTube Links</SectionTitle>
+      <LinkRow href="https://studio.youtube.com"            label="YouTube Studio"             iconKey="youtube" />
+      <LinkRow href="https://console.cloud.google.com"     label="Google Cloud Console (API)"  iconKey="cog"     />
+      <LinkRow href="https://edecades.com/videos"          label="Live Videos Page"            iconKey="globe"   />
+      <LinkRow href="https://edecades.com/shorts"          label="Live Shorts Page"            iconKey="globe"   />
+    </div>
+  );
+}
+
+function TabSEO() {
+  return (
+    <div>
+      <SectionTitle iconKey="seo">SEO Checklist</SectionTitle>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 24 }}>
+        {SEO_CHECKLIST.map((s, i) => (
+          <div key={i} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 10, padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{ width: 22, height: 22, borderRadius: '50%', background: s.status === 'done' ? `${C.success}22` : `${C.warn}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <Icon d={s.status === 'done' ? ICONS.check : ICONS.clock} size={13} color={s.status === 'done' ? C.success : C.warn} />
+            </div>
+            <span style={{ flex: 1, fontSize: 13, color: C.textPrimary }}>{s.item}</span>
+            <Badge label={s.status} />
+          </div>
+        ))}
+      </div>
+      <SectionTitle iconKey="link">SEO Tools</SectionTitle>
+      <LinkRow href="https://search.google.com/search-console" label="Google Search Console" iconKey="seo"      />
+      <LinkRow href="https://analytics.google.com"             label="Google Analytics"       iconKey="chart"    />
+      <LinkRow href="https://analytics.pinterest.com"          label="Pinterest Analytics"    iconKey="star"     />
+      <LinkRow href="https://ahrefs.com"                       label="Ahrefs"                 iconKey="globe"    />
+      <LinkRow href="https://moz.com/link-explorer"            label="Moz Link Explorer"      iconKey="link"     />
+    </div>
+  );
+}
+
+const TAB_PANELS = {
+  dashboard:   TabDashboard,
+  products:    TabProducts,
+  errors:      TabErrors,
+  directories: TabDirectories,
+  social:      TabSocial,
+  ops:         TabOps,
+  automations: TabAutomations,
+  bizinfo:     TabBizInfo,
+  photos:      TabPhotos,
+  youtube:     TabYouTube,
+  seo:         TabSEO,
+};
+
+// ── Login screen ──────────────────────────────────────────────────────────────
+function LoginScreen({ onAuth }) {
+  const [pw, setPw] = useState('');
+  const [err, setErr] = useState(false);
+  const [show, setShow] = useState(false);
+
+  const submit = (e) => {
+    e.preventDefault();
+    if (pw === ADMIN_PASSWORD) { onAuth(); setErr(false); }
+    else { setErr(true); setPw(''); }
+  };
+
+  return (
+    <div style={{ minHeight: '100vh', background: C.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+      <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, padding: '40px 36px', width: '100%', maxWidth: 380, textAlign: 'center' }}>
+        <div style={{ width: 60, height: 60, borderRadius: 16, background: `${C.roseGold}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
+          <Icon d={ICONS.lock} size={28} color={C.roseGold} />
+        </div>
+        <h1 style={{ margin: '0 0 6px', fontSize: 22, fontWeight: 700, color: C.textPrimary, fontFamily: '"Playfair Display", Georgia, serif' }}>Admin Access</h1>
+        <p style={{ margin: '0 0 28px', fontSize: 13, color: C.textMuted }}>eDecades Command Center</p>
+        <form onSubmit={submit}>
+          <div style={{ position: 'relative', marginBottom: 16 }}>
+            <input
+              type={show ? 'text' : 'password'}
+              value={pw}
+              onChange={e => { setPw(e.target.value); setErr(false); }}
+              placeholder="Enter admin password"
+              autoFocus
+              style={{ width: '100%', boxSizing: 'border-box', padding: '12px 44px 12px 14px', borderRadius: 10, border: `1px solid ${err ? C.danger : C.border}`, background: C.card2, color: C.textPrimary, fontSize: 14, outline: 'none' }}
+            />
+            <button type="button" onClick={() => setShow(!show)} style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: C.textMuted }}>
+              <Icon d={ICONS.eye} size={16} color={C.textMuted} />
+            </button>
+          </div>
+          {err && <p style={{ margin: '0 0 12px', fontSize: 13, color: C.danger }}>Incorrect password. Try again.</p>}
+          <button type="submit" style={{ width: '100%', padding: '12px', borderRadius: 10, border: 'none', background: C.roseGold, color: '#fff', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
+            Unlock Dashboard
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+// ── Main Admin component ──────────────────────────────────────────────────────
+export default function Admin() {
+  const [authed, setAuthed] = useState(() => sessionStorage.getItem(STORAGE_KEY) === '1');
+  const [activeTab, setActiveTab] = useState('dashboard');
+
+  const handleAuth = () => { sessionStorage.setItem(STORAGE_KEY, '1'); setAuthed(true); };
+  const handleLogout = () => { sessionStorage.removeItem(STORAGE_KEY); setAuthed(false); };
+
+  if (!authed) return <LoginScreen onAuth={handleAuth} />;
+
+  const ActivePanel = TAB_PANELS[activeTab] || TabDashboard;
+
+  return (
+    <div style={{ minHeight: '100vh', background: C.bg, color: C.textPrimary }}>
+
+      {/* ── Sticky header ── */}
+      <div style={{ position: 'sticky', top: 0, zIndex: 40, background: C.card, borderBottom: `1px solid ${C.border}`, padding: '0 24px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', display: 'flex', alignItems: 'center', height: 60, gap: 16 }}>
+          {/* Brand */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+            <div style={{ width: 32, height: 32, borderRadius: 8, background: `${C.roseGold}22`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Icon d={ICONS.cog} size={18} color={C.roseGold} />
+            </div>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: C.textPrimary, fontFamily: '"Playfair Display", Georgia, serif', lineHeight: 1 }}>Command Center</div>
+              <div style={{ fontSize: 10, color: C.textMuted }}>King Xcel Innovations</div>
+            </div>
+          </div>
+
+          {/* Scrollable tabs */}
+          <div style={{ flex: 1, overflowX: 'auto', display: 'flex', gap: 4, scrollbarWidth: 'none' }}>
+            {TABS.map(t => (
+              <button key={t.id} onClick={() => setActiveTab(t.id)}
+                style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px', borderRadius: 8, border: 'none', cursor: 'pointer', whiteSpace: 'nowrap', fontSize: 13, fontWeight: activeTab === t.id ? 600 : 400, transition: 'all 0.15s',
+                  background: activeTab === t.id ? C.roseGold : 'transparent',
+                  color: activeTab === t.id ? '#fff' : C.textMuted }}>
+                <Icon d={ICONS[t.iconKey]} size={14} color={activeTab === t.id ? '#fff' : C.textMuted} />
+                {t.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Logout */}
+          <button onClick={handleLogout} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px', borderRadius: 8, border: `1px solid ${C.border}`, background: 'transparent', color: C.textMuted, fontSize: 12, cursor: 'pointer', flexShrink: 0 }}>
+            <Icon d={ICONS.lock} size={13} color={C.textMuted} />
+            Logout
+          </button>
+        </div>
+      </div>
+
+      {/* ── Content ── */}
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '28px 24px' }}>
+        <ActivePanel />
+      </div>
     </div>
   );
 }
