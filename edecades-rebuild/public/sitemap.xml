@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://edecades.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://edecades.com/decades</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://edecades.com/music</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://edecades.com/sports</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://edecades.com/trivia</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://edecades.com/onthisday</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://edecades.com/timecapsule</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://edecades.com/videos</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://edecades.com/shorts</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://edecades.com/presidents</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://edecades.com/chat</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://edecades.com/stats</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://edecades.com/search</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://edecades.com/categories</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://edecades.com/decades/1920s</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://edecades.com/decades/1930s</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://edecades.com/decades/1940s</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://edecades.com/decades/1950s</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://edecades.com/decades/1960s</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://edecades.com/decades/1970s</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://edecades.com/decades/1980s</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://edecades.com/decades/1990s</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://edecades.com/decades/2000s</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://edecades.com/decades/2010s</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://edecades.com/decades/2020s</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+</urlset>
