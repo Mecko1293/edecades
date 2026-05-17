@@ -1,185 +1,146 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { DECADES } from '../data/decades';
 
-// Decade-accurate YouTube short/documentary search queries
-const DECADE_YOUTUBE_SEARCHES = {
-  '1920s': ['1920s jazz age flappers history', '1920s prohibition speakeasy', '1920s charleston dance'],
-  '1930s': ['1930s great depression history', '1930s hollywood golden age', '1930s swing music jazz'],
-  '1940s': ['1940s world war 2 homefront', '1940s pin up vintage style', '1940s big band music'],
-  '1950s': ['1950s rock and roll elvis history', '1950s drive in diner nostalgia', '1950s sock hop dance'],
-  '1960s': ['1960s woodstock hippie history', '1960s mod fashion swinging london', '1960s nasa space race moon'],
-  '1970s': ['1970s disco era saturday night fever', '1970s bell bottoms fashion', '1970s things that dont exist today history shorts'],
-  '1980s': ['1980s mtv big hair neon nostalgia', '1980s arcade video games atari', '1980s power suits fashion'],
-  '1990s': ['1990s grunge nirvana history', '1990s gameboy windows 95 nostalgia', '1990s supermodels fashion'],
-  '2000s': ['2000s y2k nostalgia early internet', '2000s flip phones myspace', '2000s low rise jeans fashion'],
-  '2010s': ['2010s instagram social media culture', '2010s avocado toast millennial', '2010s smartphone revolution'],
-  '2020s': ['2020s pandemic tiktok culture', '2020s ai revolution history', '2020s remote work culture'],
-};
-
-// Decade-accurate static thumbnail fallbacks (Unsplash)
-const DECADE_THUMBS = {
-  '1920s': 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&q=80',
-  '1930s': 'https://images.unsplash.com/photo-1509309756405-be0199881695?w=400&q=80',
-  '1940s': 'https://images.unsplash.com/photo-1584810359583-96fc3448beaa?w=400&q=80',
-  '1950s': 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80',
-  '1960s': 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80',
-  '1970s': 'https://images.unsplash.com/photo-1504805572947-34fad45aed93?w=400&q=80',
-  '1980s': 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400&q=80',
-  '1990s': 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&q=80',
-  '2000s': 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&q=80',
-  '2010s': 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&q=80',
-  '2020s': 'https://images.unsplash.com/photo-1614624532983-4ce03382d63d?w=400&q=80',
-};
-
-// Curated decade-accurate short video links (real YouTube search links)
-const CURATED_SHORTS = {
+const DECADE_VIDEOS = {
+  '1900s': [
+    { id: 'jklSy7m5dLY', title: 'Life in the 1900s — A Visual History' },
+    { id: 'D84CJj7stlY', title: 'The Edwardian Era Explained' },
+    { id: 'nYRiXYH_JnM', title: 'Early 1900s in Color' },
+  ],
+  '1910s': [
+    { id: 'xAY2jqFRFcQ', title: 'World War I in Color' },
+    { id: '8dLq2CZ7raw', title: '1910s Fashion & Culture' },
+    { id: 'gkBhW1p-y1s', title: 'The Titanic: A Decade-Defining Disaster' },
+  ],
+  '1920s': [
+    { id: 'N_9GuiE5Fck', title: "Special Ed — I Got It Made (Jazz Era)" },
+    { id: '6JpxLiMhHOI', title: 'The Roaring Twenties in Color' },
+    { id: 'UBmSDCnKpRo', title: 'Prohibition & Speakeasies' },
+  ],
+  '1930s': [
+    { id: 'D9IC1AZAIF4', title: 'The Great Depression — Life in the 1930s' },
+    { id: 'yPiMtPU5Uck', title: "Dust Bowl: America's Great Migration" },
+    { id: 'iOZdBTBaems', title: 'Hollywood Golden Age 1930s' },
+  ],
+  '1940s': [
+    { id: 'DwKPFT-RioU', title: 'World War II — The Complete Story' },
+    { id: 'FH-OtRgGWME', title: '1940s Home Front America' },
+    { id: 'qNLhQVKXMKk', title: '1940s Fashion & Style' },
+  ],
+  '1950s': [
+    { id: 'ijcP7wLmzCc', title: "Rock 'n' Roll Origins — 1950s" },
+    { id: 'KLGBXcKuMDE', title: 'Suburbia & the American Dream' },
+    { id: 'ESnrZhkJDJY', title: '1950s Pop Culture Deep Dive' },
+  ],
+  '1960s': [
+    { id: 'KkITlXiUQGY', title: 'The 1960s — Revolution & Change' },
+    { id: 'ydCMGUknDR8', title: 'Woodstock 1969 — History of a Movement' },
+    { id: 'Ik9l1LXvJoU', title: 'The Space Race Explained' },
+  ],
   '1970s': [
-    { title: 'Things From the 1970s That Don\'t Exist Today', search: 'things from the 1970s that dont exist today', tag: '#history #shorts', thumb: DECADE_THUMBS['1970s'] },
-    { title: 'Saturday Night Fever — Disco Era', search: '1970s disco saturday night fever history', tag: '#disco #70s', thumb: 'https://images.unsplash.com/photo-1504805572947-34fad45aed93?w=400&q=80' },
-    { title: 'Bell Bottoms & Boho — 1970s Fashion', search: '1970s fashion bell bottoms style', tag: '#fashion #retro', thumb: 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=400&q=80' },
-    { title: 'Atari & the Microprocessor Revolution', search: 'atari 1970s gaming history', tag: '#tech #gaming', thumb: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&q=80' },
+    { id: 'Gm_enCagNEI', title: 'Disco Era — 1970s Nightlife' },
+    { id: 'tLlJkREQDCQ', title: 'The 1970s: Funk, Fashion & Freedom' },
+    { id: 'VdoRvWiMq5Y', title: 'Watergate & the Nixon Era' },
   ],
   '1980s': [
-    { title: 'Things From the 1980s That Don\'t Exist Today', search: 'things from the 1980s that dont exist today', tag: '#history #shorts', thumb: DECADE_THUMBS['1980s'] },
-    { title: 'Big Hair & Power Suits — 80s Fashion', search: '1980s big hair power suits fashion', tag: '#fashion #80s', thumb: 'https://images.unsplash.com/photo-1571513722275-4b41940f54b8?w=400&q=80' },
-    { title: 'MTV Launches — Music Television History', search: 'mtv launch 1981 music television history', tag: '#mtv #music', thumb: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&q=80' },
-    { title: 'Arcade Revolution — Pac-Man & Donkey Kong', search: '1980s arcade games pac man donkey kong nostalgia', tag: '#gaming #nostalgia', thumb: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&q=80' },
+    { id: 'wKTPz8T21f0', title: '80s Synth Pop Top 100' },
+    { id: 'IoTdm31BIrk', title: 'Best Synth Pop 80s Compilation' },
+    { id: '0IcH8NPZRJs', title: '80s Ultimate Synthpop Mix' },
   ],
   '1990s': [
-    { title: 'Things From the 1990s That Don\'t Exist Today', search: 'things from the 1990s that dont exist today', tag: '#history #shorts', thumb: DECADE_THUMBS['1990s'] },
-    { title: 'Grunge Nation — Nirvana & Seattle Sound', search: '1990s grunge nirvana seattle history', tag: '#grunge #music', thumb: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=400&q=80' },
-    { title: 'World Wide Web — Internet Goes Public', search: '1990s world wide web internet history', tag: '#tech #internet', thumb: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&q=80' },
-    { title: 'Game Boy, Tamagotchi & 90s Toys', search: '1990s game boy tamagotchi toys nostalgia', tag: '#nostalgia #90s', thumb: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&q=80' },
+    { id: 'xNMQMhTOC9s', title: 'The 1990s: Grunge, Hip-Hop & the Web' },
+    { id: 'CvBgGS_MKDM', title: '90s Nostalgia — Everything You Forgot' },
+    { id: 'zFM2PmPSBuQ', title: 'The Rise of the Internet 1990s' },
+  ],
+  '2000s': [
+    { id: 'DFzZrMD0bOA', title: "Y2K & the 2000s — A Decade in Review" },
+    { id: 'D71bT6tGhUw', title: '2000s Pop Culture — Do You Remember?' },
+    { id: 'QSIpBBj-DJQ', title: 'The 2000s: Fashion & Music Throwback' },
+  ],
+  '2010s': [
+    { id: 'xkSxZqaXaQA', title: 'The 2010s: A Decade of Transformation' },
+    { id: 'yAHi2F0b-Ks', title: 'Social Media Changed Everything' },
+    { id: 'RFqE9wNLs8A', title: "2010s Fashion: The Decade's Best Looks" },
+  ],
+  '2020s': [
+    { id: 'vOHgDqBMWOM', title: 'The 2020s So Far — A Visual Timeline' },
+    { id: '3PdUbcMfMaU', title: 'AI Revolution: 2020s Tech' },
+    { id: 'u5PTiB-JuMo', title: 'Pandemic, Protest & Progress — 2020s' },
   ],
 };
 
-function ShortCard({ item, decade, onClick }) {
-  const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(item.search || item.title + ' ' + decade)}`;
-  return (
-    <div className="group relative rounded-2xl overflow-hidden border border-white/10 hover:border-rose-gold/50 transition-all cursor-pointer hover:-translate-y-1 hover:shadow-xl hover:shadow-rose-gold/10"
-      onClick={() => window.open(searchUrl, '_blank')}>
-      {/* Thumbnail */}
-      <div className="relative aspect-[9/16] sm:aspect-[4/5] overflow-hidden bg-charcoal">
-        <img
-          src={item.thumb || item.thumbnail || DECADE_THUMBS[decade]}
-          alt={item.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          onError={e => { e.target.src = DECADE_THUMBS[decade] || 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80'; }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-
-        {/* Play button */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-          <div className="w-14 h-14 bg-red-600/90 rounded-full flex items-center justify-center shadow-lg">
-            <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          </div>
-        </div>
-
-        {/* Decade badge */}
-        <div className="absolute top-3 left-3">
-          <span className="bg-rose-gold text-white text-[10px] font-bold px-2 py-1 rounded-full">{decade}</span>
-        </div>
-
-        {/* Tag */}
-        {item.tag && (
-          <div className="absolute top-3 right-3">
-            <span className="bg-black/60 text-gray-300 text-[9px] px-2 py-1 rounded-full backdrop-blur-sm">{item.tag}</span>
-          </div>
-        )}
-
-        {/* Title at bottom */}
-        <div className="absolute bottom-0 left-0 right-0 p-3">
-          <p className="text-white text-xs font-semibold leading-tight line-clamp-2">{item.title}</p>
-          <p className="text-rose-gold text-[10px] mt-1 flex items-center gap-1">
-            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.27 8.27 0 004.84 1.56V6.8a4.85 4.85 0 01-1.07-.11z"/></svg>
-            Watch on YouTube
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function VideoShorts() {
-  const [selectedDecade, setSelectedDecade] = useState('1970s');
-  const DECADES_WITH_SHORTS = DECADES.filter(d => d.id !== '1900s' && d.id !== '1910s');
+  const [activeDec, setActiveDec] = useState('1980s');
+  const [activeIdx, setActiveIdx] = useState(0);
 
-  // Build shorts for current decade
-  const getCuratedShorts = (decade) => {
-    if (CURATED_SHORTS[decade]) return CURATED_SHORTS[decade];
-    // Generate generic shorts for other decades
-    const searches = DECADE_YOUTUBE_SEARCHES[decade] || [`${decade} history nostalgia`];
-    return searches.map((s, i) => ({
-      title: s.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^\w/, c => c.toUpperCase()),
-      search: s,
-      tag: `#history #${decade.replace('s','')}s`,
-      thumb: DECADE_THUMBS[decade],
-    }));
-  };
-
-  const shorts = getCuratedShorts(selectedDecade);
+  const videos = DECADE_VIDEOS[activeDec] || [];
+  const current = videos[activeIdx];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12">
-      {/* Header */}
-      <div className="text-center mb-10">
-        <h1 className="font-retro text-4xl font-bold text-white mb-2">Decade Shorts</h1>
-        <p className="text-gray-400">Decade-accurate clips — tap any card to watch on YouTube</p>
-      </div>
+    <div className="max-w-5xl mx-auto px-4 py-12">
+      <h1 className="font-retro text-4xl font-black text-white mb-2">📽️ Decade Shorts</h1>
+      <p className="text-gray-400 mb-8">Curated documentary clips sorted by era — history in under 10 minutes</p>
 
-      {/* Decade Selector */}
-      <div className="flex flex-wrap gap-2 justify-center mb-10">
-        {DECADES_WITH_SHORTS.map(d => (
-          <button key={d.id} onClick={() => setSelectedDecade(d.id)}
-            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-              selectedDecade === d.id
-                ? 'bg-rose-gold text-white shadow-lg shadow-rose-gold/20'
-                : 'bg-charcoal text-gray-300 border border-white/10 hover:text-rose-gold hover:border-rose-gold/30'
+      {/* Decade selector */}
+      <div className="flex flex-wrap gap-2 mb-8">
+        {DECADES.map(d => (
+          <button key={d.id} onClick={() => { setActiveDec(d.id); setActiveIdx(0); }}
+            className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-colors ${
+              activeDec === d.id
+                ? 'bg-rose-gold text-white border-rose-gold'
+                : 'border-white/20 text-gray-400 hover:border-rose-gold/40 hover:text-rose-gold'
             }`}>
-            {d.label}
+            {d.emoji} {d.label}
           </button>
         ))}
       </div>
 
-      {/* Featured — "Things that don't exist today" */}
-      <div className="mb-8 bg-charcoal rounded-2xl border border-white/10 p-5">
-        <div className="flex items-center justify-between mb-1">
-          <h2 className="text-white font-semibold text-sm">
-            Things From the {selectedDecade} That Don't Exist Today
-          </h2>
-          <span className="text-[10px] text-gray-500 bg-white/5 px-2 py-1 rounded-full">#history #shorts</span>
+      {/* Main player */}
+      {current && (
+        <div className="bg-charcoal rounded-2xl overflow-hidden border border-white/10 mb-8">
+          <div className="aspect-video w-full">
+            <iframe
+              key={current.id}
+              src={`https://www.youtube-nocookie.com/embed/${current.id}?rel=0&modestbranding=1`}
+              title={current.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="w-full h-full"
+            />
+          </div>
+          <div className="p-4">
+            <h2 className="font-semibold text-white">{current.title}</h2>
+            <p className="text-gray-400 text-sm mt-1">{activeDec} · Documentary Short</p>
+          </div>
         </div>
-        <p className="text-gray-400 text-xs mb-4">Fascinating glimpses of life from a bygone era — objects, customs, and technologies that have vanished.</p>
-        <a
-          href={`https://www.youtube.com/results?search_query=${encodeURIComponent(`things from the ${selectedDecade} that don't exist today history shorts`)}`}
-          target="_blank" rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold px-5 py-2.5 rounded-xl text-sm transition-colors">
-          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.27 8.27 0 004.84 1.56V6.8a4.85 4.85 0 01-1.07-.11z"/>
-          </svg>
-          Watch on YouTube
-        </a>
-      </div>
+      )}
 
-      {/* Shorts Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-        {shorts.map((item, i) => (
-          <ShortCard key={i} item={item} decade={selectedDecade} />
+      {/* Playlist */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {videos.map((v, i) => (
+          <button key={v.id} onClick={() => setActiveIdx(i)}
+            className={`text-left rounded-xl p-4 border transition-all ${
+              i === activeIdx
+                ? 'border-rose-gold bg-rose-gold/10'
+                : 'border-white/10 bg-charcoal hover:border-rose-gold/40'
+            }`}>
+            <div className="flex items-center gap-2 mb-2">
+              <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                i === activeIdx ? 'bg-rose-gold text-white' : 'bg-white/10 text-gray-400'
+              }`}>{i + 1}</span>
+              {i === activeIdx && <span className="text-xs text-rose-gold">▶ Now Playing</span>}
+            </div>
+            <p className="text-sm text-white font-medium leading-snug">{v.title}</p>
+          </button>
         ))}
       </div>
 
-      {/* Browse all YouTube button */}
-      <div className="text-center mt-10">
-        <a
-          href={`https://www.youtube.com/results?search_query=${encodeURIComponent(selectedDecade + ' history culture nostalgia documentary')}`}
+      {/* External search link */}
+      <div className="mt-8 text-center">
+        <a href={`https://www.youtube.com/results?search_query=${activeDec}+history+documentary`}
           target="_blank" rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 border border-rose-gold/50 text-rose-gold hover:bg-rose-gold hover:text-white font-semibold px-6 py-3 rounded-xl transition-colors">
-          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.27 8.27 0 004.84 1.56V6.8a4.85 4.85 0 01-1.07-.11z"/>
-          </svg>
-          Browse All {selectedDecade} Content on YouTube
+          className="inline-flex items-center gap-2 border border-rose-gold/40 text-rose-gold hover:bg-rose-gold/10 px-5 py-2.5 rounded-xl text-sm font-medium transition-colors">
+          Explore More {activeDec} Videos on YouTube ↗
         </a>
       </div>
     </div>
