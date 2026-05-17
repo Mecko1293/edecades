@@ -7,9 +7,13 @@ const NAV_LINKS = [
   { to: '/categories', label: 'Every Decade' },
   { to: '/music', label: 'Music' },
   { to: '/sports', label: 'Sports MVPs' },
+  { to: '/presidents', label: 'Presidents' },
   { to: '/trivia', label: 'Trivia' },
   { to: '/onthisday', label: 'On This Day' },
   { to: '/timecapsule', label: 'Time Capsule' },
+  { to: '/shorts', label: 'Shorts' },
+  { to: '/stats', label: 'Decade Stats' },
+  { to: '/chat', label: 'Ask a Figure' },
   { to: '/search', label: 'Search' },
 ];
 
@@ -20,12 +24,12 @@ export default function Navbar() {
   return (
     <nav className="bg-charcoal-dark border-b border-rose-gold/30 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
-        <Link to="/" className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2 shrink-0">
           <span className="text-2xl">🕰️</span>
           <span className="font-retro text-xl font-bold text-rose-gold">eDecades</span>
         </Link>
         {/* Desktop */}
-        <div className="hidden lg:flex items-center gap-1">
+        <div className="hidden lg:flex items-center gap-1 flex-wrap justify-end">
           {NAV_LINKS.map(l => (
             <Link key={l.to} to={l.to}
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
