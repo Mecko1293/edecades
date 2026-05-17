@@ -1,30 +1,30 @@
 import { useState } from 'react';
 import { DECADES } from '../data/decades';
 
-const MOODS = ['Nostalgic', 'Happy', 'Inspired', 'Bittersweet', 'Proud', 'Grateful'];
+const MOODS = ['Nostalgic 😢', 'Happy 😊', 'Inspired 💡', 'Bittersweet 🌅', 'Proud 💪', 'Grateful 🙏'];
 
 export default function TimeCapsule() {
   const [entries, setEntries] = useState([]);
-  const [form, setForm] = useState({ title: '', decade: '1980s', reflection: '', mood: 'Happy', author: '' });
+  const [form, setForm] = useState({ title: '', decade: '1980s', reflection: '', mood: 'Happy 😊', author: '' });
   const [submitted, setSubmitted] = useState(false);
 
   function handleSubmit(e) {
     e.preventDefault();
     if (!form.title || !form.reflection || !form.author) return;
     setEntries(prev => [{ ...form, id: Date.now() }, ...prev]);
-    setForm({ title: '', decade: '1980s', reflection: '', mood: 'Happy', author: '' });
+    setForm({ title: '', decade: '1980s', reflection: '', mood: 'Happy 😊', author: '' });
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 3000);
   }
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
-      <h1 className="font-retro text-4xl font-bold text-white text-center mb-2">Time Capsule Journal</h1>
+      <h1 className="font-retro text-4xl font-bold text-white text-center mb-2">⏳ Time Capsule Journal</h1>
       <p className="text-gray-400 text-center mb-10">Leave a memory for the future. Write about a decade that shaped you.</p>
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="bg-charcoal rounded-3xl p-8 border border-white/10 mb-10">
-        <h2 className="font-retro text-xl font-bold text-white mb-6">Add Your Entry</h2>
+        <h2 className="font-retro text-xl font-bold text-white mb-6">✍️ Add Your Entry</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
             <label className="text-gray-400 text-sm block mb-1">Your Name</label>
@@ -64,15 +64,15 @@ export default function TimeCapsule() {
           </div>
         </div>
         <button type="submit" className="bg-rose-gold hover:bg-rose-gold-light text-white font-semibold px-8 py-3 rounded-xl transition-colors w-full">
-          Seal My Time Capsule
+          🕰️ Seal My Time Capsule
         </button>
-        {submitted && <p className="text-green-400 text-sm text-center mt-3">Entry sealed! Scroll down to see it.</p>}
+        {submitted && <p className="text-green-400 text-sm text-center mt-3">✅ Entry sealed! Scroll down to see it.</p>}
       </form>
 
       {/* Entries */}
       {entries.length > 0 && (
         <div>
-          <h2 className="font-retro text-2xl font-bold text-white mb-4">Capsules This Session</h2>
+          <h2 className="font-retro text-2xl font-bold text-white mb-4">📖 Capsules This Session</h2>
           <div className="space-y-4">
             {entries.map(e => (
               <div key={e.id} className="bg-charcoal rounded-2xl p-6 border border-white/10">
