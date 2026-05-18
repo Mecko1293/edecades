@@ -3,6 +3,22 @@ import { DECADES, CATEGORIES, CATEGORY_DATA } from '../data/decades';
 import { MUSIC_BY_DECADE } from '../data/music';
 import { SPORTS_MVPS } from '../data/sports';
 
+const DECADE_HERO = {
+  '1900s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/1900s_decade_montage.png/330px-1900s_decade_montage.png',
+  '1910s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/World_war_one_poster.jpg/330px-World_war_one_poster.jpg',
+  '1920s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flappers-1920s.jpg/330px-Flappers-1920s.jpg',
+  '1930s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Dust_Bowl_-_Dallas%2C_South_Dakota_1936.jpg/330px-Dust_Bowl_-_Dallas%2C_South_Dakota_1936.jpg',
+  '1940s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Into_the_Jaws_of_Death_23-0455M_edit.jpg/330px-Into_the_Jaws_of_Death_23-0455M_edit.jpg',
+  '1950s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Elvis_Presley_promoting_Jailhouse_Rock.jpg/330px-Elvis_Presley_promoting_Jailhouse_Rock.jpg',
+  '1960s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/March_on_Washington_edit.jpg/330px-March_on_Washington_edit.jpg',
+  '1970s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Wembley_Stadium_Live_Aid.jpg/330px-Wembley_Stadium_Live_Aid.jpg',
+  '1980s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Berlinermauer.jpg/330px-Berlinermauer.jpg',
+  '1990s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Nirvana_around_1992_%28cropped%29.jpg/330px-Nirvana_around_1992_%28cropped%29.jpg',
+  '2000s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/National_Park_Service_9-11_Statue_of_Liberty_and_WTC_fire.jpg/330px-National_Park_Service_9-11_Statue_of_Liberty_and_WTC_fire.jpg',
+  '2010s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/President_Barack_Obama.jpg/330px-President_Barack_Obama.jpg',
+  '2020s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Syringe_and_vaccine.jpg/330px-Syringe_and_vaccine.jpg',
+};
+
 export default function DecadeDetail() {
   const { id } = useParams();
   const decade = DECADES.find(d => d.id === id);
@@ -21,17 +37,26 @@ export default function DecadeDetail() {
     <div className="max-w-5xl mx-auto px-4 py-12">
       <Link to="/decades" className="text-rose-gold hover:underline text-sm mb-6 inline-block">← All Decades</Link>
 
-      {/* Header */}
-      <div className="flex items-center gap-4 mb-8">
-        <span className="text-6xl">{decade.emoji}</span>
-        <div>
-          <h1 className="font-retro text-5xl font-black text-white">{decade.label}</h1>
-          <p className="text-rose-gold-light italic">{decade.tagline}</p>
-          <p className="text-gray-400 text-sm">{decade.years}</p>
+      {/* Hero image */}
+      <div className="relative rounded-3xl overflow-hidden mb-8 h-64">
+        <img
+          src={DECADE_HERO[id]}
+          alt={`${decade.label} — ${decade.tagline}`}
+          loading="lazy"
+          onError={e => { e.target.style.display='none'; }}
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-charcoal via-charcoal/60 to-transparent" />
+        <div className="absolute inset-0 flex items-center px-8">
+          <div>
+            <h1 className="font-retro text-6xl font-black text-white mb-1">{decade.label}</h1>
+            <p className="text-rose-gold-light italic text-lg">{decade.tagline}</p>
+            <p className="text-gray-400 text-sm">{decade.years}</p>
+          </div>
         </div>
       </div>
 
-      {/* Quick links bar */}
+      {/* Quick links */}
       <div className="flex flex-wrap gap-2 mb-10">
         {[
           { href: `https://en.wikipedia.org/wiki/${id}`, label: 'Wikipedia' },
@@ -51,15 +76,12 @@ export default function DecadeDetail() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
         {CATEGORIES.map(cat => {
           const text = CATEGORY_DATA[cat]?.[id];
-          const wikiUrl = `https://en.wikipedia.org/wiki/${id}_in_${cat.toLowerCase()}`;
           return text ? (
             <div key={cat} className="bg-charcoal rounded-xl p-5 border border-white/10 hover:border-rose-gold/30 transition-colors">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="font-semibold text-rose-gold">{cat}</h3>
-                <a href={wikiUrl} target="_blank" rel="noopener noreferrer"
-                  className="text-xs text-gray-500 hover:text-rose-gold-light transition-colors">
-                  Learn more ↗
-                </a>
+                <a href={`https://en.wikipedia.org/wiki/${id}_in_${cat.toLowerCase()}`} target="_blank" rel="noopener noreferrer"
+                  className="text-xs text-gray-500 hover:text-rose-gold-light">Learn more ↗</a>
               </div>
               <p className="text-gray-300 text-sm leading-relaxed">{text}</p>
             </div>
@@ -69,27 +91,29 @@ export default function DecadeDetail() {
 
       {/* Music */}
       {music && (
-        <div className="bg-charcoal rounded-2xl p-6 border border-white/10 mb-6">
-          <h2 className="font-retro text-2xl font-bold text-white mb-1">🎵 {music.genre}</h2>
-          <p className="text-gray-400 mb-4 text-sm">{music.description}</p>
-          <div className="flex flex-wrap gap-2 mb-4">
-            {music.artists.map(a => (
-              <a key={a}
-                href={`https://www.youtube.com/results?search_query=${encodeURIComponent(a + ' ' + id)}`}
-                target="_blank" rel="noopener noreferrer"
-                className="bg-charcoal-dark text-rose-gold-light text-xs px-3 py-1 rounded-full border border-rose-gold/30 hover:bg-rose-gold/10 transition-colors">
-                {a} ↗
-              </a>
-            ))}
+        <div className="bg-charcoal rounded-2xl overflow-hidden border border-white/10 mb-6">
+          <div className="p-6">
+            <h2 className="font-retro text-2xl font-bold text-white mb-1">🎵 {music.genre}</h2>
+            <p className="text-gray-400 mb-4 text-sm">{music.description}</p>
+            <div className="flex flex-wrap gap-2 mb-4">
+              {music.artists.map(a => (
+                <a key={a}
+                  href={`https://www.youtube.com/results?search_query=${encodeURIComponent(a + ' ' + id)}`}
+                  target="_blank" rel="noopener noreferrer"
+                  className="bg-charcoal-dark text-rose-gold-light text-xs px-3 py-1 rounded-full border border-rose-gold/30 hover:bg-rose-gold/10 transition-colors">
+                  {a} ↗
+                </a>
+              ))}
+            </div>
+            <a href={music.youtube} target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">
+              ▶ Explore on YouTube
+            </a>
           </div>
-          <a href={music.youtube} target="_blank" rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">
-            ▶ Explore on YouTube
-          </a>
         </div>
       )}
 
-      {/* Sports */}
+      {/* Sports with photos */}
       {athletes.length > 0 && (
         <div className="bg-charcoal rounded-2xl p-6 border border-white/10 mb-6">
           <h2 className="font-retro text-2xl font-bold text-white mb-4">🏆 Sports MVPs of the {id}</h2>
@@ -98,19 +122,28 @@ export default function DecadeDetail() {
               <a key={a.name}
                 href={`https://en.wikipedia.org/wiki/${encodeURIComponent(a.name)}`}
                 target="_blank" rel="noopener noreferrer"
-                className="bg-charcoal-dark rounded-xl p-4 border border-white/10 hover:border-rose-gold/30 transition-colors block">
-                <div className="text-3xl mb-2">{a.emoji}</div>
-                <h3 className="font-semibold text-white">{a.name}</h3>
-                <p className="text-rose-gold text-xs mb-1">{a.sport} · {a.team}</p>
-                <p className="text-gray-400 text-xs leading-relaxed">{a.highlights}</p>
-                <span className="text-xs text-rose-gold-light mt-2 inline-block">Wikipedia ↗</span>
+                className="bg-charcoal-dark rounded-xl overflow-hidden border border-white/10 hover:border-rose-gold/30 transition-colors block flex gap-4">
+                {a.photo && (
+                  <img
+                    src={a.photo}
+                    alt={a.name}
+                    loading="lazy"
+                    onError={e => { e.target.style.display='none'; }}
+                    className="w-20 h-24 object-cover object-top shrink-0"
+                  />
+                )}
+                <div className="p-3">
+                  <h3 className="font-semibold text-white text-sm">{a.name}</h3>
+                  <p className="text-rose-gold text-xs mb-1">{a.sport} · {a.team}</p>
+                  <p className="text-gray-400 text-xs leading-relaxed line-clamp-2">{a.highlights}</p>
+                </div>
               </a>
             ))}
           </div>
         </div>
       )}
 
-      {/* Nav to adjacent decades */}
+      {/* Adjacent decade nav */}
       <div className="flex justify-between mt-10">
         {(() => {
           const idx = DECADES.findIndex(d => d.id === id);
@@ -118,16 +151,8 @@ export default function DecadeDetail() {
           const next = DECADES[idx + 1];
           return (
             <>
-              {prev ? (
-                <Link to={`/decade/${prev.id}`} className="text-sm text-rose-gold hover:underline">
-                  ← {prev.label}
-                </Link>
-              ) : <span />}
-              {next ? (
-                <Link to={`/decade/${next.id}`} className="text-sm text-rose-gold hover:underline">
-                  {next.label} →
-                </Link>
-              ) : <span />}
+              {prev ? <Link to={`/decade/${prev.id}`} className="text-sm text-rose-gold hover:underline">← {prev.label}</Link> : <span />}
+              {next ? <Link to={`/decade/${next.id}`} className="text-sm text-rose-gold hover:underline">{next.label} →</Link> : <span />}
             </>
           );
         })()}
