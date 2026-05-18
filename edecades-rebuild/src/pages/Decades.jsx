@@ -3,19 +3,19 @@ import { DECADES } from '../data/decades';
 
 // One representative Wikimedia Commons photo per decade
 const DECADE_PHOTOS = {
-  '1900s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/1900s_decade_montage.png/330px-1900s_decade_montage.png',
-  '1910s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/WWI_-_Trench_warfare.jpg/330px-WWI_-_Trench_warfare.jpg',
-  '1920s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Roaring_Twenties_montage.png/330px-Roaring_Twenties_montage.png',
-  '1930s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Dust_Bowl_-_Dallas%2C_South_Dakota_1936.jpg/330px-Dust_Bowl_-_Dallas%2C_South_Dakota_1936.jpg',
+  '1900s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Edward_VII_in_coronation_robes.jpg/330px-Edward_VII_in_coronation_robes.jpg',
+  '1910s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Bataille_de_Verdun_1916.jpg/330px-Bataille_de_Verdun_1916.jpg',
+  '1920s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Baker_Charleston.jpg/330px-Baker_Charleston.jpg',
+  '1930s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Unemployed_men_queued_outside_a_depression_soup_kitchen_opened_in_Chicago_by_Al_Capone%2C_02-1931_-_NARA_-_541927.jpg/330px-Unemployed_men_queued_outside_a_depression_soup_kitchen_opened_in_Chicago_by_Al_Capone%2C_02-1931_-_NARA_-_541927.jpg',
   '1940s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Into_the_Jaws_of_Death_23-0455M_edit.jpg/330px-Into_the_Jaws_of_Death_23-0455M_edit.jpg',
-  '1950s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/1950s_decade_montage.png/330px-1950s_decade_montage.png',
-  '1960s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/1960s_decade_montage.png/330px-1960s_decade_montage.png',
-  '1970s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/1970s_decade_montage.png/330px-1970s_decade_montage.png',
-  '1980s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/1980s_decade_montage.png/330px-1980s_decade_montage.png',
-  '1990s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/1990s_decade_montage.png/330px-1990s_decade_montage.png',
-  '2000s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/2000s_decade_montage.png/330px-2000s_decade_montage.png',
-  '2010s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/2010s_decade_montage.png/330px-2010s_decade_montage.png',
-  '2020s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/2020s_decade_montage.jpg/330px-2020s_decade_montage.jpg',
+  '1950s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Elvis_Presley_promoting_Jailhouse_Rock.jpg/330px-Elvis_Presley_promoting_Jailhouse_Rock.jpg',
+  '1960s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/March_on_Washington_edit.jpg/330px-March_on_Washington_edit.jpg',
+  '1970s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Wembley_Stadium_Live_Aid.jpg/330px-Wembley_Stadium_Live_Aid.jpg',
+  '1980s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Berlinermauer.jpg/330px-Berlinermauer.jpg',
+  '1990s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Nirvana_around_1992_%28cropped%29.jpg/330px-Nirvana_around_1992_%28cropped%29.jpg',
+  '2000s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/National_Park_Service_9-11_Statue_of_Liberty_and_WTC_fire.jpg/330px-National_Park_Service_9-11_Statue_of_Liberty_and_WTC_fire.jpg',
+  '2010s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/President_Barack_Obama.jpg/330px-President_Barack_Obama.jpg',
+  '2020s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Sputnik_asm.jpg/330px-Sputnik_asm.jpg',
 };
 
 export default function Decades() {
