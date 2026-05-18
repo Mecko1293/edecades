@@ -3,19 +3,19 @@ import { DECADES } from '../data/decades';
 
 // One representative Wikimedia Commons photo per decade
 const DECADE_PHOTOS = {
-  '1900s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/1900s_decade_montage.png/640px-1900s_decade_montage.png',
-  '1910s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/WWI_-_Trench_warfare.jpg/640px-WWI_-_Trench_warfare.jpg',
-  '1920s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Roaring_Twenties_montage.png/640px-Roaring_Twenties_montage.png',
-  '1930s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Dust_Bowl_-_Dallas%2C_South_Dakota_1936.jpg/640px-Dust_Bowl_-_Dallas%2C_South_Dakota_1936.jpg',
-  '1940s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Into_the_Jaws_of_Death_23-0455M_edit.jpg/640px-Into_the_Jaws_of_Death_23-0455M_edit.jpg',
-  '1950s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/1950s_decade_montage.png/640px-1950s_decade_montage.png',
-  '1960s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/1960s_decade_montage.png/640px-1960s_decade_montage.png',
-  '1970s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/1970s_decade_montage.png/640px-1970s_decade_montage.png',
-  '1980s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/1980s_decade_montage.png/640px-1980s_decade_montage.png',
-  '1990s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/1990s_decade_montage.png/640px-1990s_decade_montage.png',
-  '2000s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/2000s_decade_montage.png/640px-2000s_decade_montage.png',
-  '2010s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/2010s_decade_montage.png/640px-2010s_decade_montage.png',
-  '2020s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/2020s_decade_montage.jpg/640px-2020s_decade_montage.jpg',
+  '1900s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/1900s_decade_montage.png/330px-1900s_decade_montage.png',
+  '1910s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/WWI_-_Trench_warfare.jpg/330px-WWI_-_Trench_warfare.jpg',
+  '1920s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Roaring_Twenties_montage.png/330px-Roaring_Twenties_montage.png',
+  '1930s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Dust_Bowl_-_Dallas%2C_South_Dakota_1936.jpg/330px-Dust_Bowl_-_Dallas%2C_South_Dakota_1936.jpg',
+  '1940s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Into_the_Jaws_of_Death_23-0455M_edit.jpg/330px-Into_the_Jaws_of_Death_23-0455M_edit.jpg',
+  '1950s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/1950s_decade_montage.png/330px-1950s_decade_montage.png',
+  '1960s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/1960s_decade_montage.png/330px-1960s_decade_montage.png',
+  '1970s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/1970s_decade_montage.png/330px-1970s_decade_montage.png',
+  '1980s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/1980s_decade_montage.png/330px-1980s_decade_montage.png',
+  '1990s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/1990s_decade_montage.png/330px-1990s_decade_montage.png',
+  '2000s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/2000s_decade_montage.png/330px-2000s_decade_montage.png',
+  '2010s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/2010s_decade_montage.png/330px-2010s_decade_montage.png',
+  '2020s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/2020s_decade_montage.jpg/330px-2020s_decade_montage.jpg',
 };
 
 export default function Decades() {
