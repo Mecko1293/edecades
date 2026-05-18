@@ -9,18 +9,18 @@ const DECADE_PHOTOS = {
   '1940s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Into_the_Jaws_of_Death_23-0455M_edit.jpg/330px-Into_the_Jaws_of_Death_23-0455M_edit.jpg',
   '1950s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Elvis_Presley_promoting_Jailhouse_Rock.jpg/330px-Elvis_Presley_promoting_Jailhouse_Rock.jpg',
   '1960s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/March_on_Washington_edit.jpg/330px-March_on_Washington_edit.jpg',
-  '1970s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Wembley_Stadium_Live_Aid.jpg/330px-Wembley_Stadium_Live_Aid.jpg',
+  '1970s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Watergate_complex.jpg/330px-Watergate_complex.jpg',
   '1980s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Berlinermauer.jpg/330px-Berlinermauer.jpg',
   '1990s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Nirvana_around_1992_%28cropped%29.jpg/330px-Nirvana_around_1992_%28cropped%29.jpg',
   '2000s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/National_Park_Service_9-11_Statue_of_Liberty_and_WTC_fire.jpg/330px-National_Park_Service_9-11_Statue_of_Liberty_and_WTC_fire.jpg',
   '2010s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/President_Barack_Obama.jpg/330px-President_Barack_Obama.jpg',
-  '2020s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Sputnik_asm.jpg/330px-Sputnik_asm.jpg',
+  '2020s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Above_Gotham.jpg/330px-Above_Gotham.jpg',
 };
 
 const FEATURES = [
-  { to: '/categories', title: 'Everything About Every Decade', desc: 'Fashion, Food, Art, Tech, Homes & Culture — all 13 decades', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Collage_of_Nine_Dogs.jpg/330px-Collage_of_Nine_Dogs.jpg', color: '#d4956e' },
+  { to: '/categories', title: 'Everything About Every Decade', desc: 'Fashion, Food, Art, Tech, Homes & Culture — all 13 decades', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Vintage_shops%2C_Dublin.jpg/330px-Vintage_shops%2C_Dublin.jpg', color: '#d4956e' },
   { to: '/music',      title: 'Music by Decade',               desc: 'Genre guides and artist spotlights from Jazz to TikTok pop',  img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Louis_Armstrong_in_Color_%28cropped%29.jpg/330px-Louis_Armstrong_in_Color_%28cropped%29.jpg', color: '#9B59B6' },
-  { to: '/trivia',     title: 'Decade Trivia',                  desc: 'Test your knowledge across history, music, film and culture',  img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Sputnik_asm.jpg/330px-Sputnik_asm.jpg', color: '#E8A87C' },
+  { to: '/trivia',     title: 'Decade Trivia',                  desc: 'Test your knowledge across history, music, film and culture',  img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Above_Gotham.jpg/330px-Above_Gotham.jpg', color: '#E8A87C' },
   { to: '/onthisday',  title: 'On This Day',                    desc: 'Real events that happened on today\'s date throughout history', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Aldrin_Apollo_11_original.jpg/330px-Aldrin_Apollo_11_original.jpg', color: '#D4AF37' },
   { to: '/presidents', title: 'Presidents by Decade',          desc: 'Every U.S. president from Roosevelt to Biden — one per era',   img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/John_F._Kennedy%2C_White_House_color_photo_portrait.jpg/330px-John_F._Kennedy%2C_White_House_color_photo_portrait.jpg', color: '#4A5C6B' },
   { to: '/shorts',     title: 'Decade Shorts',                  desc: 'Curated video clips sorted by era — history in 10 minutes',    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Into_the_Jaws_of_Death_23-0455M_edit.jpg/330px-Into_the_Jaws_of_Death_23-0455M_edit.jpg', color: '#E53935' },
