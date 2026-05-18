@@ -5,9 +5,9 @@ const DECADES_ORDER = ['1920s','1930s','1940s','1950s','1960s','1970s','1980s','
 
 // Representative artist/era photos from Wikimedia Commons
 const MUSIC_PHOTOS = {
-  '1920s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Louis_Armstrong_in_Color_%28restored%29.jpg/330px-Louis_Armstrong_in_Color_%28restored%29.jpg',
-  '1930s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Benny_Goodman_-_Life.jpg/330px-Benny_Goodman_-_Life.jpg',
-  '1940s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Frank_Sinatra_Pal_Joey_1957.jpg/330px-Frank_Sinatra_Pal_Joey_1957.jpg',
+  '1920s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Louis_Armstrong_in_Color_%28cropped%29.jpg/330px-Louis_Armstrong_in_Color_%28cropped%29.jpg',
+  '1930s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Benny_Goodman_1942.jpg/330px-Benny_Goodman_1942.jpg',
+  '1940s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Frank_Sinatra_1961.jpg/330px-Frank_Sinatra_1961.jpg',
   '1950s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Elvis_Presley_promoting_Jailhouse_Rock.jpg/330px-Elvis_Presley_promoting_Jailhouse_Rock.jpg',
   '1960s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/The_Beatles_1963_Dezo_Hoffman_Capitol_Records_press_photo_2.jpg/330px-The_Beatles_1963_Dezo_Hoffman_Capitol_Records_press_photo_2.jpg',
   '1970s': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Bee_Gees_1977.JPG/330px-Bee_Gees_1977.JPG',
